@@ -3,15 +3,15 @@ package com.judjingm.android002.home.data
 import com.judjingm.android002.home.data.models.dto.MovieDto
 import com.judjingm.android002.home.data.models.dto.MoviesDto
 import com.judjingm.android002.home.data.models.dto.PopularMoviesQueryDto
-import com.judjingm.android002.home.data.models.dto.PopularTVSeriesQueryDto
+import com.judjingm.android002.home.data.models.dto.PopularTVShowsQueryDto
 import com.judjingm.android002.home.data.models.dto.TvShowDto
-import com.judjingm.android002.home.data.models.dto.TvSeriesDto
+import com.judjingm.android002.home.data.models.dto.TvShowsDto
 import com.judjingm.android002.home.data.models.request.PopularMoviesRequest
 import com.judjingm.android002.home.data.models.request.PopularTVShowsRequest
 import com.judjingm.android002.home.data.models.response.MovieResults
 import com.judjingm.android002.home.data.models.response.MoviesResponse
 import com.judjingm.android002.home.data.models.response.TVShowsResponse
-import com.judjingm.android002.home.data.models.response.TVShowsResults
+import com.judjingm.android002.home.data.models.response.TVShowResults
 
 class ContentDataMapper {
 
@@ -23,10 +23,10 @@ class ContentDataMapper {
         )
     }
 
-    fun toPopularTvSeriesRequest(popularTVSeriesQueryDto: PopularTVSeriesQueryDto): PopularTVShowsRequest {
+    fun toPopularTvSeriesRequest(popularTVShowsQueryDto: PopularTVShowsQueryDto): PopularTVShowsRequest {
         return PopularTVShowsRequest(
-            page = popularTVSeriesQueryDto.page,
-            language = popularTVSeriesQueryDto.language
+            page = popularTVShowsQueryDto.page,
+            language = popularTVShowsQueryDto.language
         )
     }
 
@@ -39,8 +39,8 @@ class ContentDataMapper {
         )
     }
 
-    fun toTvSeriesDto(tvShowsResponse: TVShowsResponse): TvSeriesDto {
-        return TvSeriesDto(
+    fun toTvShowDto(tvShowsResponse: TVShowsResponse): TvShowsDto {
+        return TvShowsDto(
             page = tvShowsResponse.page,
             results = tvShowsResponse.results.map { toTvShowDto(it) },
             totalPages = tvShowsResponse.totalPages,
@@ -71,7 +71,7 @@ class ContentDataMapper {
         }
     }
 
-    fun toTvShowDto(tvShowResults: TVShowsResults): TvShowDto {
+    private fun toTvShowDto(tvShowResults: TVShowResults): TvShowDto {
         with(tvShowResults) {
             return TvShowDto(
                 adult = adult,

@@ -7,8 +7,8 @@ import com.judjingm.android002.home.data.api.PopularContentApi
 import com.judjingm.android002.home.data.api.PopularContentRemoteDataSource
 import com.judjingm.android002.home.data.models.dto.MoviesDto
 import com.judjingm.android002.home.data.models.dto.PopularMoviesQueryDto
-import com.judjingm.android002.home.data.models.dto.PopularTVSeriesQueryDto
-import com.judjingm.android002.home.data.models.dto.TvSeriesDto
+import com.judjingm.android002.home.data.models.dto.PopularTVShowsQueryDto
+import com.judjingm.android002.home.data.models.dto.TvShowsDto
 
 class PopularContentRemoteDataSourceImpl(
     private val popularContentApi: PopularContentApi,
@@ -27,14 +27,14 @@ class PopularContentRemoteDataSourceImpl(
         }
     }
 
-    override suspend fun getPopularSeriesShows(popularTVSeriesQueryDto: PopularTVSeriesQueryDto): TvSeriesDto {
+    override suspend fun getPopularSeriesShows(popularTVShowsQueryDto: PopularTVShowsQueryDto): TvShowsDto {
         return try {
             val response = popularContentApi.getPopularTvSeries(
                 popularTVSeriesRequest = contentDataMapper.toPopularTvSeriesRequest(
-                    popularTVSeriesQueryDto = popularTVSeriesQueryDto
+                    popularTVShowsQueryDto = popularTVShowsQueryDto
                 )
             )
-            contentDataMapper.toTvSeriesDto(response)
+            contentDataMapper.toTvShowDto(response)
         } catch (exception: NetworkException) {
             throw networkToPopularContentExceptionMapper.handleException(exception = exception)
         }

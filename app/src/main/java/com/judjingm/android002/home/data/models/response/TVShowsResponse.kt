@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 
 data class TVShowsResponse(
     val page: Int?,
-    val results: List<TVShowsResults>,
+    val results: List<TVShowResults>,
     @SerialName("total_pages") val totalPages: Int?,
     @SerialName("total_results") val totalResults: Int?
 )

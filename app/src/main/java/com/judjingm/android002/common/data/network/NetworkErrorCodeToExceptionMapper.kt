@@ -1,5 +1,6 @@
 package com.judjingm.android002.common.data.network
 
+import app.cashadvisor.common.utill.extensions.logNetworkError
 import com.judjingm.android002.common.utill.exceptions.NetworkException
 import java.io.IOException
 import javax.inject.Inject
@@ -7,6 +8,7 @@ import javax.inject.Inject
 class NetworkErrorCodeToExceptionMapper @Inject constructor() {
 
     fun getException(errorMessage: String, responseCode: Int): IOException {
+        logNetworkError(errorMessage)
         return when (responseCode) {
             400 -> NetworkException.BadRequest(errorMessage, responseCode)
             401 -> NetworkException.Unauthorized(errorMessage, responseCode)
