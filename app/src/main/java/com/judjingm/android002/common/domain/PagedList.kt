@@ -12,4 +12,5 @@ data class PagedList<T> (
         totalElements = totalElements,
         totalPages = totalPages
     )
+
 }

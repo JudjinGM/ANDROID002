@@ -20,7 +20,7 @@ sealed class PopularContentException(
         class InvalidPage(
             override val message: String,
             val statusCode: Int
-        ):PopularContent(message)
+        ) : PopularContent(message)
 
         class InvalidAPIkey(
             override val message: String,
