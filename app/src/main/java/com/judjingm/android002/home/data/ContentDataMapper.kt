@@ -1,11 +1,10 @@
 package com.judjingm.android002.home.data
 
+import com.judjingm.android002.common.domain.PagedList
 import com.judjingm.android002.home.data.models.dto.MovieDto
-import com.judjingm.android002.home.data.models.dto.MoviesDto
 import com.judjingm.android002.home.data.models.dto.PopularMoviesQueryDto
 import com.judjingm.android002.home.data.models.dto.PopularTVShowsQueryDto
 import com.judjingm.android002.home.data.models.dto.TvShowDto
-import com.judjingm.android002.home.data.models.dto.TvShowsDto
 import com.judjingm.android002.home.data.models.request.PopularMoviesRequest
 import com.judjingm.android002.home.data.models.request.PopularTVShowsRequest
 import com.judjingm.android002.home.data.models.response.MovieResults
@@ -30,25 +29,25 @@ class ContentDataMapper {
         )
     }
 
-    fun toMoviesDto(moviesResponse: MoviesResponse): MoviesDto {
-        return MoviesDto(
-            page = moviesResponse.page,
-            results = moviesResponse.results.map { toMovieDto(it) },
+    fun toMoviesDto(moviesResponse: MoviesResponse): PagedList<MovieDto> {
+        return PagedList(
+            currentPage = moviesResponse.page,
+            content = moviesResponse.results.map { toMovieDto(it) },
             totalPages = moviesResponse.totalPages,
-            totalResults = moviesResponse.totalResults
+            totalElements = moviesResponse.totalResults
         )
     }
 
-    fun toTvShowDto(tvShowsResponse: TVShowsResponse): TvShowsDto {
-        return TvShowsDto(
-            page = tvShowsResponse.page,
-            results = tvShowsResponse.results.map { toTvShowDto(it) },
+    fun toTvShowDto(tvShowsResponse: TVShowsResponse): PagedList<TvShowDto> {
+        return PagedList(
+            currentPage = tvShowsResponse.page,
+            content = tvShowsResponse.results.map { toTvShowDto(it) },
             totalPages = tvShowsResponse.totalPages,
-            totalResults = tvShowsResponse.totalResults
+            totalElements = tvShowsResponse.totalResults
         )
     }
 
-    fun toMovieDto(movieResults: MovieResults): MovieDto {
+    private fun toMovieDto(movieResults: MovieResults): MovieDto {
         with(movieResults) {
             return MovieDto(
                 adult = adult,
@@ -66,8 +65,6 @@ class ContentDataMapper {
                 voteAverage = voteAverage,
                 voteCount = voteCount
             )
-
-
         }
     }
 
