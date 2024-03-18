@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ErrorResponse(
-    @SerialName("error") val message: String,
-    @SerialName("status_code") val statusCode: Int
+    val success: Boolean,
+    @SerialName("status_code") val statusCode: Int,
+    @SerialName("status_message") val statusMessage: String
 )
