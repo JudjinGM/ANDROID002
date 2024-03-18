@@ -1,4 +1,4 @@
-package com.judjingm.android002.common.data
+package com.judjingm.android002.common.data.network
 
 import com.judjingm.android002.common.utill.exceptions.NetworkException
 import java.io.IOException
