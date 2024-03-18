@@ -3,7 +3,16 @@
     <style name="Base.Theme.ANDROID002" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/blue</item>
+
+        <item name="android:statusBarColor">@color/white</item>
     </style>
 
     <style name="Theme.ANDROID002" parent="Base.Theme.ANDROID002" />
+
+    <style name="AuthorsTextView">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text_size_main</item>
+        <item name="android:fontFamily">@font/roboto_slab_medium</item>
+    </style>
 </resources>

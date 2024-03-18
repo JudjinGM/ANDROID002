@@ -1,3 +1,38 @@
 <resources>
-    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_size_header">22sp</dimen>
+    <dimen name="text_size_big_header">32sp</dimen>
+    <dimen name="text_size_main">16sp</dimen>
+    <dimen name="text_size_menu">12sp</dimen>
+
+    <dimen name="padding_horizontal">16dp</dimen>
+    <dimen name="padding_horizontal_small">12dp</dimen>
+    <dimen name="padding_horizontal_smaller">8dp</dimen>
+    <dimen name="padding_horizontal_very_small">4dp</dimen>
+
+    <dimen name="padding_vertical">8dp</dimen>
+    <dimen name="padding_vertical_small">4dp</dimen>
+    <dimen name="padding_vertical_big">16dp</dimen>
+
+    <dimen name="margin_vertical_big">32dp</dimen>
+    <dimen name="margin_vertical">24dp</dimen>
+    <dimen name="margin_vertical_small">16dp</dimen>
+    <dimen name="margin_vertical_for_layout">6dp</dimen>
+
+    <dimen name="_0dp">0dp</dimen>
+    <dimen name="toolbar_height">64dp</dimen>
+    <dimen name="edit_text_height">56dp</dimen>
+    <dimen name="search_screen_counter_vacancies_margin">12dp</dimen>
+    <dimen name="progress_bar">48dp</dimen>
+
+    <dimen name="item_height">48dp</dimen>
+    <dimen name="logo_dim">48dp</dimen>
+
+    <dimen name="button_vertical_padding">20dp</dimen>
+
+    <dimen name="corner_radius">12dp</dimen>
+    <dimen name="text_input_layout_height">60dp</dimen>
+    <dimen name="icon_size_bottom_nav">24dp</dimen>
+
+    <dimen name="bottom_navigation_height">56dp</dimen>
+
 </resources>
