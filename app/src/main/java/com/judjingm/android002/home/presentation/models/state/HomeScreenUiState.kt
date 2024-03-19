@@ -8,9 +8,10 @@ data class HomeScreenUiState(
     sealed interface UiState {
         fun handleState(handler: StateHandler)
 
-        data object Loading : UiState {
+        data class Loading(private val isPagination: Boolean = false) : UiState {
+
             override fun handleState(handler: StateHandler) {
-                handler.handleLoading()
+                handler.handleLoading(isPagination)
             }
         }
 
@@ -34,7 +35,7 @@ data class HomeScreenUiState(
     }
 
     interface StateHandler {
-        fun handleLoading()
+        fun handleLoading(isPagination: Boolean)
 
         fun handleSuccess(
             content: List<PopularContentUi>,

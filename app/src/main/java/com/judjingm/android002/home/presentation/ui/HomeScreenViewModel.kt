@@ -16,12 +16,14 @@ import com.judjingm.android002.home.presentation.models.state.HomeScreenState
 import com.judjingm.android002.home.presentation.models.state.HomeScreenUiState
 import com.judjingm.android002.home.presentation.models.state.UiErrorsState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
@@ -41,7 +43,7 @@ class HomeScreenViewModel @Inject constructor(
     private val state: StateFlow<HomeScreenState> = _state.asStateFlow()
 
     private val _uiState: MutableStateFlow<HomeScreenUiState> =
-        MutableStateFlow(HomeScreenUiState(HomeScreenUiState.UiState.Loading))
+        MutableStateFlow(HomeScreenUiState(HomeScreenUiState.UiState.Loading(false)))
 
     val uiState: StateFlow<HomeScreenUiState> = _uiState.asStateFlow()
 
@@ -49,77 +51,93 @@ class HomeScreenViewModel @Inject constructor(
 
     val sideEffect: SharedFlow<HomeScreenSideEffects> = _sideEffects.asSharedFlow()
 
+    private val currentState get() = state.replayCache.firstOrNull() ?: HomeScreenState()
+
+
     fun handleEvent(event: HomeScreenEvents) {
         when (event) {
             HomeScreenEvents.GetPopularContent -> getPopularContent()
             HomeScreenEvents.InitializeViewModel -> initialize()
+            HomeScreenEvents.OnContentClicked -> {
+                viewModelScope.launch {
+                    _sideEffects.emit(HomeScreenSideEffects.ShowMessage(StringVO.Plain("clicked")))
+                }
+            }
         }
     }
 
     private fun initialize() {
         viewModelScope.launch {
             state.collect { screenState ->
-                if (screenState.popularContent.content.isEmpty()) {
-                    _uiState.update {
-                        HomeScreenUiState(
-                            HomeScreenUiState.UiState.Success.Empty
-                        )
-                    }
-                } else {
-                    _uiState.update {
-                        HomeScreenUiState(
-                            HomeScreenUiState.UiState.Success.Content(screenState.popularContent.content)
-                        )
-                    }
-                }
 
-                if (screenState.isErrorFetchingMovie && screenState.isErrorFetchingTVShows) {
-                    _uiState.update {
-                        HomeScreenUiState(
-                            HomeScreenUiState.UiState.Error(UiErrorsState.CouldNotFetchData)
-                        )
+                when {
+                    screenState.popularContent.content.isEmpty() && !screenState.isLoading -> {
+                        _uiState.update {
+                            HomeScreenUiState(
+                                HomeScreenUiState.UiState.Success.Empty
+                            )
+                        }
                     }
-                } else if (screenState.isErrorFetchingMovie) {
-                    _sideEffects.emit(HomeScreenSideEffects.ShowMessage(screenState.errorMessage))
 
-                } else if (screenState.isErrorFetchingTVShows) {
-                    _sideEffects.emit(HomeScreenSideEffects.ShowMessage(screenState.errorMessage))
+                    screenState.popularContent.content.isNotEmpty() && !screenState.isLoading -> {
+                        _uiState.update {
+                            HomeScreenUiState(
+                                HomeScreenUiState.UiState.Success.Content(screenState.popularContent.content)
+                            )
+                        }
+                    }
+
+                    screenState.isLoading -> {
+                        _uiState.update {
+                            HomeScreenUiState(
+                                HomeScreenUiState.UiState.Loading(currentState.currentPage != FIRST_PAGE)
+                            )
+                        }
+                    }
+
+                    screenState.isErrorFetchingMovie && screenState.isErrorFetchingTVShows -> {
+                        _uiState.update {
+                            HomeScreenUiState(
+                                HomeScreenUiState.UiState.Error(UiErrorsState.CouldNotFetchData)
+                            )
+                        }
+                    }
+
+                    screenState.isErrorFetchingMovie -> {
+                        _sideEffects.emit(HomeScreenSideEffects.ShowMessage(screenState.errorMessage))
+                    }
+
+                    screenState.isErrorFetchingTVShows -> _sideEffects.emit(
+                        HomeScreenSideEffects.ShowMessage(
+                            screenState.errorMessage
+                        )
+                    )
                 }
             }
         }
     }
 
+
     private fun getPopularContent() {
-        viewModelScope.launch {
-            getPopularMoviesUseCase
-                .execute(page = state.value.currentPage).zip(
-                    getPopularTVShowsUseCase.execute(page = state.value.currentPage)
-                ) { popularMovies, popularTVShows ->
-
-                    val popularContentMutex = Mutex()
-                    var pagedList = state.value.popularContent
-
-                    popularMovies.handle(object :
-                        Resource.ResultHandler<PagedList<Movie>, ErrorEntity> {
-                        override suspend fun handleSuccess(data: PagedList<Movie>) {
-                            popularContentMutex.withLock {
-                                pagedList += commonUIMapper.toPagedList(
-                                    data
-                                ) { commonUIMapper.toPopularContent(it) }
-                            }
+        if (isPaginationDebounce()) {
+            viewModelScope.launch {
+                getPopularMoviesUseCase
+                    .execute(page = currentState.currentPage)
+                    .onStart {
+                        _state.update {
+                            it.copy(isLoading = true)
                         }
+                    }
+                    .zip(
+                        getPopularTVShowsUseCase.execute(page = currentState.currentPage)
+                    ) { popularMovies, popularTVShows ->
 
-                        override suspend fun handleError(errorStatus: ErrorEntity) {
-                            _state.update { screenState ->
-                                handleMovieFetchingError(screenState, errorStatus)
-                            }
-                        }
-                    })
+                        val popularContentMutex = Mutex()
+                        var pagedList = currentState.popularContent
 
-                    popularTVShows.handle(
-                        object :
-                            Resource.ResultHandler<PagedList<TVShow>, ErrorEntity> {
-                            override suspend fun handleSuccess(data: PagedList<TVShow>) {
+                        popularMovies.handle(object :
+                            Resource.ResultHandler<PagedList<Movie>, ErrorEntity> {
+                            override suspend fun handleSuccess(data: PagedList<Movie>) {
                                 popularContentMutex.withLock {
                                     pagedList += commonUIMapper.toPagedList(
                                         data
@@ -129,19 +147,39 @@ class HomeScreenViewModel @Inject constructor(
 
                             override suspend fun handleError(errorStatus: ErrorEntity) {
                                 _state.update { screenState ->
-                                    handleMovieTvShowError(screenState, errorStatus)
+                                    handleMovieFetchingError(screenState, errorStatus)
                                 }
                             }
                         })
-                    return@zip pagedList
-                }.collect { data ->
-                    _state.update {
-                        it.copy(
-                            popularContent = data,
-                            currentPage = data.currentPage + 1
-                        )
+
+                        popularTVShows.handle(
+                            object :
+                                Resource.ResultHandler<PagedList<TVShow>, ErrorEntity> {
+                                override suspend fun handleSuccess(data: PagedList<TVShow>) {
+                                    popularContentMutex.withLock {
+                                        pagedList += commonUIMapper.toPagedList(
+                                            data
+                                        ) { commonUIMapper.toPopularContent(it) }
+                                    }
+                                }
+
+                                override suspend fun handleError(errorStatus: ErrorEntity) {
+                                    _state.update { screenState ->
+                                        handleMovieTvShowError(screenState, errorStatus)
+                                    }
+                                }
+                            })
+                        return@zip pagedList
+                    }.collect { data ->
+                        _state.update {
+                            it.copy(
+                                isLoading = false,
+                                popularContent = data,
+                                currentPage = data.currentPage + 1
+                            )
+                        }
                     }
-                }
+            }
         }
     }
 
@@ -152,6 +190,7 @@ class HomeScreenViewModel @Inject constructor(
         return when (errorStatus) {
             is ErrorEntity.NetworksError.NoInternet -> {
                 state.copy(
+                    isLoading = false,
                     isErrorFetchingMovie = true,
                     errorMessage = StringVO.Plain(errorStatus.message)
                 )
@@ -159,6 +198,7 @@ class HomeScreenViewModel @Inject constructor(
 
             is ErrorEntity.PopularContent.InvalidPage -> {
                 state.copy(
+                    isLoading = false,
                     isErrorFetchingMovie = true,
                     errorMessage = StringVO.Plain(errorStatus.message)
                 )
@@ -166,6 +206,7 @@ class HomeScreenViewModel @Inject constructor(
 
             is ErrorEntity.PopularContent.Unauthorized -> {
                 state.copy(
+                    isLoading = false,
                     isErrorFetchingMovie = true,
                     errorMessage = StringVO.Plain(errorStatus.message)
                 )
@@ -173,6 +214,7 @@ class HomeScreenViewModel @Inject constructor(
 
             is ErrorEntity.UnknownError -> {
                 state.copy(
+                    isLoading = false,
                     isErrorFetchingMovie = true,
                     errorMessage = StringVO.Plain(errorStatus.message)
                 )
@@ -187,6 +229,7 @@ class HomeScreenViewModel @Inject constructor(
         return when (errorStatus) {
             is ErrorEntity.NetworksError.NoInternet -> {
                 state.copy(
+                    isLoading = false,
                     isErrorFetchingMovie = true,
                     errorMessage = StringVO.Plain(errorStatus.message)
                 )
@@ -194,6 +237,7 @@ class HomeScreenViewModel @Inject constructor(
 
             is ErrorEntity.PopularContent.InvalidPage -> {
                 state.copy(
+                    isLoading = false,
                     isErrorFetchingMovie = true,
                     errorMessage = StringVO.Plain(errorStatus.message)
                 )
@@ -201,6 +245,7 @@ class HomeScreenViewModel @Inject constructor(
 
             is ErrorEntity.PopularContent.Unauthorized -> {
                 state.copy(
+                    isLoading = false,
                     isErrorFetchingMovie = true,
                     errorMessage = StringVO.Plain(errorStatus.message)
                 )
@@ -208,10 +253,49 @@ class HomeScreenViewModel @Inject constructor(
 
             is ErrorEntity.UnknownError -> {
                 state.copy(
+                    isLoading = false,
                     isErrorFetchingMovie = true,
                     errorMessage = StringVO.Plain(errorStatus.message)
                 )
             }
         }
     }
+
+    private fun isPaginationDebounce(): Boolean {
+        val current = currentState.isPaginationAllowed
+        if (currentState.isPaginationAllowed) {
+            _state.update {
+                it.copy(isPaginationAllowed = false)
+            }
+            viewModelScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY_MILLIS)
+                _state.update {
+                    it.copy(isPaginationAllowed = true)
+                }
+            }
+        }
+        return current
+    }
+
+    private fun isClickDebounce(): Boolean {
+        val current = currentState.isClickAllowed
+        if (currentState.isClickAllowed) {
+            _state.update {
+                it.copy(isClickAllowed = false)
+            }
+            viewModelScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY_MILLIS)
+                _state.update {
+                    it.copy(isClickAllowed = true)
+                }
+            }
+        }
+        return current
+    }
+
+    companion object {
+        const val FIRST_PAGE = 1
+        const val CLICK_DEBOUNCE_DELAY_MILLIS = 500L
+    }
+
 }
