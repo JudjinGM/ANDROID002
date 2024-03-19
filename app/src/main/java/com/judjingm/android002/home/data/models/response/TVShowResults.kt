@@ -1,7 +1,9 @@
 package com.judjingm.android002.home.data.models.response
 
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class TVShowResults(
     val adult: Boolean?,
     @SerialName("backdrop_path") val backdropPath: String?,

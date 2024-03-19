@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -12,6 +14,8 @@ android {
     compileSdk = 34
 
     defaultConfig {
+        val localProperties = gradleLocalProperties(rootDir, providers)
+
         applicationId = "com.judjingm.android002"
         minSdk = 22
         targetSdk = 34
@@ -19,6 +23,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField(
+            type = "String",
+            name = "TMDB_ACCESS_TOKEN",
+            value = "\"${localProperties.getProperty("tmdbAccessToken")}\""
+        )
     }
 
     buildTypes {
@@ -39,6 +49,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -87,6 +98,7 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.retrofit2.kotlinx.serialization.converter)
 
     // Test
     testImplementation(libs.junit)

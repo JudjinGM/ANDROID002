@@ -7,7 +7,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.judjingm.android002.R
 import com.judjingm.android002.common.ui.BaseActivity
 import com.judjingm.android002.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
     override fun configureViews() {
         val navigationView = binding.navigationView

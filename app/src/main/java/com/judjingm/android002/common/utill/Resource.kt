@@ -1,24 +1,24 @@
 package com.judjingm.android002.common.utill
 
-sealed class Resource<T, E>(val data: T? = null, val error: E? = null) {
-    abstract fun handle(handler: ResultHandler)
-    class Success<T, E>(data: T) : Resource<T, E>(data = data) {
-        override fun handle(handler: ResultHandler) {
+sealed class Resource<T, E> {
+    abstract suspend fun handle(handler: ResultHandler<T, E>)
+    class Success<T, E>(private val data: T) : Resource<T, E>() {
+        override suspend fun handle(handler: ResultHandler<T, E>) {
             handler.handleSuccess(data)
         }
 
     }
 
-    class Error<T, E>(error: E) : Resource<T, E>(error = error) {
-        override fun handle(handler: ResultHandler) {
+    class Error<T, E>(private val error: E) : Resource<T, E>() {
+        override suspend fun handle(handler: ResultHandler<T, E>) {
             handler.handleError(error)
         }
     }
 
 
-    interface ResultHandler {
-        fun <T> handleSuccess(data: T)
-        fun <E> handleError(errorStatus: E)
+    interface ResultHandler<T, E> {
+        suspend fun handleSuccess(data: T)
+        suspend fun handleError(errorStatus: E)
     }
 }
 

@@ -7,10 +7,13 @@ import com.judjingm.android002.home.domain.models.PopularTVShowsQuery
 import com.judjingm.android002.home.domain.models.TVShow
 import com.judjingm.android002.home.domain.repository.PopularContentRepository
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 interface GetPopularTVShowsUseCase {
     fun execute(page: Int): Flow<Resource<PagedList<TVShow>, ErrorEntity>>
-    class Base(private val repository: PopularContentRepository) : GetPopularTVShowsUseCase {
+    class Base @Inject constructor(
+        private val repository: PopularContentRepository
+    ) : GetPopularTVShowsUseCase {
         override fun execute(page: Int): Flow<Resource<PagedList<TVShow>, ErrorEntity>> {
             return repository.getPopularTvShows(
                 PopularTVShowsQuery(

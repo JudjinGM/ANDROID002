@@ -1,5 +1,6 @@
 package com.judjingm.android002.home.data.impl
 
+import app.cashadvisor.common.utill.extensions.logDebugError
 import com.judjingm.android002.common.domain.PagedList
 import com.judjingm.android002.common.domain.models.ErrorEntity
 import com.judjingm.android002.common.utill.BaseExceptionToErrorMapper
@@ -13,8 +14,9 @@ import com.judjingm.android002.home.domain.models.TVShow
 import com.judjingm.android002.home.domain.repository.PopularContentRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class PopularContentRepositoryImpl(
+class PopularContentRepositoryImpl @Inject constructor(
     private val remoteDataSource: PopularContentRemoteDataSource,
     private val domainMapper: PopularContentDomainMapper,
     private val exceptionToErrorMapper: BaseExceptionToErrorMapper
@@ -27,14 +29,19 @@ class PopularContentRepositoryImpl(
                 popularMoviesQueryDto = domainMapper.toPopularMoviesQueryDto(popularMoviesQuery)
             )
 
-            Resource.Success<PagedList<Movie>, ErrorEntity>(
-                data = domainMapper.toPagedList(data) {
-                    domainMapper.toMovie(it)
-                })
+            emit(
+                Resource.Success(
+                    data = domainMapper.toPagedList(data) {
+                        domainMapper.toMovie(it)
+                    })
+            )
 
         } catch (exception: Exception) {
-            Resource.Error<PagedList<Movie>, ErrorEntity>(
-                exceptionToErrorMapper.handleException(exception)
+            logDebugError("getPopularMovies, ${exception.message}")
+            emit(
+                Resource.Error(
+                    exceptionToErrorMapper.handleException(exception)
+                )
             )
         }
     }
@@ -49,14 +56,19 @@ class PopularContentRepositoryImpl(
                 )
             )
 
-            Resource.Success<PagedList<TVShow>, ErrorEntity>(
-                data = domainMapper.toPagedList(data) {
+            emit(
+                Resource.Success(data = domainMapper.toPagedList(data) {
                     domainMapper.toTVShow(it)
                 })
+            )
 
         } catch (exception: Exception) {
-            Resource.Error<PagedList<Movie>, ErrorEntity>(
-                exceptionToErrorMapper.handleException(exception)
+            logDebugError("getPopularTvShows, ${exception.message}")
+
+            emit(
+                Resource.Error(
+                    exceptionToErrorMapper.handleException(exception)
+                )
             )
         }
     }

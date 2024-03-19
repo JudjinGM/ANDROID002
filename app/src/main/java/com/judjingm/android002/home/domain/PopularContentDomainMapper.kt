@@ -9,8 +9,9 @@ import com.judjingm.android002.home.domain.models.Movie
 import com.judjingm.android002.home.domain.models.PopularMoviesQuery
 import com.judjingm.android002.home.domain.models.PopularTVShowsQuery
 import com.judjingm.android002.home.domain.models.TVShow
+import javax.inject.Inject
 
-class PopularContentDomainMapper {
+class PopularContentDomainMapper @Inject constructor() {
     fun <Data, Domain> toPagedList(
         pagedList: PagedList<Data>,
         convertFunc: (Data) -> Domain

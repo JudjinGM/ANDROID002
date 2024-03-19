@@ -4,8 +4,9 @@ import com.judjingm.android002.common.data.models.ErrorResponse
 import com.judjingm.android002.common.utill.exceptions.NetworkException
 import com.judjingm.android002.common.utill.exceptions.PopularContentException
 import kotlinx.serialization.json.Json
+import javax.inject.Inject
 
-class NetworkToPopularContentExceptionMapper(
+class NetworkToPopularContentExceptionMapper @Inject constructor(
     private val json: Json
 ) {
     fun handleException(exception: NetworkException): PopularContentException {

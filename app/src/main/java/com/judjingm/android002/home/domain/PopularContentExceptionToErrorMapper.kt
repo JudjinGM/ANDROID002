@@ -3,8 +3,10 @@ package com.judjingm.android002.home.domain
 import com.judjingm.android002.common.domain.models.ErrorEntity
 import com.judjingm.android002.common.utill.BaseExceptionToErrorMapper
 import com.judjingm.android002.common.utill.exceptions.PopularContentException
+import javax.inject.Inject
 
-class PopularContentExceptionToErrorMapper : BaseExceptionToErrorMapper() {
+class PopularContentExceptionToErrorMapper @Inject constructor(
+) : BaseExceptionToErrorMapper() {
 
     override fun handleSpecificException(
         exception: Exception,

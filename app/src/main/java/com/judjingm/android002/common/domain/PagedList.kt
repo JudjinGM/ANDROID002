@@ -1,11 +1,11 @@
 package com.judjingm.android002.common.domain
 
-data class PagedList<T> (
-    val currentPage: Int?,
-    val content: List<T>,
-    val totalPages: Int?,
-    val totalElements: Int?
-){
+data class PagedList<T>(
+    val currentPage: Int = 0,
+    val content: List<T> = emptyList(),
+    val totalPages: Int = 0,
+    val totalElements: Int = 0
+) {
     operator fun plus(newPage: PagedList<T>) = PagedList(
         content = content + newPage.content,
         currentPage = newPage.currentPage,
