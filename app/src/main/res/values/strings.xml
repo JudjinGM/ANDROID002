@@ -19,6 +19,7 @@
     <string name="year">Year</string>
     <string name="title">Title</string>
     <string name="cast">Cast</string>
+    <string name="poster">Poster</string>
 
 
 </resources>

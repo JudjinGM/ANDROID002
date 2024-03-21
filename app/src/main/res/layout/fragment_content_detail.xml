@@ -102,6 +102,7 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/content_cover_rv"
                 android:visibility="visible"
+                android:contentDescription="@string/poster"
                 app:layout_constraintDimensionRatio="2:2"
                 app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
                 app:layout_constraintStart_toStartOf="@id/guidLineStart"
