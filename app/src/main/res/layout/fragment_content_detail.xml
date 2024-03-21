@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_arrow_left"
         app:titleTextAppearance="@style/TitleText"
-        tools:title="Detail" />
+        tools:title="@string/details" />
 
     <ProgressBar
         android:id="@+id/detailProgressBar"
@@ -52,13 +52,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/placeholderImage"
-        tools:text="Ошибка" />
+        tools:text="string/error" />
 
     <ScrollView
         android:id="@+id/contentScrollView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/detailToolbar">
@@ -87,11 +87,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_vertical"
+                android:ellipsize="end"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
                 app:layout_constraintStart_toStartOf="@id/guidLineStart"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Название фильма" />
+                tools:text="@string/title" />
 
             <ImageView
                 android:id="@+id/posterImage"
@@ -107,16 +108,18 @@
                 app:layout_constraintTop_toBottomOf="@id/contentNameTextView" />
 
             <TextView
-                android:id="@+id/releaseYearTextTextView"
+                android:id="@+id/releaseYearTitileTextView"
                 style="@style/MediumText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="@id/guidLineStart"
                 app:layout_constraintTop_toBottomOf="@id/posterImage"
-                tools:text="Год выпуска:" />
+                tools:text="@string/year" />
 
             <TextView
                 android:id="@+id/releaseYearTextView"
@@ -127,24 +130,26 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 app:layout_constrainedWidth="true"
-                app:layout_constraintBottom_toBottomOf="@+id/releaseYearTextTextView"
+                app:layout_constraintBottom_toBottomOf="@+id/releaseYearTitileTextView"
                 app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
                 app:layout_constraintHorizontal_bias="1"
-                app:layout_constraintStart_toEndOf="@+id/releaseYearTextTextView"
-                app:layout_constraintTop_toTopOf="@+id/releaseYearTextTextView"
-                tools:text="1999 год." />
+                app:layout_constraintStart_toEndOf="@+id/releaseYearTitileTextView"
+                app:layout_constraintTop_toTopOf="@+id/releaseYearTitileTextView"
+                tools:text="1999" />
 
             <TextView
-                android:id="@+id/runtimeYearTextTextView"
+                android:id="@+id/runtimeYearTitleTextView"
                 style="@style/MediumText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="@id/guidLineStart"
-                app:layout_constraintTop_toBottomOf="@id/releaseYearTextTextView"
-                tools:text="Продолжительность:" />
+                app:layout_constraintTop_toBottomOf="@id/releaseYearTitileTextView"
+                tools:text="@string/runtime" />
 
             <TextView
                 android:id="@+id/runtimeYearTextView"
@@ -155,40 +160,39 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 app:layout_constrainedWidth="true"
-                app:layout_constraintBottom_toBottomOf="@+id/runtimeYearTextTextView"
+                app:layout_constraintBottom_toBottomOf="@+id/runtimeYearTitleTextView"
                 app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
                 app:layout_constraintHorizontal_bias="1"
-                app:layout_constraintStart_toEndOf="@+id/runtimeYearTextTextView"
-                app:layout_constraintTop_toTopOf="@+id/runtimeYearTextTextView"
-                tools:text="100 минут" />
+                app:layout_constraintStart_toEndOf="@+id/runtimeYearTitleTextView"
+                app:layout_constraintTop_toTopOf="@+id/runtimeYearTitleTextView"
+                tools:text="100 minutes" />
 
             <TextView
-                android:id="@+id/genresTextTextView"
+                android:id="@+id/genresTextTitleView"
                 style="@style/MediumText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="@id/guidLineStart"
-                app:layout_constraintTop_toBottomOf="@id/runtimeYearTextTextView"
-                tools:text="Жанры:" />
+                app:layout_constraintTop_toBottomOf="@id/runtimeYearTitleTextView"
+                tools:text="@string/genre" />
 
             <TextView
                 android:id="@+id/genresTextView"
                 style="@style/RegularText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
                 android:ellipsize="end"
-                android:maxLines="1"
                 app:layout_constrainedWidth="true"
-                app:layout_constraintBottom_toBottomOf="@+id/genresTextTextView"
                 app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
-                app:layout_constraintHorizontal_bias="1"
-                app:layout_constraintStart_toEndOf="@+id/genresTextTextView"
-                app:layout_constraintTop_toTopOf="@+id/genresTextTextView"
-                tools:text="комедия, драма, триллер, фентези" />
+                app:layout_constraintStart_toStartOf="@id/guidLineStart"
+                app:layout_constraintTop_toBottomOf="@id/genresTextTitleView"
+                tools:text="comedy, drama, fantasy, horror, thriller" />
 
             <TextView
                 android:id="@+id/castTextTextView"
@@ -196,10 +200,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="@id/guidLineStart"
-                app:layout_constraintTop_toBottomOf="@id/genresTextTextView"
+                app:layout_constraintTop_toBottomOf="@id/genresTextView"
                 tools:text="Список актеров:" />
 
             <TextView
@@ -208,12 +214,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:ellipsize="end"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
                 app:layout_constraintStart_toStartOf="@id/guidLineStart"
                 app:layout_constraintTop_toBottomOf="@id/castTextTextView"
-                tools:text="Леонардо ДиКаприо, Марк Уолбер" />
+                tools:text="Leonardo DiCaprio, Tom Cruise, Tom Hanks, Brad Pitt" />
 
             <TextView
                 android:id="@+id/overviewTextTextView"
@@ -221,6 +226,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="@id/guidLineStart"
@@ -233,7 +240,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:ellipsize="end"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
                 app:layout_constraintStart_toStartOf="@id/guidLineStart"

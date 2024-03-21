@@ -12,4 +12,11 @@
     <string name="error_service_problem">Проблема с сервисом</string>
     <string name="error_something_went_wrong">Что-то пошло не так</string>
     <string name="refresh">Обновить</string>
+    <string name="details">Детали</string>
+    <string name="overview">Описание</string>
+    <string name="genre">Жанр</string>
+    <string name="runtime">Продолжительность</string>
+    <string name="year">Год выпуска</string>
+    <string name="title">Название</string>
+    <string name="cast">Список актеров</string>
 </resources>
