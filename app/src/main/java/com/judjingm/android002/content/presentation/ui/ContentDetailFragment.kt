@@ -3,7 +3,9 @@ package com.judjingm.android002.content.presentation.ui
 import androidx.fragment.app.viewModels
 import com.judjingm.android002.common.ui.BaseFragment
 import com.judjingm.android002.databinding.FragmentContentDetailBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ContentDetailFragment :
     BaseFragment<FragmentContentDetailBinding, ContentDetailViewModel>(FragmentContentDetailBinding::inflate) {
 

@@ -1,13 +1,244 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".content.presentation.ui.ContentDetailFragment">
 
-    <TextView
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/detailToolbar"
+        style="@style/Toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_arrow_left"
+        app:titleTextAppearance="@style/TitleText"
+        tools:title="Detail" />
 
-</FrameLayout>
+    <ProgressBar
+        android:id="@+id/detailProgressBar"
+        android:layout_width="@dimen/progress_bar"
+        android:layout_height="@dimen/progress_bar"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/placeholderImage"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="120dp"
+        android:contentDescription="@string/error"
+        android:src="@drawable/error"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/errorTextTextView"
+        style="@style/TitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/placeholderImage"
+        tools:text="Ошибка" />
+
+    <ScrollView
+        android:id="@+id/contentScrollView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/detailToolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidLineStart"
+                android:layout_width="@dimen/_0dp"
+                android:layout_height="@dimen/_0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/padding_horizontal" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidLineEnd"
+                android:layout_width="@dimen/_0dp"
+                android:layout_height="@dimen/_0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/padding_horizontal" />
+
+            <TextView
+                android:id="@+id/contentNameTextView"
+                style="@style/TitleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_vertical"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
+                app:layout_constraintStart_toStartOf="@id/guidLineStart"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Название фильма" />
+
+            <ImageView
+                android:id="@+id/posterImage"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/content_cover_rv"
+                android:visibility="visible"
+                app:layout_constraintDimensionRatio="2:2"
+                app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
+                app:layout_constraintStart_toStartOf="@id/guidLineStart"
+                app:layout_constraintTop_toBottomOf="@id/contentNameTextView" />
+
+            <TextView
+                android:id="@+id/releaseYearTextTextView"
+                style="@style/MediumText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="@id/guidLineStart"
+                app:layout_constraintTop_toBottomOf="@id/posterImage"
+                tools:text="Год выпуска:" />
+
+            <TextView
+                android:id="@+id/releaseYearTextView"
+                style="@style/RegularText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toBottomOf="@+id/releaseYearTextTextView"
+                app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toEndOf="@+id/releaseYearTextTextView"
+                app:layout_constraintTop_toTopOf="@+id/releaseYearTextTextView"
+                tools:text="1999 год." />
+
+            <TextView
+                android:id="@+id/runtimeYearTextTextView"
+                style="@style/MediumText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="@id/guidLineStart"
+                app:layout_constraintTop_toBottomOf="@id/releaseYearTextTextView"
+                tools:text="Продолжительность:" />
+
+            <TextView
+                android:id="@+id/runtimeYearTextView"
+                style="@style/RegularText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toBottomOf="@+id/runtimeYearTextTextView"
+                app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toEndOf="@+id/runtimeYearTextTextView"
+                app:layout_constraintTop_toTopOf="@+id/runtimeYearTextTextView"
+                tools:text="100 минут" />
+
+            <TextView
+                android:id="@+id/genresTextTextView"
+                style="@style/MediumText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="@id/guidLineStart"
+                app:layout_constraintTop_toBottomOf="@id/runtimeYearTextTextView"
+                tools:text="Жанры:" />
+
+            <TextView
+                android:id="@+id/genresTextView"
+                style="@style/RegularText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toBottomOf="@+id/genresTextTextView"
+                app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toEndOf="@+id/genresTextTextView"
+                app:layout_constraintTop_toTopOf="@+id/genresTextTextView"
+                tools:text="комедия, драма, триллер, фентези" />
+
+            <TextView
+                android:id="@+id/castTextTextView"
+                style="@style/MediumText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="@id/guidLineStart"
+                app:layout_constraintTop_toBottomOf="@id/genresTextTextView"
+                tools:text="Список актеров:" />
+
+            <TextView
+                android:id="@+id/castTextView"
+                style="@style/RegularText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
+                app:layout_constraintStart_toStartOf="@id/guidLineStart"
+                app:layout_constraintTop_toBottomOf="@id/castTextTextView"
+                tools:text="Леонардо ДиКаприо, Марк Уолбер" />
+
+            <TextView
+                android:id="@+id/overviewTextTextView"
+                style="@style/MediumText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="@id/guidLineStart"
+                app:layout_constraintTop_toBottomOf="@id/castTextView"
+                tools:text="Описание" />
+
+            <TextView
+                android:id="@+id/overviewTextView"
+                style="@style/RegularText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
+                app:layout_constraintStart_toStartOf="@id/guidLineStart"
+                app:layout_constraintTop_toBottomOf="@id/overviewTextTextView"
+                tools:text="Duplicity and treachery...nobility and honor...conquest and triumph...and, of course, dragons. In Season 3, family and loyalty are the overarching themes as many critical storylines from the first two seasons come to a brutal head. Meanwhile, the Lannisters maintain their hold on King's Landing, though stirrings in the North threaten to alter the balance of power; Robb Stark, King of the North, faces a major calamity as he tries to build on his victories; a massive army of wildlings led by Mance Rayder march for the Wall; and Daenerys Targaryen--reunited with her dragons--attempts to raise an army in her quest for the Iron Throne." />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
