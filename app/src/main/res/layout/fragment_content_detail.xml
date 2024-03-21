@@ -31,8 +31,8 @@
 
     <ImageView
         android:id="@+id/placeholderImage"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="260dp"
+        android:layout_height="260dp"
         android:layout_marginTop="120dp"
         android:contentDescription="@string/error"
         android:src="@drawable/error"
@@ -56,16 +56,17 @@
 
     <ScrollView
         android:id="@+id/contentScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/detailToolbar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guidLineStart"
@@ -81,61 +82,44 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_end="@dimen/padding_horizontal" />
 
-            <TextView
-                android:id="@+id/contentNameTextView"
-                style="@style/TitleText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_vertical"
-                android:ellipsize="end"
-                app:layout_constrainedWidth="true"
-                app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
-                app:layout_constraintStart_toStartOf="@id/guidLineStart"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="@string/title" />
-
             <ImageView
                 android:id="@+id/posterImage"
-                android:layout_width="0dp"
+                android:layout_width="240dp"
                 android:layout_height="0dp"
-                android:layout_marginTop="16dp"
-                android:scaleType="centerCrop"
+                android:contentDescription="@string/poster"
                 android:src="@drawable/content_cover_rv"
                 android:visibility="visible"
-                android:contentDescription="@string/poster"
-                app:layout_constraintDimensionRatio="2:2"
-                app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
-                app:layout_constraintStart_toStartOf="@id/guidLineStart"
-                app:layout_constraintTop_toBottomOf="@id/contentNameTextView" />
+                app:layout_constraintDimensionRatio="2:3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/releaseYearTitileTextView"
+                android:id="@+id/releaseYearTitleTextView"
                 style="@style/MediumText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:ellipsize="end"
+                android:text="@string/year"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="@id/guidLineStart"
-                app:layout_constraintTop_toBottomOf="@id/posterImage"
-                tools:text="@string/year" />
+                app:layout_constraintTop_toBottomOf="@id/posterImage" />
 
             <TextView
                 android:id="@+id/releaseYearTextView"
                 style="@style/RegularText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:ellipsize="end"
                 android:maxLines="1"
                 app:layout_constrainedWidth="true"
-                app:layout_constraintBottom_toBottomOf="@+id/releaseYearTitileTextView"
                 app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
-                app:layout_constraintHorizontal_bias="1"
-                app:layout_constraintStart_toEndOf="@+id/releaseYearTitileTextView"
-                app:layout_constraintTop_toTopOf="@+id/releaseYearTitileTextView"
+                app:layout_constraintStart_toStartOf="@id/guidLineStart"
+                app:layout_constraintTop_toBottomOf="@id/releaseYearTitleTextView"
                 tools:text="1999" />
 
             <TextView
@@ -145,69 +129,68 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:ellipsize="end"
+                android:text="@string/runtime"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="@id/guidLineStart"
-                app:layout_constraintTop_toBottomOf="@id/releaseYearTitileTextView"
-                tools:text="@string/runtime" />
+                app:layout_constraintTop_toBottomOf="@id/releaseYearTextView" />
 
             <TextView
                 android:id="@+id/runtimeYearTextView"
                 style="@style/RegularText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:ellipsize="end"
                 android:maxLines="1"
                 app:layout_constrainedWidth="true"
-                app:layout_constraintBottom_toBottomOf="@+id/runtimeYearTitleTextView"
                 app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
-                app:layout_constraintHorizontal_bias="1"
-                app:layout_constraintStart_toEndOf="@+id/runtimeYearTitleTextView"
-                app:layout_constraintTop_toTopOf="@+id/runtimeYearTitleTextView"
+                app:layout_constraintStart_toStartOf="@id/guidLineStart"
+                app:layout_constraintTop_toBottomOf="@id/runtimeYearTitleTextView"
                 tools:text="100 minutes" />
 
             <TextView
-                android:id="@+id/genresTextTitleView"
+                android:id="@+id/genresTitleTextView"
                 style="@style/MediumText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:ellipsize="end"
+                android:text="@string/genre"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="@id/guidLineStart"
-                app:layout_constraintTop_toBottomOf="@id/runtimeYearTitleTextView"
-                tools:text="@string/genre" />
+                app:layout_constraintTop_toBottomOf="@id/runtimeYearTextView" />
 
             <TextView
                 android:id="@+id/genresTextView"
                 style="@style/RegularText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:ellipsize="end"
+                android:maxLines="1"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
                 app:layout_constraintStart_toStartOf="@id/guidLineStart"
-                app:layout_constraintTop_toBottomOf="@id/genresTextTitleView"
+                app:layout_constraintTop_toBottomOf="@id/genresTitleTextView"
                 tools:text="comedy, drama, fantasy, horror, thriller" />
 
             <TextView
-                android:id="@+id/castTextTextView"
+                android:id="@+id/castTitleTextView"
                 style="@style/MediumText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:ellipsize="end"
+                android:text="@string/cast"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="@id/guidLineStart"
-                app:layout_constraintTop_toBottomOf="@id/genresTextView"
-                tools:text="Список актеров:" />
+                app:layout_constraintTop_toBottomOf="@id/genresTextView" />
 
             <TextView
                 android:id="@+id/castTextView"
@@ -218,22 +201,22 @@
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
                 app:layout_constraintStart_toStartOf="@id/guidLineStart"
-                app:layout_constraintTop_toBottomOf="@id/castTextTextView"
+                app:layout_constraintTop_toBottomOf="@id/castTitleTextView"
                 tools:text="Leonardo DiCaprio, Tom Cruise, Tom Hanks, Brad Pitt" />
 
             <TextView
-                android:id="@+id/overviewTextTextView"
+                android:id="@+id/overviewTitleTextView"
                 style="@style/MediumText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:ellipsize="end"
+                android:text="@string/overview"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="@id/guidLineStart"
-                app:layout_constraintTop_toBottomOf="@id/castTextView"
-                tools:text="Описание" />
+                app:layout_constraintTop_toBottomOf="@id/castTextView" />
 
             <TextView
                 android:id="@+id/overviewTextView"
@@ -241,10 +224,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
                 app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
                 app:layout_constraintStart_toStartOf="@id/guidLineStart"
-                app:layout_constraintTop_toBottomOf="@id/overviewTextTextView"
+                app:layout_constraintTop_toBottomOf="@id/overviewTitleTextView"
                 tools:text="Duplicity and treachery...nobility and honor...conquest and triumph...and, of course, dragons. In Season 3, family and loyalty are the overarching themes as many critical storylines from the first two seasons come to a brutal head. Meanwhile, the Lannisters maintain their hold on King's Landing, though stirrings in the North threaten to alter the balance of power; Robb Stark, King of the North, faces a major calamity as he tries to build on his victories; a massive army of wildlings led by Mance Rayder march for the Wall; and Daenerys Targaryen--reunited with her dragons--attempts to raise an army in her quest for the Iron Throne." />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

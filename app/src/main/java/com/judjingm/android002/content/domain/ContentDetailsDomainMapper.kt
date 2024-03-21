@@ -10,8 +10,9 @@ import com.judjingm.android002.content.domain.models.Credits
 import com.judjingm.android002.content.domain.models.Genre
 import com.judjingm.android002.content.domain.models.MovieDetails
 import com.judjingm.android002.content.domain.models.TvShowDetails
+import javax.inject.Inject
 
-class ContentDetailsDomainMapper {
+class ContentDetailsDomainMapper @Inject constructor() {
     fun toMovieDetails(movieDetailsDto: MovieDetailsDto): MovieDetails {
         return MovieDetails(
             id = movieDetailsDto.id,

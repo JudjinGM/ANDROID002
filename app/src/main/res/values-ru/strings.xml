@@ -7,7 +7,7 @@
     <string name="profile">Профиль</string>
     <string name="popular">Популярное</string>
     <string name="error">Ошибка</string>
-    <string name="error_no_connection">Нет интеренета</string>
+    <string name="error_no_connection">Нет интернета</string>
     <string name="error_not_found">Ничего не найдено</string>
     <string name="error_service_problem">Проблема с сервисом</string>
     <string name="error_something_went_wrong">Что-то пошло не так</string>
@@ -20,4 +20,31 @@
     <string name="title">Название</string>
     <string name="cast">Список актеров</string>
     <string name="poster">Постер</string>
+
+    <plurals name="season_plural">
+        <item quantity="zero"> %1$d сезонов</item>
+        <item quantity="one"> %1$d сезон</item>
+        <item quantity="two"> %1$d сезона</item>
+        <item quantity="few"> %1$d сезона</item>
+        <item quantity="many"> %1$d сезонов</item>
+        <item quantity="other"> %1$d сезонов</item>
+    </plurals>
+
+    <plurals name="episode_plural">
+        <item quantity="zero"> %1$d эпизод</item>
+        <item quantity="one"> %1$d эпизод</item>
+        <item quantity="two"> %1$d эпизода</item>
+        <item quantity="few"> %1$d эпизода</item>
+        <item quantity="many"> %1$d эпизодов</item>
+        <item quantity="other"> %1$d эпизодов</item>
+    </plurals>
+
+    <plurals name="minutes">
+        <item quantity="zero"> %1$d минут</item>
+        <item quantity="one"> %1$d минута</item>
+        <item quantity="two"> %1$d минуты </item>
+        <item quantity="few"> %1$d минут </item>
+        <item quantity="many"> %1$d минут</item>
+        <item quantity="other"> %1$d минут</item>
+    </plurals>
 </resources>

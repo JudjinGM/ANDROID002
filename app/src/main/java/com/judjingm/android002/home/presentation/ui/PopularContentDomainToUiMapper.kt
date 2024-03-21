@@ -9,7 +9,7 @@ import com.judjingm.android002.home.presentation.models.MovieUi.Companion.EMPTY_
 import com.judjingm.android002.home.presentation.models.PopularContentUi
 import javax.inject.Inject
 
-class CommonUiMapper @Inject constructor() {
+class PopularContentDomainToUiMapper @Inject constructor() {
     fun <Domain, Ui> toPagedList(
         pagedList: PagedList<Domain>,
         convertFunc: (Domain) -> Ui

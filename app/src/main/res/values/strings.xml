@@ -21,5 +21,19 @@
     <string name="cast">Cast</string>
     <string name="poster">Poster</string>
 
+    <plurals name="season_plural">
+        <item quantity="one"> %1$d season</item>
+        <item quantity="other"> %1$d seasons</item>
+    </plurals>
+
+    <plurals name="episode_plural">
+        <item quantity="one"> %1$d episode</item>
+        <item quantity="other"> %1$d episodes</item>
+    </plurals>
+
+    <plurals name="minutes">
+        <item quantity="one"> %1$d minute</item>
+        <item quantity="other"> %1$d minutes</item>
+    </plurals>
 
 </resources>

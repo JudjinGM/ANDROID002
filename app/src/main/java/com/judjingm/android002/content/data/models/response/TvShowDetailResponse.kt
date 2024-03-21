@@ -1,7 +1,9 @@
 package com.judjingm.android002.content.data.models.response
 
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class TvShowDetailResponse(
     val id: Int,
     val name: String,

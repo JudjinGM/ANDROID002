@@ -38,7 +38,7 @@ import javax.inject.Inject
 class HomeScreenViewModel @Inject constructor(
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
     private val getPopularTVShowsUseCase: GetPopularTVShowsUseCase,
-    private val commonUIMapper: CommonUiMapper
+    private val popularContentDomainToUIMapper: PopularContentDomainToUiMapper
 ) : BaseViewModel() {
 
     private val _state: MutableStateFlow<HomeScreenState> = MutableStateFlow(HomeScreenState())
@@ -117,8 +117,8 @@ class HomeScreenViewModel @Inject constructor(
             is HomeScreenEvent.OnContentClicked -> {
                 viewModelScope.launch {
                     _sideEffects.emit(
-                        HomeScreenSideEffects.ShowMessage(
-                            StringVO.Plain("Clicked ${event.content.id} ${event.content.type}")
+                        HomeScreenSideEffects.NavigateToDetails(
+                            contentType = event.content.type, id = event.content.id
                         )
                     )
                 }
@@ -152,9 +152,9 @@ class HomeScreenViewModel @Inject constructor(
                         Resource.ResultHandler<PagedList<Movie>, ErrorEntity> {
                         override suspend fun handleSuccess(data: PagedList<Movie>) {
                             popularContentMutex.withLock {
-                                pagedList += commonUIMapper.toPagedList(
+                                pagedList += popularContentDomainToUIMapper.toPagedList(
                                     data
-                                ) { commonUIMapper.toPopularContent(it) }
+                                ) { popularContentDomainToUIMapper.toPopularContent(it) }
                             }
                         }
 
@@ -170,9 +170,9 @@ class HomeScreenViewModel @Inject constructor(
                         Resource.ResultHandler<PagedList<TVShow>, ErrorEntity> {
                         override suspend fun handleSuccess(data: PagedList<TVShow>) {
                             popularContentMutex.withLock {
-                                pagedList += commonUIMapper.toPagedList(
+                                pagedList += popularContentDomainToUIMapper.toPagedList(
                                     data
-                                ) { commonUIMapper.toPopularContent(it) }
+                                ) { popularContentDomainToUIMapper.toPopularContent(it) }
                             }
                         }
 

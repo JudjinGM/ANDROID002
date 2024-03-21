@@ -2,13 +2,13 @@ package com.judjingm.android002.common.utill
 
 sealed class Resource<T, E> {
     abstract suspend fun handle(handler: ResultHandler<T, E>)
-    class Success<T, E>(private val data: T) : Resource<T, E>() {
+    class Success<T, E>(val data: T) : Resource<T, E>() {
         override suspend fun handle(handler: ResultHandler<T, E>) {
             handler.handleSuccess(data)
         }
     }
 
-    class Error<T, E>(private val error: E) : Resource<T, E>() {
+    class Error<T, E>(val error: E) : Resource<T, E>() {
         override suspend fun handle(handler: ResultHandler<T, E>) {
             handler.handleError(error)
         }

@@ -8,7 +8,11 @@
         android:id="@+id/homeScreenFragment"
         android:name="com.judjingm.android002.home.presentation.ui.HomeScreenFragment"
         android:label="fragment_home_screen"
-        tools:layout="@layout/fragment_home_screen" />
+        tools:layout="@layout/fragment_home_screen">
+        <action
+            android:id="@+id/action_homeScreenFragment_to_contentDetailFragment"
+            app:destination="@id/contentDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.judjingm.android002.profile.presentation.ui.ProfileFragment"
@@ -19,4 +23,17 @@
         android:name="com.judjingm.android002.search.presentation.ui.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/contentDetailFragment"
+        android:name="com.judjingm.android002.content.presentation.ui.ContentDetailFragment"
+        android:label="fragment_content_detail"
+        tools:layout="@layout/fragment_content_detail">
+        <argument
+            android:name="contentId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+        <argument
+            android:name="contentType"
+            app:argType="com.judjingm.android002.home.presentation.models.ContentType" />
+    </fragment>
 </navigation>

@@ -14,10 +14,8 @@ class ContentDetailsRemoteDataSourceImpl @Inject constructor(
     private val contentDetailsApiService: ContentDetailsApiService,
     private val contentDetailDataMapper: ContentDetailDataMapper,
     private val networkToContentDetailExceptionMapper: NetworkToContentDetailExceptionMapper
-
-
 ) : ContentDetailsRemoteDataSource {
-    override fun getMovieDetail(movieId: Int): MovieDetailsDto {
+    override suspend fun getMovieDetail(movieId: Int): MovieDetailsDto {
         return try {
             val response = contentDetailsApiService.getMovieDetail(movieId)
             contentDetailDataMapper.toMovieDetailDto(response)
@@ -26,7 +24,7 @@ class ContentDetailsRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override fun getTvShowDetail(seriesId: Int): TvShowDetailDto {
+    override suspend fun getTvShowDetail(seriesId: Int): TvShowDetailDto {
         return try {
             val response = contentDetailsApiService.getTvShowDetail(seriesId)
             contentDetailDataMapper.toTVShowDetailDto(response)
@@ -35,7 +33,7 @@ class ContentDetailsRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override fun getMovieCredits(movieId: Int): CreditsDto {
+    override suspend fun getMovieCredits(movieId: Int): CreditsDto {
         return try {
             val response = contentDetailsApiService.getMovieCredits(movieId)
             contentDetailDataMapper.toCreditsDto(response)
@@ -44,9 +42,9 @@ class ContentDetailsRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override fun getTvShowCredits(seriesId: Int): CreditsDto {
+    override suspend fun getTvShowCredits(seriesId: Int): CreditsDto {
         return try {
-            val response = contentDetailsApiService.getMovieCredits(seriesId)
+            val response = contentDetailsApiService.getTvShowCredits(seriesId)
             contentDetailDataMapper.toCreditsDto(response)
         } catch (exception: NetworkException) {
             throw networkToContentDetailExceptionMapper.handleException(exception)

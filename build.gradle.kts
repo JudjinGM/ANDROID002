@@ -6,4 +6,5 @@ plugins {
     alias(libs.plugins.dagger.hilt.android) apply false
     alias(libs.plugins.androidLibrary) apply false
     alias(libs.plugins.kotlin.parcelize) apply false
+    alias(libs.plugins.androidx.navigation.safeargs.kotlin) apply false
 }

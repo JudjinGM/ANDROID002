@@ -6,9 +6,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import app.cashadvisor.common.utill.extensions.logDebugMessage
 import com.judjingm.android002.common.ui.BaseFragment
 import com.judjingm.android002.databinding.FragmentHomeScreenBinding
 import com.judjingm.android002.home.presentation.models.PopularContentUi
@@ -61,7 +61,6 @@ class HomeScreenFragment :
                 }
 
                 override fun handleSuccess(content: List<PopularContentUi>) {
-                    logDebugMessage("content: $content")
                     showContent(content)
                 }
 
@@ -95,9 +94,18 @@ class HomeScreenFragment :
                 showToast(sideEffect.message.value(requireContext()))
                 binding.progressBarPagination.isVisible = false
             }
-        }
 
+            is HomeScreenSideEffects.NavigateToDetails -> {
+                val direction =
+                    HomeScreenFragmentDirections.actionHomeScreenFragmentToContentDetailFragment(
+                        contentId = sideEffect.id,
+                        contentType = sideEffect.contentType
+                    )
+                findNavController().navigate(direction)
+            }
+        }
     }
+
 
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()

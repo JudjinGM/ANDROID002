@@ -11,6 +11,7 @@ fragment_version = "1.6.2"
 constraintlayout = "2.1.4"
 navigationFragmentKtx = "2.7.7"
 navigationUiKtx = "2.7.7"
+nav_version = "2.7.7"
 hiltAndroid = "2.50"
 kotlinxCoroutinesAndroid = "1.7.3"
 ksp = "1.9.10-1.0.13"
@@ -67,4 +68,6 @@ dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hi
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinx-serialization" }
 androidLibrary = { id = "com.android.library", version.ref = "androidLibrary" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+androidx-navigation-safeargs-kotlin = { id = "androidx.navigation.safeargs.kotlin", version.ref = "nav_version" }
+
 
