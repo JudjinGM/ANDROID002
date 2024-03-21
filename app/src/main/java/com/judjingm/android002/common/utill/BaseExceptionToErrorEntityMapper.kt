@@ -2,10 +2,9 @@ package com.judjingm.android002.common.utill
 
 import app.cashadvisor.common.utill.extensions.logNetworkError
 import com.judjingm.android002.common.domain.models.ErrorEntity
-import com.judjingm.android002.common.utill.exceptions.NetworkException
 import java.net.ConnectException
 
-abstract class BaseExceptionToErrorMapper {
+abstract class BaseExceptionToErrorEntityMapper {
 
     abstract fun handleSpecificException(
         exception: Exception,
@@ -13,7 +12,7 @@ abstract class BaseExceptionToErrorMapper {
 
     fun handleException(exception: Exception): ErrorEntity {
         return when (exception) {
-            is ConnectException, is NetworkException -> {
+            is ConnectException -> {
                 logNetworkError(exception.message)
                 handleNetworkError(exception)
             }

@@ -12,14 +12,13 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="160dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="0dp">
+        android:layout_height="185dp"
+        app:cardCornerRadius="@dimen/corner_radius">
 
         <ImageView
             android:id="@+id/contentCoverImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
             android:src="@drawable/content_cover_rv" />

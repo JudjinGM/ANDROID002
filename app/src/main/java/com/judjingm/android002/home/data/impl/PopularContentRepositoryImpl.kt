@@ -3,7 +3,7 @@ package com.judjingm.android002.home.data.impl
 import app.cashadvisor.common.utill.extensions.logDebugError
 import com.judjingm.android002.common.domain.PagedList
 import com.judjingm.android002.common.domain.models.ErrorEntity
-import com.judjingm.android002.common.utill.BaseExceptionToErrorMapper
+import com.judjingm.android002.common.utill.BaseExceptionToErrorEntityMapper
 import com.judjingm.android002.common.utill.Resource
 import com.judjingm.android002.home.data.api.PopularContentRemoteDataSource
 import com.judjingm.android002.home.domain.PopularContentDomainMapper
@@ -19,7 +19,7 @@ import javax.inject.Inject
 class PopularContentRepositoryImpl @Inject constructor(
     private val remoteDataSource: PopularContentRemoteDataSource,
     private val domainMapper: PopularContentDomainMapper,
-    private val exceptionToErrorMapper: BaseExceptionToErrorMapper
+    private val exceptionToErrorMapper: BaseExceptionToErrorEntityMapper
 ) : PopularContentRepository {
     override fun getPopularMovies(
         popularMoviesQuery: PopularMoviesQuery

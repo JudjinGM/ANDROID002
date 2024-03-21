@@ -1,10 +1,10 @@
 package com.judjingm.android002.home.di
 
-import com.judjingm.android002.common.utill.BaseExceptionToErrorMapper
+import com.judjingm.android002.common.utill.BaseExceptionToErrorEntityMapper
 import com.judjingm.android002.home.data.api.PopularContentRemoteDataSource
 import com.judjingm.android002.home.data.impl.PopularContentRemoteDataSourceImpl
 import com.judjingm.android002.home.data.impl.PopularContentRepositoryImpl
-import com.judjingm.android002.home.domain.PopularContentExceptionToErrorMapper
+import com.judjingm.android002.home.domain.PopularContentExceptionToErrorEntityMapper
 import com.judjingm.android002.home.domain.repository.PopularContentRepository
 import dagger.Binds
 import dagger.Module
@@ -29,7 +29,7 @@ interface PopularContentDataModule {
 
     @Binds
     fun bindPopularContentExceptionToErrorMapper(
-        impl: PopularContentExceptionToErrorMapper
-    ): BaseExceptionToErrorMapper
+        impl: PopularContentExceptionToErrorEntityMapper
+    ): BaseExceptionToErrorEntityMapper
 
 }

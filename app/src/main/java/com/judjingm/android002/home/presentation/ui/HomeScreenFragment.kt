@@ -1,5 +1,6 @@
 package com.judjingm.android002.home.presentation.ui
 
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -11,10 +12,10 @@ import app.cashadvisor.common.utill.extensions.logDebugMessage
 import com.judjingm.android002.common.ui.BaseFragment
 import com.judjingm.android002.databinding.FragmentHomeScreenBinding
 import com.judjingm.android002.home.presentation.models.PopularContentUi
-import com.judjingm.android002.home.presentation.models.StringVO
-import com.judjingm.android002.home.presentation.models.state.HomeScreenEvents
+import com.judjingm.android002.home.presentation.models.state.ErrorUiState
+import com.judjingm.android002.home.presentation.models.state.HomeScreenEvent
+import com.judjingm.android002.home.presentation.models.state.HomeScreenSideEffects
 import com.judjingm.android002.home.presentation.models.state.HomeScreenUiState
-import com.judjingm.android002.home.presentation.models.state.UiErrorsState
 import com.judjingm.android002.home.presentation.recycleView.RecycleViewPopularContentAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -26,10 +27,11 @@ class HomeScreenFragment :
     private var adapter: RecycleViewPopularContentAdapter? = null
 
     override fun onConfigureViews() {
-        viewModel.handleEvent(HomeScreenEvents.InitializeViewModel)
-        viewModel.handleEvent(HomeScreenEvents.GetPopularContent)
         recycleViewInit()
         setOnScrollForRecycleView(binding.contentRecyclerView, adapter, viewModel)
+        binding.refreshButton.setOnClickListener {
+            viewModel.handleEvent(HomeScreenEvent.RefreshButtonClicked)
+        }
     }
 
     override fun onSubscribe() {
@@ -44,16 +46,14 @@ class HomeScreenFragment :
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.sideEffect.collect {
-                    //     handleSideEffects(it)
+                    handleSideEffects(it)
                 }
             }
         }
-
-        viewModel.handleEvent(HomeScreenEvents.InitializeViewModel)
     }
 
     private fun updateUi(uiState: HomeScreenUiState) {
-        uiState.state.handleState(
+        uiState.handleState(
             handler = object : HomeScreenUiState.StateHandler {
 
                 override fun handleLoading(isPagination: Boolean) {
@@ -65,16 +65,47 @@ class HomeScreenFragment :
                     showContent(content)
                 }
 
-                override fun handleError(error: UiErrorsState) {
-                    showError(StringVO.Plain("Something went wrong"))
+                override fun handleError(error: ErrorUiState) {
+                    when (error) {
+                        is ErrorUiState.CouldNotFetchData -> showError(
+                            error.message.value(requireContext())
+                        )
+
+                        is ErrorUiState.NoConnection -> showErrorNoConnection(
+                            error.message.value(requireContext())
+                        )
+
+                        is ErrorUiState.NothingFound -> showError(
+                            error.message.value(requireContext())
+                        )
+
+                        is ErrorUiState.UnknownError -> showError(
+                            error.message.value(requireContext())
+                        )
+                    }
+
                 }
             }
         )
     }
 
+    private fun handleSideEffects(sideEffect: HomeScreenSideEffects) {
+        when (sideEffect) {
+            is HomeScreenSideEffects.ShowMessage -> {
+                showToast(sideEffect.message.value(requireContext()))
+                binding.progressBarPagination.isVisible = false
+            }
+        }
+
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
     private fun recycleViewInit() {
         adapter = RecycleViewPopularContentAdapter { content ->
-
+            viewModel.handleEvent(HomeScreenEvent.OnContentClicked(content))
         }
 
         binding.contentRecyclerView.layoutManager =
@@ -96,7 +127,7 @@ class HomeScreenFragment :
                         (recyclerView.layoutManager as GridLayoutManager).findLastVisibleItemPosition()
                     val itemsCount = adapter?.itemCount
                     if (itemsCount != null && pos >= (itemsCount - 1)) {
-                        viewModel.handleEvent(HomeScreenEvents.GetPopularContent)
+                        viewModel.handleEvent(HomeScreenEvent.PaginationTriggered)
                     }
                 }
             }
@@ -117,12 +148,23 @@ class HomeScreenFragment :
         }
     }
 
-    private fun showError(text: StringVO) {
+    private fun showError(text: String) {
         showEmpty()
         adapter?.items = emptyList()
         binding.placeholderImage.isVisible = true
         binding.errorTextTextView.isVisible = true
-        binding.errorTextTextView.text = text.value(requireContext())
+        binding.errorTextTextView.text = text
+        binding.refreshButton.isVisible = true
+    }
+
+    private fun showErrorNoConnection(text: String) {
+        showEmpty()
+        adapter?.items = emptyList()
+        binding.placeholderImage.setImageResource(com.judjingm.android002.R.drawable.no_signal_no_background)
+        binding.placeholderImage.isVisible = true
+        binding.errorTextTextView.isVisible = true
+        binding.errorTextTextView.text = text
+        binding.refreshButton.isVisible = true
     }
 
 
@@ -131,5 +173,6 @@ class HomeScreenFragment :
         binding.errorTextTextView.isVisible = false
         binding.progressBar.isVisible = false
         binding.progressBarPagination.isVisible = false
+        binding.refreshButton.isVisible = false
     }
 }

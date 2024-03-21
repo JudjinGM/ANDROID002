@@ -5,4 +5,11 @@
     <string name="home_screen">Главная</string>
     <string name="search">Поиск</string>
     <string name="profile">Профиль</string>
+    <string name="popular">Популярное</string>
+    <string name="error">Ошибка</string>
+    <string name="error_no_connection">Нет интеренета</string>
+    <string name="error_not_found">Ничего не найдено</string>
+    <string name="error_service_problem">Проблема с сервисом</string>
+    <string name="error_something_went_wrong">Что-то пошло не так</string>
+    <string name="refresh">Обновить</string>
 </resources>

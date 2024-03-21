@@ -4,5 +4,14 @@
     <string name="home_screen">Home screen</string>
     <string name="search">Search</string>
     <string name="profile">Profile</string>
+    <string name="popular">Popular</string>
+    <string name="error">Error</string>
+
+    <string name="error_no_connection">No connection</string>
+    <string name="error_not_found">Nothing found</string>
+    <string name="error_service_problem">Service problem</string>
+    <string name="error_something_went_wrong">Something went wrong</string>
+    <string name="refresh">Refresh</string>
+
 
 </resources>

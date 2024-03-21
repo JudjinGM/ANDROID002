@@ -6,7 +6,6 @@ sealed class Resource<T, E> {
         override suspend fun handle(handler: ResultHandler<T, E>) {
             handler.handleSuccess(data)
         }
-
     }
 
     class Error<T, E>(private val error: E) : Resource<T, E>() {

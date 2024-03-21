@@ -12,16 +12,18 @@ class NetworkToPopularContentExceptionMapper @Inject constructor(
     fun handleException(exception: NetworkException): PopularContentException {
         return when (exception) {
             is NetworkException.BadRequest -> {
+                val response = handleErrorResponse<ErrorResponse>(exception.errorBody)
                 PopularContentException.PopularContent.InvalidPage(
-                    message = exception.errorBody,
-                    statusCode = exception.httpStatusCode
+                    message = response.statusMessage,
+                    statusCode = response.statusCode
                 )
             }
 
             is NetworkException.Unauthorized -> {
+                val response = handleErrorResponse<ErrorResponse>(exception.errorBody)
                 PopularContentException.PopularContent.InvalidAPIkey(
-                    message = exception.errorBody,
-                    statusCode = exception.httpStatusCode
+                    message = response.statusMessage,
+                    statusCode = response.statusCode
                 )
             }
 
@@ -34,16 +36,17 @@ class NetworkToPopularContentExceptionMapper @Inject constructor(
     private fun handleCommonException(exception: NetworkException): PopularContentException {
         return when (exception) {
             is NetworkException.NoInternetConnection -> {
-                val errorResponse = handleErrorResponse<ErrorResponse>(exception.errorBody)
-                PopularContentException.NoConnection(errorResponse.statusMessage)
+                PopularContentException.NoConnection(message = exception.errorBody)
             }
 
             is NetworkException.Undefined -> {
-                PopularContentException.Undefined(message = exception.errorBody)
+                val response = handleErrorResponse<ErrorResponse>(exception.errorBody)
+                PopularContentException.Undefined(message = response.statusMessage)
             }
 
             else -> {
-                PopularContentException.Undefined(message = exception.errorBody)
+                val response = handleErrorResponse<ErrorResponse>(exception.errorBody)
+                PopularContentException.Undefined(message = response.statusMessage)
             }
         }
     }
@@ -53,7 +56,11 @@ class NetworkToPopularContentExceptionMapper @Inject constructor(
             return json.decodeFromString<T>(errorMessage)
 
         } catch (e: Exception) {
-            throw PopularContentException.Undefined()
+            throw PopularContentException.Undefined(COULD_NOT_CONVERT_TO_ERROR_RESPONSE)
         }
+    }
+
+    companion object {
+        const val COULD_NOT_CONVERT_TO_ERROR_RESPONSE = "Couldn't convert to ErrorResponse"
     }
 }
