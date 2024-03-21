@@ -6,6 +6,7 @@ import com.judjingm.android002.common.domain.models.ErrorEntity
 import com.judjingm.android002.common.utill.BaseExceptionToErrorEntityMapper
 import com.judjingm.android002.common.utill.Resource
 import com.judjingm.android002.home.data.api.PopularContentRemoteDataSource
+import com.judjingm.android002.home.di.PopularContentExceptionMapper
 import com.judjingm.android002.home.domain.PopularContentDomainMapper
 import com.judjingm.android002.home.domain.models.Movie
 import com.judjingm.android002.home.domain.models.PopularMoviesQuery
@@ -19,7 +20,7 @@ import javax.inject.Inject
 class PopularContentRepositoryImpl @Inject constructor(
     private val remoteDataSource: PopularContentRemoteDataSource,
     private val domainMapper: PopularContentDomainMapper,
-    private val exceptionToErrorMapper: BaseExceptionToErrorEntityMapper
+    @PopularContentExceptionMapper private val exceptionToErrorMapper: BaseExceptionToErrorEntityMapper
 ) : PopularContentRepository {
     override fun getPopularMovies(
         popularMoviesQuery: PopularMoviesQuery
@@ -37,7 +38,6 @@ class PopularContentRepositoryImpl @Inject constructor(
             )
 
         } catch (exception: Exception) {
-            logDebugError("getPopularMovies, ${exception.message}")
             emit(
                 Resource.Error(
                     exceptionToErrorMapper.handleException(exception)
