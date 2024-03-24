@@ -171,7 +171,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:ellipsize="end"
-                android:maxLines="1"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
                 app:layout_constraintStart_toStartOf="@id/guidLineStart"
