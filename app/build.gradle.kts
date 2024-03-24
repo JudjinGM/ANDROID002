@@ -14,6 +14,10 @@ android {
     namespace = "com.judjingm.android002"
     compileSdk = 34
 
+    androidResources {
+        generateLocaleConfig = true
+    }
+
     defaultConfig {
         val localProperties = gradleLocalProperties(rootDir, providers)
 

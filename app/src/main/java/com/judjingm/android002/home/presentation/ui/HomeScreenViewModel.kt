@@ -6,6 +6,7 @@ import com.judjingm.android002.common.domain.PagedList
 import com.judjingm.android002.common.domain.models.ErrorEntity
 import com.judjingm.android002.common.ui.BaseViewModel
 import com.judjingm.android002.common.utill.Resource
+import com.judjingm.android002.content.domain.useCase.GetLanguageForAppUseCase
 import com.judjingm.android002.home.domain.models.Movie
 import com.judjingm.android002.home.domain.models.TVShow
 import com.judjingm.android002.home.domain.useCase.GetPopularMoviesUseCase
@@ -38,6 +39,7 @@ import javax.inject.Inject
 class HomeScreenViewModel @Inject constructor(
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
     private val getPopularTVShowsUseCase: GetPopularTVShowsUseCase,
+    private val getLanguageForAppUseCase: GetLanguageForAppUseCase,
     private val popularContentDomainToUIMapper: PopularContentDomainToUiMapper
 ) : BaseViewModel() {
 
@@ -136,10 +138,16 @@ class HomeScreenViewModel @Inject constructor(
     private fun getPopularContent() {
         if (isPaginationDebounce()) {
             viewModelScope.launch {
-                getPopularMoviesUseCase.execute(page = currentState.currentPage).onStart {
+                getPopularMoviesUseCase(
+                    page = currentState.currentPage,
+                    getLanguageForAppUseCase()
+                ).onStart {
                     _state.update { it.copy(isLoading = true, errorState = ErrorState.NoError) }
                 }.zip(
-                    getPopularTVShowsUseCase.execute(page = currentState.currentPage)
+                    getPopularTVShowsUseCase(
+                        page = currentState.currentPage,
+                        getLanguageForAppUseCase()
+                    )
                 ) { popularMovies, popularTVShows ->
 
                     val popularContentMutex = Mutex()

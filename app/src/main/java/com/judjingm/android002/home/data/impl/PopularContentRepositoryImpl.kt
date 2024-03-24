@@ -1,6 +1,5 @@
 package com.judjingm.android002.home.data.impl
 
-import app.cashadvisor.common.utill.extensions.logDebugError
 import com.judjingm.android002.common.domain.PagedList
 import com.judjingm.android002.common.domain.models.ErrorEntity
 import com.judjingm.android002.common.utill.BaseExceptionToErrorEntityMapper
@@ -63,8 +62,6 @@ class PopularContentRepositoryImpl @Inject constructor(
             )
 
         } catch (exception: Exception) {
-            logDebugError("getPopularTvShows, ${exception.message}")
-
             emit(
                 Resource.Error(
                     exceptionToErrorMapper.handleException(exception)

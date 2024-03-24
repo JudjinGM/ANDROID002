@@ -10,22 +10,21 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 interface GetPopularTVShowsUseCase {
-    fun execute(page: Int): Flow<Resource<PagedList<TVShow>, ErrorEntity>>
+    operator fun invoke(page: Int, language: String): Flow<Resource<PagedList<TVShow>, ErrorEntity>>
     class Base @Inject constructor(
         private val repository: PopularContentRepository
     ) : GetPopularTVShowsUseCase {
-        override fun execute(page: Int): Flow<Resource<PagedList<TVShow>, ErrorEntity>> {
+        override fun invoke(
+            page: Int,
+            language: String
+        ): Flow<Resource<PagedList<TVShow>, ErrorEntity>> {
             return repository.getPopularTvShows(
                 PopularTVShowsQuery(
-                    language = DEFAULT_LANGUAGE,
+                    language = language,
                     page = page,
                 )
             )
         }
-    }
-
-    companion object {
-        private const val DEFAULT_LANGUAGE = ""
     }
 
 }

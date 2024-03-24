@@ -2,8 +2,10 @@ package com.judjingm.android002.content.di
 
 import com.judjingm.android002.common.utill.BaseExceptionToErrorEntityMapper
 import com.judjingm.android002.content.data.api.ContentDetailsRemoteDataSource
+import com.judjingm.android002.content.data.api.SystemLocalProvider
 import com.judjingm.android002.content.data.impl.ContentDetailsRemoteDataSourceImpl
 import com.judjingm.android002.content.data.impl.ContentDetailsRepositoryImpl
+import com.judjingm.android002.content.data.impl.SystemLocalProviderImpl
 import com.judjingm.android002.content.domain.ContentDetailsExceptionToErrorEntityMapper
 import com.judjingm.android002.content.domain.repository.ContentDetailsRepository
 import dagger.Binds
@@ -32,10 +34,16 @@ interface ContentDetailsDataModule {
         impl: ContentDetailsRepositoryImpl
     ): ContentDetailsRepository
 
+    @Binds
+    fun bindSystemLocaleProvider(
+        impl: SystemLocalProviderImpl
+    ): SystemLocalProvider
+
     @ContentDetailsExceptionMapper
     @Binds
     fun bindContentDetailsExceptionToErrorMapper(
         impl: ContentDetailsExceptionToErrorEntityMapper
     ): BaseExceptionToErrorEntityMapper
+
 
 }

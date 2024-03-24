@@ -2,10 +2,12 @@ package com.judjingm.android002.content.presentation.ui
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import app.cashadvisor.common.utill.extensions.logDebugMessage
 import com.judjingm.android002.R
 import com.judjingm.android002.common.domain.models.ErrorEntity
 import com.judjingm.android002.common.ui.BaseViewModel
 import com.judjingm.android002.common.utill.Resource
+import com.judjingm.android002.content.domain.useCase.GetLanguageForAppUseCase
 import com.judjingm.android002.content.domain.useCase.GetMovieCreditsUseCase
 import com.judjingm.android002.content.domain.useCase.GetMoviesDetailsUseCase
 import com.judjingm.android002.content.domain.useCase.GetTvShowCreditsUseCase
@@ -37,7 +39,8 @@ class ContentDetailViewModel @Inject constructor(
     private val getTvShowDetailsUseCase: GetTvShowDetailsUseCase,
     private val getMovieCreditsUseCase: GetMovieCreditsUseCase,
     private val getTvShowCreditsUseCase: GetTvShowCreditsUseCase,
-    private val contentDetailsDomainToUiMapper: ContentDetailsDomainToUiMapper
+    private val getLanguageForAppUseCase: GetLanguageForAppUseCase,
+    private val contentDetailsDomainToUiMapper: ContentDetailsDomainToUiMapper,
 ) : BaseViewModel() {
 
     private val _uiState: MutableStateFlow<ContentDetailUiScreenState> =
@@ -86,11 +89,17 @@ class ContentDetailViewModel @Inject constructor(
 
     private fun getMovieDetails() {
         viewModelScope.launch {
-            getMoviesDetailsUseCase.execute(contentId)
+            logDebugMessage("system language = ${getLanguageForAppUseCase()}")
+            getMoviesDetailsUseCase(contentId, getLanguageForAppUseCase())
                 .onStart {
                     _uiState.value = ContentDetailUiScreenState.Loading
                 }
-                .zip(getMovieCreditsUseCase.execute(contentId)) { movie, credits ->
+                .zip(
+                    getMovieCreditsUseCase(
+                        contentId,
+                        getLanguageForAppUseCase()
+                    )
+                ) { movie, credits ->
                     return@zip when (movie) {
                         is Resource.Success ->
                             when (credits) {
@@ -147,12 +156,18 @@ class ContentDetailViewModel @Inject constructor(
     }
 
     private fun getTvShowDetails() {
+        logDebugMessage("system language = ${getLanguageForAppUseCase()}")
         viewModelScope.launch {
-            getTvShowDetailsUseCase.execute(contentId)
+            getTvShowDetailsUseCase(contentId, getLanguageForAppUseCase())
                 .onStart {
                     _uiState.value = ContentDetailUiScreenState.Loading
                 }
-                .zip(getTvShowCreditsUseCase.execute(contentId)) { tvShow, credits ->
+                .zip(
+                    getTvShowCreditsUseCase(
+                        contentId,
+                        getLanguageForAppUseCase()
+                    )
+                ) { tvShow, credits ->
                     return@zip when (tvShow) {
                         is Resource.Success ->
                             when (credits) {

@@ -1,5 +1,6 @@
 package com.judjingm.android002.content.di
 
+import com.judjingm.android002.content.domain.useCase.GetLanguageForAppUseCase
 import com.judjingm.android002.content.domain.useCase.GetMovieCreditsUseCase
 import com.judjingm.android002.content.domain.useCase.GetMoviesDetailsUseCase
 import com.judjingm.android002.content.domain.useCase.GetTvShowCreditsUseCase
@@ -32,5 +33,10 @@ interface ContentDetailsDomainModule {
     fun bindGetTvShowCreditsUseCase(
         impl: GetTvShowCreditsUseCase.Base
     ): GetTvShowCreditsUseCase
+
+    @Binds
+    fun bindGetSystemLanguageUseCase(
+        impl: GetLanguageForAppUseCase.Base
+    ): GetLanguageForAppUseCase
 
 }

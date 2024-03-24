@@ -2,14 +2,20 @@ package com.judjingm.android002.content.domain
 
 import com.judjingm.android002.content.data.models.dto.CastDto
 import com.judjingm.android002.content.data.models.dto.CreditsDto
+import com.judjingm.android002.content.data.models.dto.CreditsQueryDto
 import com.judjingm.android002.content.data.models.dto.GenreDto
 import com.judjingm.android002.content.data.models.dto.MovieDetailsDto
-import com.judjingm.android002.content.data.models.dto.TvShowDetailDto
+import com.judjingm.android002.content.data.models.dto.MovieDetailsQueryDto
+import com.judjingm.android002.content.data.models.dto.TvShowDetailsDto
+import com.judjingm.android002.content.data.models.dto.TvShowDetailsQueryDto
 import com.judjingm.android002.content.domain.models.Cast
 import com.judjingm.android002.content.domain.models.Credits
+import com.judjingm.android002.content.domain.models.CreditsQuery
 import com.judjingm.android002.content.domain.models.Genre
 import com.judjingm.android002.content.domain.models.MovieDetails
+import com.judjingm.android002.content.domain.models.MovieDetailsQuery
 import com.judjingm.android002.content.domain.models.TvShowDetails
+import com.judjingm.android002.content.domain.models.TvShowDetailsQuery
 import javax.inject.Inject
 
 class ContentDetailsDomainMapper @Inject constructor() {
@@ -25,16 +31,16 @@ class ContentDetailsDomainMapper @Inject constructor() {
         )
     }
 
-    fun toTvShowDetails(tvShowDetailDto: TvShowDetailDto): TvShowDetails {
+    fun toTvShowDetails(tvShowDetailsDto: TvShowDetailsDto): TvShowDetails {
         return TvShowDetails(
-            id = tvShowDetailDto.id,
-            name = tvShowDetailDto.name,
-            firstAirDate = tvShowDetailDto.firstAirDate,
-            genres = tvShowDetailDto.genres.map { toGenre(it) },
-            posterPath = tvShowDetailDto.posterPath,
-            overview = tvShowDetailDto.overview,
-            episodes = tvShowDetailDto.episodes,
-            seasons = tvShowDetailDto.seasons,
+            id = tvShowDetailsDto.id,
+            name = tvShowDetailsDto.name,
+            firstAirDate = tvShowDetailsDto.firstAirDate,
+            genres = tvShowDetailsDto.genres.map { toGenre(it) },
+            posterPath = tvShowDetailsDto.posterPath,
+            overview = tvShowDetailsDto.overview,
+            episodes = tvShowDetailsDto.episodes,
+            seasons = tvShowDetailsDto.seasons,
         )
     }
 
@@ -44,6 +50,28 @@ class ContentDetailsDomainMapper @Inject constructor() {
             cast = creditsDto.cast.map { toCast(it) },
         )
     }
+
+    fun toMovieDetailsQueryDto(movieDetailsQuery: MovieDetailsQuery): MovieDetailsQueryDto {
+        return MovieDetailsQueryDto(
+            movieId = movieDetailsQuery.movieId,
+            language = movieDetailsQuery.language,
+        )
+    }
+
+    fun toTvShowDetailsQueryDto(tvShowDetailsQuery: TvShowDetailsQuery): TvShowDetailsQueryDto {
+        return TvShowDetailsQueryDto(
+            seriesId = tvShowDetailsQuery.seriesId,
+            language = tvShowDetailsQuery.language,
+        )
+    }
+
+    fun toCreditsQueryDto(creditsQuery: CreditsQuery): CreditsQueryDto {
+        return CreditsQueryDto(
+            contentId = creditsQuery.contentId,
+            language = creditsQuery.language,
+        )
+    }
+
 
     private fun toGenre(genreDto: GenreDto): Genre {
         return Genre(

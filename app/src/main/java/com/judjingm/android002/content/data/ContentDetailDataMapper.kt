@@ -4,7 +4,7 @@ import com.judjingm.android002.content.data.models.dto.CastDto
 import com.judjingm.android002.content.data.models.dto.CreditsDto
 import com.judjingm.android002.content.data.models.dto.GenreDto
 import com.judjingm.android002.content.data.models.dto.MovieDetailsDto
-import com.judjingm.android002.content.data.models.dto.TvShowDetailDto
+import com.judjingm.android002.content.data.models.dto.TvShowDetailsDto
 import com.judjingm.android002.content.data.models.response.CastResponse
 import com.judjingm.android002.content.data.models.response.CreditsResponse
 import com.judjingm.android002.content.data.models.response.GenresResponse
@@ -25,8 +25,8 @@ class ContentDetailDataMapper @Inject constructor() {
         )
     }
 
-    fun toTVShowDetailDto(tvShow: TvShowDetailResponse): TvShowDetailDto {
-        return TvShowDetailDto(
+    fun toTVShowDetailDto(tvShow: TvShowDetailResponse): TvShowDetailsDto {
+        return TvShowDetailsDto(
             id = tvShow.id,
             name = tvShow.name,
             firstAirDate = tvShow.firstAirDate,

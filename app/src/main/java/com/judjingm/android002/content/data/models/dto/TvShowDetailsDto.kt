@@ -1,6 +1,6 @@
 package com.judjingm.android002.content.data.models.dto
 
-data class TvShowDetailDto(
+data class TvShowDetailsDto(
     val id: Int,
     val name: String,
     val genres: List<GenreDto>,

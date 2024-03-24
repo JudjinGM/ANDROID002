@@ -21,6 +21,7 @@ class PopularContentRemoteDataSourceImpl @Inject constructor(
     override suspend fun getPopularMovies(popularMoviesQueryDto: PopularMoviesQueryDto): PagedList<MovieDto> {
         val options = HashMap<String, String>()
         options[PAGE] = popularMoviesQueryDto.page.toString()
+        options[LANGUAGE] = popularMoviesQueryDto.language
         return try {
             val response = popularContentApiService.getPopularMovies(
                 options = options
@@ -35,6 +36,7 @@ class PopularContentRemoteDataSourceImpl @Inject constructor(
         return try {
             val options = HashMap<String, String>()
             options[PAGE] = popularTVShowsQueryDto.page.toString()
+            options[LANGUAGE] = popularTVShowsQueryDto.language
             val response = popularContentApiService.getPopularTvSeries(
                 options = options
             )
@@ -47,7 +49,6 @@ class PopularContentRemoteDataSourceImpl @Inject constructor(
     companion object {
         const val LANGUAGE = "language"
         const val PAGE = "page"
-        const val REGION = "region"
     }
 
 }
