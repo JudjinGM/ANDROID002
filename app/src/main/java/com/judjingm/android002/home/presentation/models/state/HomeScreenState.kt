@@ -5,7 +5,7 @@ import com.judjingm.android002.home.presentation.models.PopularContentUi
 
 data class HomeScreenState(
     val isLoading: Boolean = false,
-    val currentPage: Int = FIRST_PAGE,
+    val pageToLoad: Int = FIRST_PAGE,
     val popularContent: PagedList<PopularContentUi> = PagedList(),
     val errorState: ErrorState = ErrorState.NoError,
     val isPaginationAllowed: Boolean = true,

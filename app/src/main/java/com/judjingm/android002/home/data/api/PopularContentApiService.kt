@@ -1,7 +1,7 @@
 package com.judjingm.android002.home.data.api
 
-import com.judjingm.android002.home.data.models.response.MoviesResponse
-import com.judjingm.android002.home.data.models.response.TVShowsResponse
+import com.judjingm.android002.common.data.models.response.MoviesResponse
+import com.judjingm.android002.common.data.models.response.TVShowsResponse
 import retrofit2.http.GET
 import retrofit2.http.QueryMap
 

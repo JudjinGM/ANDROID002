@@ -1,4 +1,4 @@
-package com.judjingm.android002.home.data.models.response
+package com.judjingm.android002.common.data.models.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

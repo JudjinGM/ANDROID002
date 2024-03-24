@@ -1,4 +1,4 @@
-package com.judjingm.android002.home.data.impl
+package com.judjingm.android002.search.data.impl
 
 import com.judjingm.android002.common.domain.CommonContentDomainMapper
 import com.judjingm.android002.common.domain.PagedList
@@ -7,26 +7,26 @@ import com.judjingm.android002.common.domain.models.Movie
 import com.judjingm.android002.common.domain.models.TVShow
 import com.judjingm.android002.common.utill.BaseExceptionToErrorEntityMapper
 import com.judjingm.android002.common.utill.Resource
-import com.judjingm.android002.home.data.api.PopularContentRemoteDataSource
-import com.judjingm.android002.home.di.PopularContentExceptionMapper
-import com.judjingm.android002.home.domain.models.PopularMoviesQuery
-import com.judjingm.android002.home.domain.models.PopularTVShowsQuery
-import com.judjingm.android002.home.domain.repository.PopularContentRepository
+import com.judjingm.android002.search.data.api.SearchContentRemoteDataSource
+import com.judjingm.android002.search.di.SearchContentExceptionMapper
+import com.judjingm.android002.search.domain.models.SearchMoviesQuery
+import com.judjingm.android002.search.domain.models.SearchTvShowsQuery
+import com.judjingm.android002.search.domain.repository.SearchContentRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class PopularContentRepositoryImpl @Inject constructor(
-    private val remoteDataSource: PopularContentRemoteDataSource,
+class SearchContentRepositoryImpl @Inject constructor(
+    private val remoteDataSource: SearchContentRemoteDataSource,
     private val domainMapper: CommonContentDomainMapper,
-    @PopularContentExceptionMapper private val exceptionToErrorMapper: BaseExceptionToErrorEntityMapper
-) : PopularContentRepository {
-    override fun getPopularMovies(
-        popularMoviesQuery: PopularMoviesQuery
+    @SearchContentExceptionMapper private val exceptionToErrorMapper: BaseExceptionToErrorEntityMapper
+) : SearchContentRepository {
+    override fun getSearchMovies(
+        searchMoviesQuery: SearchMoviesQuery
     ): Flow<Resource<PagedList<Movie>, ErrorEntity>> = flow {
         try {
-            val data = remoteDataSource.getPopularMovies(
-                popularMoviesQueryDto = domainMapper.toPopularMoviesQueryDto(popularMoviesQuery)
+            val data = remoteDataSource.getSearchMovies(
+                searchMoviesQueryDto = domainMapper.toSearchMoviesQueryDto(searchMoviesQuery)
             )
 
             emit(
@@ -45,13 +45,13 @@ class PopularContentRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getPopularTvShows(
-        popularTVShowsQuery: PopularTVShowsQuery
+    override fun getSearchTvShows(
+        searchTvShowsQuery: SearchTvShowsQuery
     ): Flow<Resource<PagedList<TVShow>, ErrorEntity>> = flow {
         try {
-            val data = remoteDataSource.getPopularTVShows(
-                popularTVShowsQueryDto = domainMapper.toPopularTVShowsQueryDto(
-                    popularTVShowsQuery
+            val data = remoteDataSource.getSearchTvShows(
+                searchTVShowsQueryDto = domainMapper.toSearchTvShowsQueryDto(
+                    searchTvShowsQuery
                 )
             )
 

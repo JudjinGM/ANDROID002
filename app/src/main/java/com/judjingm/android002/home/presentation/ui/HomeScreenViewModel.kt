@@ -4,11 +4,11 @@ import androidx.lifecycle.viewModelScope
 import com.judjingm.android002.R
 import com.judjingm.android002.common.domain.PagedList
 import com.judjingm.android002.common.domain.models.ErrorEntity
+import com.judjingm.android002.common.domain.models.Movie
+import com.judjingm.android002.common.domain.models.TVShow
 import com.judjingm.android002.common.ui.BaseViewModel
 import com.judjingm.android002.common.utill.Resource
 import com.judjingm.android002.content.domain.useCase.GetLanguageForAppUseCase
-import com.judjingm.android002.home.domain.models.Movie
-import com.judjingm.android002.home.domain.models.TVShow
 import com.judjingm.android002.home.domain.useCase.GetPopularMoviesUseCase
 import com.judjingm.android002.home.domain.useCase.GetPopularTVShowsUseCase
 import com.judjingm.android002.home.presentation.models.PopularContentUi
@@ -104,7 +104,7 @@ class HomeScreenViewModel @Inject constructor(
 
                     ErrorState.NoError -> {
                         when {
-                            screenState.isLoading -> setUiStateLoading(currentState.currentPage != FIRST_PAGE)
+                            screenState.isLoading -> setUiStateLoading(currentState.pageToLoad != FIRST_PAGE)
                             else -> setUiStateSuccess(content = screenState.popularContent.content)
                         }
                     }
@@ -139,13 +139,13 @@ class HomeScreenViewModel @Inject constructor(
         if (isPaginationDebounce()) {
             viewModelScope.launch {
                 getPopularMoviesUseCase(
-                    page = currentState.currentPage,
+                    page = currentState.pageToLoad,
                     getLanguageForAppUseCase()
                 ).onStart {
                     _state.update { it.copy(isLoading = true, errorState = ErrorState.NoError) }
                 }.zip(
                     getPopularTVShowsUseCase(
-                        page = currentState.currentPage,
+                        page = currentState.pageToLoad,
                         getLanguageForAppUseCase()
                     )
                 ) { popularMovies, popularTVShows ->
@@ -196,13 +196,13 @@ class HomeScreenViewModel @Inject constructor(
                     return@zip if (isNetworkError) {
                         Resource.Error<PagedList<PopularContentUi>, ErrorState>(
                             ErrorState.NoConnection(
-                                currentState.currentPage != FIRST_PAGE
+                                currentState.pageToLoad != FIRST_PAGE
                             )
                         )
                     } else if (isMovieFetchingError && isTvShowFetchingError) {
                         Resource.Error<PagedList<PopularContentUi>, ErrorState>(
                             ErrorState.ServerError(
-                                currentState.currentPage != FIRST_PAGE
+                                currentState.pageToLoad != FIRST_PAGE
                             )
                         )
                     } else {
@@ -216,7 +216,7 @@ class HomeScreenViewModel @Inject constructor(
                                 it.copy(
                                     isLoading = false,
                                     popularContent = data,
-                                    currentPage = currentState.currentPage + NEXT_PAGE
+                                    pageToLoad = currentState.pageToLoad + NEXT_PAGE
                                 )
                             }
                         }

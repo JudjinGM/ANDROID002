@@ -12,6 +12,11 @@ sealed class ErrorEntity(open val message: String) {
         data class Unauthorized(override val message: String) : PopularContent(message)
     }
 
+    sealed class SearchContent(override val message: String) : ErrorEntity(message) {
+        data class InvalidPage(override val message: String) : SearchContent(message)
+        data class Unauthorized(override val message: String) : SearchContent(message)
+    }
+
     sealed class ContentDetail(override val message: String) : ErrorEntity(message) {
         data class Unauthorized(override val message: String) : ContentDetail(message)
     }

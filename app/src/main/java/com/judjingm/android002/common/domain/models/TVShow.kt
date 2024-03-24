@@ -1,4 +1,4 @@
-package com.judjingm.android002.home.domain.models
+package com.judjingm.android002.common.domain.models
 
 data class TVShow(
     val id: Int?,

@@ -1,15 +1,15 @@
-package com.judjingm.android002.home.data
+package com.judjingm.android002.common.data
 
+import com.judjingm.android002.common.data.models.MovieDto
+import com.judjingm.android002.common.data.models.TvShowDto
+import com.judjingm.android002.common.data.models.response.MovieResults
+import com.judjingm.android002.common.data.models.response.MoviesResponse
+import com.judjingm.android002.common.data.models.response.TVShowResults
+import com.judjingm.android002.common.data.models.response.TVShowsResponse
 import com.judjingm.android002.common.domain.PagedList
-import com.judjingm.android002.home.data.models.dto.MovieDto
-import com.judjingm.android002.home.data.models.dto.TvShowDto
-import com.judjingm.android002.home.data.models.response.MovieResults
-import com.judjingm.android002.home.data.models.response.MoviesResponse
-import com.judjingm.android002.home.data.models.response.TVShowResults
-import com.judjingm.android002.home.data.models.response.TVShowsResponse
 import javax.inject.Inject
 
-class ContentDataMapper @Inject constructor() {
+class CommonContentDataMapper @Inject constructor() {
 
     fun toMoviesDto(moviesResponse: MoviesResponse): PagedList<MovieDto> {
         return PagedList(

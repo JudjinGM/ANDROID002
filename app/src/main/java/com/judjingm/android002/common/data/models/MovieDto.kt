@@ -1,18 +1,18 @@
-package com.judjingm.android002.home.data.models.dto
+package com.judjingm.android002.common.data.models
 
-data class TvShowDto(
+class MovieDto(
     val adult: Boolean?,
     val backdropPath: String?,
-    val genreIds: List<Int>,
+    val genreIds: ArrayList<Int>,
     val id: Int?,
-    val originCountry: List<String>,
     val originalLanguage: String?,
-    val originalName: String?,
+    val originalTitle: String?,
     val overview: String?,
     val popularity: Double?,
     val posterPath: String?,
-    val firstAirDate: String?,
-    val name: String?,
+    val releaseDate: String?,
+    val title: String?,
+    val video: Boolean?,
     val voteAverage: Double?,
     val voteCount: Int?
 )

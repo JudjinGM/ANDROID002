@@ -2,8 +2,8 @@ package com.judjingm.android002.home.domain.useCase
 
 import com.judjingm.android002.common.domain.PagedList
 import com.judjingm.android002.common.domain.models.ErrorEntity
+import com.judjingm.android002.common.domain.models.Movie
 import com.judjingm.android002.common.utill.Resource
-import com.judjingm.android002.home.domain.models.Movie
 import com.judjingm.android002.home.domain.models.PopularMoviesQuery
 import com.judjingm.android002.home.domain.repository.PopularContentRepository
 import kotlinx.coroutines.flow.Flow

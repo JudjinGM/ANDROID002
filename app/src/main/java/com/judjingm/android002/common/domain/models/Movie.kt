@@ -1,4 +1,4 @@
-package com.judjingm.android002.home.domain.models
+package com.judjingm.android002.common.domain.models
 
 data class Movie(
     val id: Int?,

@@ -1,20 +1,20 @@
 package com.judjingm.android002.home.data.impl
 
+import com.judjingm.android002.common.data.CommonContentDataMapper
+import com.judjingm.android002.common.data.models.MovieDto
+import com.judjingm.android002.common.data.models.TvShowDto
 import com.judjingm.android002.common.domain.PagedList
 import com.judjingm.android002.common.utill.exceptions.NetworkException
-import com.judjingm.android002.home.data.ContentDataMapper
 import com.judjingm.android002.home.data.NetworkToPopularContentExceptionMapper
 import com.judjingm.android002.home.data.api.PopularContentApiService
 import com.judjingm.android002.home.data.api.PopularContentRemoteDataSource
-import com.judjingm.android002.home.data.models.dto.MovieDto
 import com.judjingm.android002.home.data.models.dto.PopularMoviesQueryDto
 import com.judjingm.android002.home.data.models.dto.PopularTVShowsQueryDto
-import com.judjingm.android002.home.data.models.dto.TvShowDto
 import javax.inject.Inject
 
 class PopularContentRemoteDataSourceImpl @Inject constructor(
     private val popularContentApiService: PopularContentApiService,
-    private val contentDataMapper: ContentDataMapper,
+    private val commonContentDataMapper: CommonContentDataMapper,
     private val networkToPopularContentExceptionMapper: NetworkToPopularContentExceptionMapper,
 
     ) : PopularContentRemoteDataSource {
@@ -26,7 +26,7 @@ class PopularContentRemoteDataSourceImpl @Inject constructor(
             val response = popularContentApiService.getPopularMovies(
                 options = options
             )
-            contentDataMapper.toMoviesDto(response)
+            commonContentDataMapper.toMoviesDto(response)
         } catch (exception: NetworkException) {
             throw networkToPopularContentExceptionMapper.handleException(exception = exception)
         }
@@ -40,7 +40,7 @@ class PopularContentRemoteDataSourceImpl @Inject constructor(
             val response = popularContentApiService.getPopularTvSeries(
                 options = options
             )
-            contentDataMapper.toTvShowDto(response)
+            commonContentDataMapper.toTvShowDto(response)
         } catch (exception: NetworkException) {
             throw networkToPopularContentExceptionMapper.handleException(exception = exception)
         }

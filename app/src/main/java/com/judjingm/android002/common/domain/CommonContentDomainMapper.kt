@@ -1,17 +1,20 @@
-package com.judjingm.android002.home.domain
+package com.judjingm.android002.common.domain
 
-import com.judjingm.android002.common.domain.PagedList
-import com.judjingm.android002.home.data.models.dto.MovieDto
+import com.judjingm.android002.common.data.models.MovieDto
+import com.judjingm.android002.common.data.models.TvShowDto
+import com.judjingm.android002.common.domain.models.Movie
+import com.judjingm.android002.common.domain.models.TVShow
 import com.judjingm.android002.home.data.models.dto.PopularMoviesQueryDto
 import com.judjingm.android002.home.data.models.dto.PopularTVShowsQueryDto
-import com.judjingm.android002.home.data.models.dto.TvShowDto
-import com.judjingm.android002.home.domain.models.Movie
 import com.judjingm.android002.home.domain.models.PopularMoviesQuery
 import com.judjingm.android002.home.domain.models.PopularTVShowsQuery
-import com.judjingm.android002.home.domain.models.TVShow
+import com.judjingm.android002.search.data.models.dto.SearchMoviesQueryDto
+import com.judjingm.android002.search.data.models.dto.SearchTvShowsQueryDto
+import com.judjingm.android002.search.domain.models.SearchMoviesQuery
+import com.judjingm.android002.search.domain.models.SearchTvShowsQuery
 import javax.inject.Inject
 
-class PopularContentDomainMapper @Inject constructor() {
+class CommonContentDomainMapper @Inject constructor() {
     fun <Data, Domain> toPagedList(
         pagedList: PagedList<Data>,
         convertFunc: (Data) -> Domain
@@ -38,6 +41,23 @@ class PopularContentDomainMapper @Inject constructor() {
             language = popularTVShowsQuery.language,
         )
     }
+    fun toSearchMoviesQueryDto(searchMoviesQuery: SearchMoviesQuery): SearchMoviesQueryDto {
+        return SearchMoviesQueryDto(
+            query = searchMoviesQuery.query,
+            page = searchMoviesQuery.page,
+            language = searchMoviesQuery.language,
+            region = searchMoviesQuery.region
+        )
+    }
+
+    fun toSearchTvShowsQueryDto(searchTVShowsQuery: SearchTvShowsQuery): SearchTvShowsQueryDto {
+        return SearchTvShowsQueryDto(
+            query = searchTVShowsQuery.query,
+            page = searchTVShowsQuery.page,
+            language = searchTVShowsQuery.language,
+        )
+    }
+
 
     fun toMovie(movieDto: MovieDto): Movie {
         return Movie(
