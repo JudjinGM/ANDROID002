@@ -21,6 +21,10 @@ sealed class ErrorEntity(open val message: String) {
         data class Unauthorized(override val message: String) : ContentDetail(message)
     }
 
+    sealed class Profile(override val message: String) : ErrorEntity(message) {
+        data class Unauthorized(override val message: String) : Profile(message)
+    }
+
     companion object {
         const val BLANC_ERROR = "Unknown error"
     }

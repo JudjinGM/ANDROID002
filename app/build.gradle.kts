@@ -92,8 +92,6 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.fragment.ktx)
-//    implementation(libs.androidx.navigation.safearg)
-
 
     // Glide
     implementation(libs.glide)
@@ -106,6 +104,9 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.retrofit2.kotlinx.serialization.converter)
+
+    //Crypto
+    implementation(libs.crypto)
 
     // Test
     testImplementation(libs.junit)
