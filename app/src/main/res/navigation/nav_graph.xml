@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/contentDetailFragment"
-        android:name="com.judjingm.android002.content.presentation.ui.ContentDetailFragment"
+        android:name="com.judjingm.android002.details.presentation.ui.ContentDetailFragment"
         android:label="fragment_content_detail"
         tools:layout="@layout/fragment_content_detail">
         <argument

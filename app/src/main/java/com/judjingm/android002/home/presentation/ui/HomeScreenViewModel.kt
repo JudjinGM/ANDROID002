@@ -7,7 +7,7 @@ import com.judjingm.android002.common.domain.models.Content
 import com.judjingm.android002.common.domain.models.ErrorEntity
 import com.judjingm.android002.common.ui.BaseViewModel
 import com.judjingm.android002.common.utill.Resource
-import com.judjingm.android002.content.domain.useCase.GetLanguageForAppUseCase
+import com.judjingm.android002.details.domain.useCase.GetLanguageForAppUseCase
 import com.judjingm.android002.home.domain.useCase.GetPopularMoviesUseCase
 import com.judjingm.android002.home.domain.useCase.GetPopularTVShowsUseCase
 import com.judjingm.android002.home.presentation.models.PopularContentUi

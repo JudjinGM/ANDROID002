@@ -8,7 +8,7 @@ import com.judjingm.android002.common.domain.models.ErrorEntity
 import com.judjingm.android002.common.ui.BaseViewModel
 import com.judjingm.android002.common.utill.Resource
 import com.judjingm.android002.common.utill.debounce
-import com.judjingm.android002.content.domain.useCase.GetLanguageForAppUseCase
+import com.judjingm.android002.details.domain.useCase.GetLanguageForAppUseCase
 import com.judjingm.android002.home.presentation.models.ContentType
 import com.judjingm.android002.home.presentation.models.StringVO
 import com.judjingm.android002.home.presentation.ui.ContentDomainToUiMapper
