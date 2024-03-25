@@ -16,7 +16,7 @@
     <string name="overview">Описание</string>
     <string name="genre">Жанр</string>
     <string name="runtime">Продолжительность</string>
-    <string name="year">Год выпуска</string>
+    <string name="year">Год:</string>
     <string name="title">Название</string>
     <string name="cast">Список актеров</string>
     <string name="poster">Постер</string>
@@ -47,4 +47,9 @@
         <item quantity="many"> %1$d минут</item>
         <item quantity="other"> %1$d минут</item>
     </plurals>
+    <string name="year_with_commas">Год выпуска:</string>
+    <string name="average_vote">Рейтинг:</string>
+    <string name="type_a_request">Введите запрос</string>
+    <string name="movies">Фильмы</string>
+    <string name="tv_shows">Сериалы</string>
 </resources>

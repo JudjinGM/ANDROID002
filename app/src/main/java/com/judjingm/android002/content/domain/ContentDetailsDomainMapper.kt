@@ -21,33 +21,33 @@ import javax.inject.Inject
 class ContentDetailsDomainMapper @Inject constructor() {
     fun toMovieDetails(movieDetailsDto: MovieDetailsDto): MovieDetails {
         return MovieDetails(
-            id = movieDetailsDto.id,
-            title = movieDetailsDto.title,
-            releaseDate = movieDetailsDto.releaseDate,
-            runtime = movieDetailsDto.runtime,
-            genres = movieDetailsDto.genres.map { toGenre(it) },
-            posterPath = movieDetailsDto.posterPath,
-            overview = movieDetailsDto.overview,
+            id = movieDetailsDto.id ?: DEFAULT_ID,
+            title = movieDetailsDto.title ?: BLANC_STRING,
+            releaseDate = movieDetailsDto.releaseDate ?: BLANC_STRING,
+            runtime = movieDetailsDto.runtime ?: DEFAULT_RUNTIME,
+            genres = movieDetailsDto.genres?.map { toGenre(it) } ?: emptyList(),
+            posterPath = movieDetailsDto.posterPath ?: BLANC_STRING,
+            overview = movieDetailsDto.overview ?: BLANC_STRING,
         )
     }
 
     fun toTvShowDetails(tvShowDetailsDto: TvShowDetailsDto): TvShowDetails {
         return TvShowDetails(
-            id = tvShowDetailsDto.id,
-            name = tvShowDetailsDto.name,
-            firstAirDate = tvShowDetailsDto.firstAirDate,
-            genres = tvShowDetailsDto.genres.map { toGenre(it) },
-            posterPath = tvShowDetailsDto.posterPath,
-            overview = tvShowDetailsDto.overview,
-            episodes = tvShowDetailsDto.episodes,
-            seasons = tvShowDetailsDto.seasons,
+            id = tvShowDetailsDto.id ?: DEFAULT_ID,
+            name = tvShowDetailsDto.name ?: BLANC_STRING,
+            firstAirDate = tvShowDetailsDto.firstAirDate ?: BLANC_STRING,
+            genres = tvShowDetailsDto.genres?.map { toGenre(it) } ?: emptyList(),
+            posterPath = tvShowDetailsDto.posterPath ?: BLANC_STRING,
+            overview = tvShowDetailsDto.overview ?: BLANC_STRING,
+            episodes = tvShowDetailsDto.episodes ?: DEFAULT_EPISODES,
+            seasons = tvShowDetailsDto.seasons ?: DEFAULT_SEASON,
         )
     }
 
     fun toCredits(creditsDto: CreditsDto): Credits {
         return Credits(
-            id = creditsDto.id,
-            cast = creditsDto.cast.map { toCast(it) },
+            id = creditsDto.id ?: DEFAULT_ID,
+            cast = creditsDto.cast?.map { toCast(it) } ?: emptyList(),
         )
     }
 
@@ -75,12 +75,22 @@ class ContentDetailsDomainMapper @Inject constructor() {
 
     private fun toGenre(genreDto: GenreDto): Genre {
         return Genre(
-            id = genreDto.id,
-            name = genreDto.name,
+            id = genreDto.id ?: DEFAULT_ID,
+            name = genreDto.name ?: BLANC_STRING,
         )
     }
 
     private fun toCast(cast: CastDto): Cast {
-        return Cast(name = cast.name)
+        return Cast(
+            name = cast.name ?: BLANC_STRING,
+        )
+    }
+
+    companion object {
+        const val DEFAULT_ID = -1
+        const val BLANC_STRING = ""
+        const val DEFAULT_RUNTIME = 0
+        const val DEFAULT_EPISODES = 0
+        const val DEFAULT_SEASON = 0
     }
 }

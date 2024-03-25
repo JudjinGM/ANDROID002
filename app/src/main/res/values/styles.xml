@@ -50,4 +50,20 @@
         <item name="android:textColor">@color/white_universal</item>
     </style>
 
+    <style name="SearchEditText">
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:inputType">text</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:paddingStart">@dimen/padding_horizontal</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:background">@drawable/rectangle_with_corners</item>
+        <item name="android:backgroundTint">@color/light_gray_gray</item>
+        <item name="android:drawablePadding">@dimen/padding_horizontal</item>
+        <item name="android:drawableTint">@color/black_universal</item>
+        <item name="android:textColor">@color/black_universal</item>
+        <item name="android:textColorHint">@color/gray_white</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
+    </style>
+
 </resources>

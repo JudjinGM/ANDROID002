@@ -2,9 +2,8 @@ package com.judjingm.android002.home.data.impl
 
 import com.judjingm.android002.common.domain.CommonContentDomainMapper
 import com.judjingm.android002.common.domain.PagedList
+import com.judjingm.android002.common.domain.models.Content
 import com.judjingm.android002.common.domain.models.ErrorEntity
-import com.judjingm.android002.common.domain.models.Movie
-import com.judjingm.android002.common.domain.models.TVShow
 import com.judjingm.android002.common.utill.BaseExceptionToErrorEntityMapper
 import com.judjingm.android002.common.utill.Resource
 import com.judjingm.android002.home.data.api.PopularContentRemoteDataSource
@@ -23,7 +22,7 @@ class PopularContentRepositoryImpl @Inject constructor(
 ) : PopularContentRepository {
     override fun getPopularMovies(
         popularMoviesQuery: PopularMoviesQuery
-    ): Flow<Resource<PagedList<Movie>, ErrorEntity>> = flow {
+    ): Flow<Resource<PagedList<Content.Movie>, ErrorEntity>> = flow {
         try {
             val data = remoteDataSource.getPopularMovies(
                 popularMoviesQueryDto = domainMapper.toPopularMoviesQueryDto(popularMoviesQuery)
@@ -47,7 +46,7 @@ class PopularContentRepositoryImpl @Inject constructor(
 
     override fun getPopularTvShows(
         popularTVShowsQuery: PopularTVShowsQuery
-    ): Flow<Resource<PagedList<TVShow>, ErrorEntity>> = flow {
+    ): Flow<Resource<PagedList<Content.TVShow>, ErrorEntity>> = flow {
         try {
             val data = remoteDataSource.getPopularTVShows(
                 popularTVShowsQueryDto = domainMapper.toPopularTVShowsQueryDto(

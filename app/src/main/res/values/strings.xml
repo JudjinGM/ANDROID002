@@ -21,6 +21,7 @@
     <string name="cast">Cast</string>
     <string name="poster">Poster</string>
 
+
     <plurals name="season_plural">
         <item quantity="one"> %1$d season</item>
         <item quantity="other"> %1$d seasons</item>
@@ -35,5 +36,10 @@
         <item quantity="one"> %1$d minute</item>
         <item quantity="other"> %1$d minutes</item>
     </plurals>
+    <string name="year_with_commas">Year:</string>
+    <string name="average_vote">Rating</string>
+    <string name="type_a_request">Type request</string>
+    <string name="movies">Movies</string>
+    <string name="tv_shows">TV Shows</string>
 
 </resources>

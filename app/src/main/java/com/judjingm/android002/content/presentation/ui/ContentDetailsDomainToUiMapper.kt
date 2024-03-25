@@ -13,12 +13,18 @@ import javax.inject.Inject
 @ViewModelScoped
 class ContentDetailsDomainToUiMapper @Inject constructor(@ApplicationContext private val context: Context) {
     fun toContentDetailsUi(movieDetails: MovieDetails, credits: Credits): ContentDetailsUi {
+        val releaseDate =
+            if (movieDetails.releaseDate.isNotEmpty() && movieDetails.releaseDate.length > 4) {
+                movieDetails.releaseDate.substring(0, 4)
+            } else {
+                BLANC_STRING
+            }
         return ContentDetailsUi(
             id = movieDetails.id,
             title = movieDetails.title,
             posterPath = movieDetails.posterPath,
             overview = movieDetails.overview,
-            releaseDate = movieDetails.releaseDate.substring(0, 4),
+            releaseDate = releaseDate,
             runtime = buildString {
                 append(
                     context.resources.getQuantityString(
@@ -28,12 +34,19 @@ class ContentDetailsDomainToUiMapper @Inject constructor(@ApplicationContext pri
             },
             genres = movieDetails.genres.joinToString { it.name }
                 .replaceFirstChar { it.uppercase() },
-            cast = credits.cast.joinToString { it.name }
-                .replaceFirstChar { it.uppercase() },
+            cast = credits.cast.joinToString { it.name }.replaceFirstChar { it.uppercase() },
         )
     }
 
-    fun toContentDetailsUi(tvShowDetails: TvShowDetails, credits: Credits): ContentDetailsUi {
+    fun toContentDetailsUi(
+        tvShowDetails: TvShowDetails, credits: Credits
+    ): ContentDetailsUi {
+        val releaseDate =
+            if (tvShowDetails.firstAirDate.isNotEmpty() && tvShowDetails.firstAirDate.length > 4) {
+                tvShowDetails.firstAirDate.substring(0, 4)
+            } else {
+                BLANC_STRING
+            }
         val runtime = buildString {
             append(
                 context.resources.getQuantityString(
@@ -53,11 +66,15 @@ class ContentDetailsDomainToUiMapper @Inject constructor(@ApplicationContext pri
             title = tvShowDetails.name,
             posterPath = tvShowDetails.posterPath,
             overview = tvShowDetails.overview,
-            releaseDate = tvShowDetails.firstAirDate.substring(0, 4),
+            releaseDate = releaseDate,
             runtime = runtime,
             genres = tvShowDetails.genres.joinToString { it.name }
                 .replaceFirstChar { it.uppercase() },
             cast = credits.cast.joinToString { it.name },
         )
+    }
+
+    companion object {
+        const val BLANC_STRING = ""
     }
 }

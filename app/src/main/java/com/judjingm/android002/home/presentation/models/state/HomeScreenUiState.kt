@@ -19,7 +19,7 @@ sealed interface HomeScreenUiState {
         }
     }
 
-    data class Error(private val error: ErrorUiState) : HomeScreenUiState {
+    data class Error(private val error: PopularsErrorUiState) : HomeScreenUiState {
         override fun handleState(handler: StateHandler) {
             handler.handleError(error)
         }
@@ -30,6 +30,6 @@ sealed interface HomeScreenUiState {
 
         fun handleSuccess(content: List<PopularContentUi>)
 
-        fun handleError(error: ErrorUiState)
+        fun handleError(error: PopularsErrorUiState)
     }
 }

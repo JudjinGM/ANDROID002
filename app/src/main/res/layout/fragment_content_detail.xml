@@ -42,7 +42,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/errorTextTextView"
+        android:id="@+id/errorTextView"
         style="@style/TitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

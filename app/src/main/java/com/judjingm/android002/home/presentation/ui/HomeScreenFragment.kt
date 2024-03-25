@@ -64,21 +64,21 @@ class HomeScreenFragment :
                     showContent(content)
                 }
 
-                override fun handleError(error: ErrorUiState) {
+                override fun handleError(error: PopularsErrorUiState) {
                     when (error) {
-                        is ErrorUiState.CouldNotFetchData -> showError(
+                        is PopularsErrorUiState.CouldNotFetchData -> showError(
                             error.message.value(requireContext())
                         )
 
-                        is ErrorUiState.NoConnection -> showErrorNoConnection(
+                        is PopularsErrorUiState.NoConnection -> showErrorNoConnection(
                             error.message.value(requireContext())
                         )
 
-                        is ErrorUiState.NothingFound -> showError(
+                        is PopularsErrorUiState.NothingFound -> showError(
                             error.message.value(requireContext())
                         )
 
-                        is ErrorUiState.UnknownError -> showError(
+                        is PopularsErrorUiState.UnknownError -> showError(
                             error.message.value(requireContext())
                         )
                     }
@@ -160,8 +160,8 @@ class HomeScreenFragment :
         showEmpty()
         adapter?.items = emptyList()
         binding.placeholderImage.isVisible = true
-        binding.errorTextTextView.isVisible = true
-        binding.errorTextTextView.text = text
+        binding.errorTextView.isVisible = true
+        binding.errorTextView.text = text
         binding.refreshButton.isVisible = true
     }
 
@@ -170,15 +170,15 @@ class HomeScreenFragment :
         adapter?.items = emptyList()
         binding.placeholderImage.setImageResource(com.judjingm.android002.R.drawable.no_signal_no_background)
         binding.placeholderImage.isVisible = true
-        binding.errorTextTextView.isVisible = true
-        binding.errorTextTextView.text = text
+        binding.errorTextView.isVisible = true
+        binding.errorTextView.text = text
         binding.refreshButton.isVisible = true
     }
 
 
     private fun showEmpty() {
         binding.placeholderImage.isVisible = false
-        binding.errorTextTextView.isVisible = false
+        binding.errorTextView.isVisible = false
         binding.progressBar.isVisible = false
         binding.progressBarPagination.isVisible = false
         binding.refreshButton.isVisible = false

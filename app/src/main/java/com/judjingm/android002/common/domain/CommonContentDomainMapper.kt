@@ -2,8 +2,7 @@ package com.judjingm.android002.common.domain
 
 import com.judjingm.android002.common.data.models.MovieDto
 import com.judjingm.android002.common.data.models.TvShowDto
-import com.judjingm.android002.common.domain.models.Movie
-import com.judjingm.android002.common.domain.models.TVShow
+import com.judjingm.android002.common.domain.models.Content
 import com.judjingm.android002.home.data.models.dto.PopularMoviesQueryDto
 import com.judjingm.android002.home.data.models.dto.PopularTVShowsQueryDto
 import com.judjingm.android002.home.domain.models.PopularMoviesQuery
@@ -59,21 +58,23 @@ class CommonContentDomainMapper @Inject constructor() {
     }
 
 
-    fun toMovie(movieDto: MovieDto): Movie {
-        return Movie(
+    fun toMovie(movieDto: MovieDto): Content.Movie {
+        return Content.Movie(
             id = movieDto.id,
             title = movieDto.title,
             releaseDate = movieDto.releaseDate,
             posterPath = movieDto.posterPath,
+            voteAverage = movieDto.voteAverage,
         )
     }
 
-    fun toTVShow(tvShowDto: TvShowDto): TVShow {
-        return TVShow(
+    fun toTVShow(tvShowDto: TvShowDto): Content.TVShow {
+        return Content.TVShow(
             id = tvShowDto.id,
             name = tvShowDto.name,
             firstAirDate = tvShowDto.firstAirDate,
             posterPath = tvShowDto.posterPath,
+            voteAverage = tvShowDto.voteAverage,
         )
     }
 

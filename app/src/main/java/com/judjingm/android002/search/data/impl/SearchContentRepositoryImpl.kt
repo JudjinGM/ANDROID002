@@ -2,9 +2,8 @@ package com.judjingm.android002.search.data.impl
 
 import com.judjingm.android002.common.domain.CommonContentDomainMapper
 import com.judjingm.android002.common.domain.PagedList
+import com.judjingm.android002.common.domain.models.Content
 import com.judjingm.android002.common.domain.models.ErrorEntity
-import com.judjingm.android002.common.domain.models.Movie
-import com.judjingm.android002.common.domain.models.TVShow
 import com.judjingm.android002.common.utill.BaseExceptionToErrorEntityMapper
 import com.judjingm.android002.common.utill.Resource
 import com.judjingm.android002.search.data.api.SearchContentRemoteDataSource
@@ -23,7 +22,7 @@ class SearchContentRepositoryImpl @Inject constructor(
 ) : SearchContentRepository {
     override fun getSearchMovies(
         searchMoviesQuery: SearchMoviesQuery
-    ): Flow<Resource<PagedList<Movie>, ErrorEntity>> = flow {
+    ): Flow<Resource<PagedList<Content.Movie>, ErrorEntity>> = flow {
         try {
             val data = remoteDataSource.getSearchMovies(
                 searchMoviesQueryDto = domainMapper.toSearchMoviesQueryDto(searchMoviesQuery)
@@ -47,7 +46,7 @@ class SearchContentRepositoryImpl @Inject constructor(
 
     override fun getSearchTvShows(
         searchTvShowsQuery: SearchTvShowsQuery
-    ): Flow<Resource<PagedList<TVShow>, ErrorEntity>> = flow {
+    ): Flow<Resource<PagedList<Content.TVShow>, ErrorEntity>> = flow {
         try {
             val data = remoteDataSource.getSearchTvShows(
                 searchTVShowsQueryDto = domainMapper.toSearchTvShowsQueryDto(

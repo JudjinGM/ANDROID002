@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class CreditsResponse(
-    val id: Int,
-    val cast: List<CastResponse>,
+    val id: Int?,
+    val cast: List<CastResponse>?,
 )

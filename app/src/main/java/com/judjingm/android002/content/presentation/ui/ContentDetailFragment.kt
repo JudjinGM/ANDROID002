@@ -67,7 +67,7 @@ class ContentDetailFragment :
     private fun showEmpty() {
         binding.detailProgressBar.isVisible = false
         binding.placeholderImage.isVisible = false
-        binding.errorTextTextView.isVisible = false
+        binding.errorTextView.isVisible = false
         binding.contentScrollView.isVisible = false
     }
 
@@ -128,21 +128,21 @@ class ContentDetailFragment :
         when (errorState) {
             is ContentDetailErrorState.NoConnection -> {
                 binding.placeholderImage.setImageResource(R.drawable.no_signal_no_background)
-                binding.errorTextTextView.text = errorState.message.value(requireContext())
+                binding.errorTextView.text = errorState.message.value(requireContext())
             }
 
             is ContentDetailErrorState.ServerError -> {
                 binding.placeholderImage.setImageResource(R.drawable.error)
-                binding.errorTextTextView.text = errorState.message.value(requireContext())
+                binding.errorTextView.text = errorState.message.value(requireContext())
             }
 
             is ContentDetailErrorState.UnknownError -> {
                 binding.placeholderImage.setImageResource(R.drawable.error)
-                binding.errorTextTextView.text = errorState.message.value(requireContext())
+                binding.errorTextView.text = errorState.message.value(requireContext())
             }
         }
         binding.placeholderImage.isVisible = true
-        binding.errorTextTextView.isVisible = true
+        binding.errorTextView.isVisible = true
     }
 
     private fun showLoading() {

@@ -30,7 +30,7 @@ class ContentDetailDataMapper @Inject constructor() {
             id = tvShow.id,
             name = tvShow.name,
             firstAirDate = tvShow.firstAirDate,
-            genres = tvShow.genres.map { toGenresDto(it) },
+            genres = tvShow.genres?.map { toGenresDto(it) },
             posterPath = tvShow.posterPath,
             overview = tvShow.overview,
             episodes = tvShow.episodes,
@@ -41,7 +41,7 @@ class ContentDetailDataMapper @Inject constructor() {
     fun toCreditsDto(credits: CreditsResponse): CreditsDto {
         return CreditsDto(
             id = credits.id,
-            cast = credits.cast.map { toCastDto(it) },
+            cast = credits.cast?.map { toCastDto(it) },
         )
     }
 

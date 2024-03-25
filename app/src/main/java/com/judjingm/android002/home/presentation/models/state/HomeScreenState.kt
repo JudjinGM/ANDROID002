@@ -7,7 +7,7 @@ data class HomeScreenState(
     val isLoading: Boolean = false,
     val pageToLoad: Int = FIRST_PAGE,
     val popularContent: PagedList<PopularContentUi> = PagedList(),
-    val errorState: ErrorState = ErrorState.NoError,
+    val errorState: PopularsErrorState = PopularsErrorState.NoError,
     val isPaginationAllowed: Boolean = true,
     val isClickAllowed: Boolean = true
 

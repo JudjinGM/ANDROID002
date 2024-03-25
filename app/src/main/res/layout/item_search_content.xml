@@ -8,12 +8,13 @@
 
     <ImageView
         android:id="@+id/posterImageView"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="40dp"
+        android:layout_height="0dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:contentDescription="@string/poster"
+        app:layout_constraintDimensionRatio="2:3"
         android:scaleType="fitCenter"
         android:src="@drawable/content_cover_rv"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -38,7 +39,7 @@
         tools:text="Content name" />
 
     <TextView
-        android:id="@+id/countryTextView"
+        android:id="@+id/voteTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -61,20 +62,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:importantForAccessibility="no"
+        android:layout_marginStart="4dp"
         android:src="@drawable/point"
-        app:layout_constraintBottom_toBottomOf="@id/countryTextView"
-        app:layout_constraintEnd_toStartOf="@id/songTimeStampTextView"
-        app:layout_constraintStart_toEndOf="@id/countryTextView"
-        app:layout_constraintTop_toTopOf="@id/countryTextView"
+        app:layout_constraintBottom_toBottomOf="@id/voteTitleTextView"
+        app:layout_constraintEnd_toStartOf="@id/yearTitleTextView"
+        app:layout_constraintStart_toEndOf="@id/voteTextView"
+        app:layout_constraintTop_toTopOf="@id/voteTitleTextView"
         app:tint="?attr/colorSecondary" />
 
     <TextView
-        android:id="@+id/songTimeStampTextView"
+        android:id="@+id/yearTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:ellipsize="end"
         android:maxLines="1"
+        android:layout_marginStart="4dp"
         android:textAppearance="@style/MediumText"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="@id/countryTextView"

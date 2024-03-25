@@ -3,9 +3,8 @@ package com.judjingm.android002.home.presentation.ui
 import androidx.lifecycle.viewModelScope
 import com.judjingm.android002.R
 import com.judjingm.android002.common.domain.PagedList
+import com.judjingm.android002.common.domain.models.Content
 import com.judjingm.android002.common.domain.models.ErrorEntity
-import com.judjingm.android002.common.domain.models.Movie
-import com.judjingm.android002.common.domain.models.TVShow
 import com.judjingm.android002.common.ui.BaseViewModel
 import com.judjingm.android002.common.utill.Resource
 import com.judjingm.android002.content.domain.useCase.GetLanguageForAppUseCase
@@ -13,12 +12,12 @@ import com.judjingm.android002.home.domain.useCase.GetPopularMoviesUseCase
 import com.judjingm.android002.home.domain.useCase.GetPopularTVShowsUseCase
 import com.judjingm.android002.home.presentation.models.PopularContentUi
 import com.judjingm.android002.home.presentation.models.StringVO
-import com.judjingm.android002.home.presentation.models.state.ErrorState
-import com.judjingm.android002.home.presentation.models.state.ErrorUiState
 import com.judjingm.android002.home.presentation.models.state.HomeScreenEvent
 import com.judjingm.android002.home.presentation.models.state.HomeScreenSideEffects
 import com.judjingm.android002.home.presentation.models.state.HomeScreenState
 import com.judjingm.android002.home.presentation.models.state.HomeScreenUiState
+import com.judjingm.android002.home.presentation.models.state.PopularsErrorState
+import com.judjingm.android002.home.presentation.models.state.PopularsErrorUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -40,7 +39,7 @@ class HomeScreenViewModel @Inject constructor(
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
     private val getPopularTVShowsUseCase: GetPopularTVShowsUseCase,
     private val getLanguageForAppUseCase: GetLanguageForAppUseCase,
-    private val popularContentDomainToUIMapper: PopularContentDomainToUiMapper
+    private val contentDomainToUIMapper: ContentDomainToUiMapper
 ) : BaseViewModel() {
 
     private val _state: MutableStateFlow<HomeScreenState> = MutableStateFlow(HomeScreenState())
@@ -64,45 +63,45 @@ class HomeScreenViewModel @Inject constructor(
         viewModelScope.launch {
             state.collect { screenState ->
                 when (screenState.errorState) {
-                    is ErrorState.NoConnection -> if (screenState.errorState.isPagination) {
+                    is PopularsErrorState.NoConnection -> if (screenState.errorState.isPagination) {
                         setSideEffect(HomeScreenSideEffects.ShowMessage(StringVO.Resource(R.string.error_no_connection)))
                     } else setErrorUiState(
-                        ErrorUiState.UnknownError(
+                        PopularsErrorUiState.UnknownError(
                             StringVO.Resource(R.string.error_no_connection)
                         )
                     )
 
-                    is ErrorState.NotFound -> if (screenState.errorState.isPagination) {
+                    is PopularsErrorState.NotFound -> if (screenState.errorState.isPagination) {
                         setSideEffect(HomeScreenSideEffects.ShowMessage(StringVO.Resource(R.string.error_not_found)))
                     } else setErrorUiState(
-                        ErrorUiState.UnknownError(
+                        PopularsErrorUiState.UnknownError(
                             StringVO.Resource(
                                 R.string.error_not_found
                             )
                         )
                     )
 
-                    is ErrorState.ServerError -> if (screenState.errorState.isPagination) {
+                    is PopularsErrorState.ServerError -> if (screenState.errorState.isPagination) {
                         setSideEffect(HomeScreenSideEffects.ShowMessage(StringVO.Resource(R.string.error_service_problem)))
                     } else setErrorUiState(
-                        ErrorUiState.UnknownError(
+                        PopularsErrorUiState.UnknownError(
                             StringVO.Resource(
                                 R.string.error_service_problem
                             )
                         )
                     )
 
-                    is ErrorState.UnknownError -> if (screenState.errorState.isPagination) {
+                    is PopularsErrorState.UnknownError -> if (screenState.errorState.isPagination) {
                         setSideEffect(HomeScreenSideEffects.ShowMessage(StringVO.Resource(R.string.error_something_went_wrong)))
                     } else setErrorUiState(
-                        ErrorUiState.UnknownError(
+                        PopularsErrorUiState.UnknownError(
                             StringVO.Resource(
                                 R.string.error_something_went_wrong
                             )
                         )
                     )
 
-                    ErrorState.NoError -> {
+                    PopularsErrorState.NoError -> {
                         when {
                             screenState.isLoading -> setUiStateLoading(currentState.pageToLoad != FIRST_PAGE)
                             else -> setUiStateSuccess(content = screenState.popularContent.content)
@@ -142,7 +141,12 @@ class HomeScreenViewModel @Inject constructor(
                     page = currentState.pageToLoad,
                     getLanguageForAppUseCase()
                 ).onStart {
-                    _state.update { it.copy(isLoading = true, errorState = ErrorState.NoError) }
+                    _state.update {
+                        it.copy(
+                            isLoading = true,
+                            errorState = PopularsErrorState.NoError
+                        )
+                    }
                 }.zip(
                     getPopularTVShowsUseCase(
                         page = currentState.pageToLoad,
@@ -150,19 +154,19 @@ class HomeScreenViewModel @Inject constructor(
                     )
                 ) { popularMovies, popularTVShows ->
 
-                    val popularContentMutex = Mutex()
+                    val contentMutex = Mutex()
                     var pagedList = currentState.popularContent
                     var isNetworkError = false
                     var isMovieFetchingError = false
                     var isTvShowFetchingError = false
 
                     popularMovies.handle(object :
-                        Resource.ResultHandler<PagedList<Movie>, ErrorEntity> {
-                        override suspend fun handleSuccess(data: PagedList<Movie>) {
-                            popularContentMutex.withLock {
-                                pagedList += popularContentDomainToUIMapper.toPagedList(
+                        Resource.ResultHandler<PagedList<Content.Movie>, ErrorEntity> {
+                        override suspend fun handleSuccess(data: PagedList<Content.Movie>) {
+                            contentMutex.withLock {
+                                pagedList += contentDomainToUIMapper.toPagedList(
                                     data
-                                ) { popularContentDomainToUIMapper.toPopularContent(it) }
+                                ) { contentDomainToUIMapper.toPopularContent(it) }
                             }
                         }
 
@@ -175,33 +179,32 @@ class HomeScreenViewModel @Inject constructor(
                     })
 
                     popularTVShows.handle(object :
-                        Resource.ResultHandler<PagedList<TVShow>, ErrorEntity> {
-                        override suspend fun handleSuccess(data: PagedList<TVShow>) {
-                            popularContentMutex.withLock {
-                                pagedList += popularContentDomainToUIMapper.toPagedList(
+                        Resource.ResultHandler<PagedList<Content.TVShow>, ErrorEntity> {
+                        override suspend fun handleSuccess(data: PagedList<Content.TVShow>) {
+                            contentMutex.withLock {
+                                pagedList += contentDomainToUIMapper.toPagedList(
                                     data
-                                ) { popularContentDomainToUIMapper.toPopularContent(it) }
+                                ) { contentDomainToUIMapper.toPopularContent(it) }
                             }
                         }
 
                         override suspend fun handleError(errorStatus: ErrorEntity) {
                             when (errorStatus) {
                                 is ErrorEntity.NetworksError.NoInternet -> isNetworkError = true
-
                                 else -> isTvShowFetchingError = true
                             }
                         }
                     })
 
                     return@zip if (isNetworkError) {
-                        Resource.Error<PagedList<PopularContentUi>, ErrorState>(
-                            ErrorState.NoConnection(
+                        Resource.Error<PagedList<PopularContentUi>, PopularsErrorState>(
+                            PopularsErrorState.NoConnection(
                                 currentState.pageToLoad != FIRST_PAGE
                             )
                         )
                     } else if (isMovieFetchingError && isTvShowFetchingError) {
-                        Resource.Error<PagedList<PopularContentUi>, ErrorState>(
-                            ErrorState.ServerError(
+                        Resource.Error<PagedList<PopularContentUi>, PopularsErrorState>(
+                            PopularsErrorState.ServerError(
                                 currentState.pageToLoad != FIRST_PAGE
                             )
                         )
@@ -210,7 +213,7 @@ class HomeScreenViewModel @Inject constructor(
                     }
                 }.collect { data ->
                     data.handle(object :
-                        Resource.ResultHandler<PagedList<PopularContentUi>, ErrorState> {
+                        Resource.ResultHandler<PagedList<PopularContentUi>, PopularsErrorState> {
                         override suspend fun handleSuccess(data: PagedList<PopularContentUi>) {
                             _state.update {
                                 it.copy(
@@ -221,7 +224,7 @@ class HomeScreenViewModel @Inject constructor(
                             }
                         }
 
-                        override suspend fun handleError(errorStatus: ErrorState) {
+                        override suspend fun handleError(errorStatus: PopularsErrorState) {
                             _state.update {
                                 it.copy(isLoading = false, errorState = errorStatus)
                             }
@@ -265,7 +268,7 @@ class HomeScreenViewModel @Inject constructor(
         return current
     }
 
-    private fun setErrorUiState(errorState: ErrorUiState) {
+    private fun setErrorUiState(errorState: PopularsErrorUiState) {
         _uiState.update { HomeScreenUiState.Error(errorState) }
     }
 
@@ -286,7 +289,6 @@ class HomeScreenViewModel @Inject constructor(
         const val NEXT_PAGE = 1
         const val CLICK_DEBOUNCE_DELAY_MILLIS = 500L
         const val PAGINATION_DEBOUNCE_DELAY_MILLIS = 1000L
-
     }
 
 }
