@@ -51,7 +51,6 @@
         android:layout_height="@dimen/_0dp"
         android:layout_marginTop="8dp"
         android:clipToPadding="false"
-        android:paddingTop="@dimen/margin_vertical"
         app:layout_constraintBottom_toTopOf="@+id/paginationProgressBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
