@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.judjingm.android002.common.ui.BaseFragment
 import com.judjingm.android002.databinding.FragmentHomeScreenBinding
 import com.judjingm.android002.home.presentation.models.PopularContentUi
-import com.judjingm.android002.home.presentation.models.state.ErrorUiState
 import com.judjingm.android002.home.presentation.models.state.HomeScreenEvent
 import com.judjingm.android002.home.presentation.models.state.HomeScreenSideEffects
 import com.judjingm.android002.home.presentation.models.state.HomeScreenUiState
+import com.judjingm.android002.home.presentation.models.state.PopularsErrorUiState
 import com.judjingm.android002.home.presentation.recycleView.RecycleViewPopularContentAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
