@@ -21,12 +21,19 @@ sealed class ErrorEntity(open val message: String) {
         data class Unauthorized(override val message: String) : ContentDetail(message)
     }
 
-    sealed class Profile(override val message: String) : ErrorEntity(message) {
-        data class Unauthorized(override val message: String) : Profile(message)
+
+    sealed class Authentication(override val message: String) : ErrorEntity(message) {
+        data class Unauthorized(override val message: String) : Authentication(message)
+        data class InvalidToken(override val message: String) : Authentication(message)
+
+        data class InvalidCredentials(override val message: String = INVALID_CREDENTIALS) :
+            Authentication(message)
+
     }
 
     companion object {
         const val BLANC_ERROR = "Unknown error"
+        const val INVALID_CREDENTIALS = "Invalid credentials"
     }
 }
 

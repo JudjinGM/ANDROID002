@@ -1,11 +1,11 @@
 package com.judjingm.android002.profile.di
 
 import com.judjingm.android002.common.utill.BaseExceptionToErrorEntityMapper
-import com.judjingm.android002.profile.data.api.ProfileRemoteDataSource
-import com.judjingm.android002.profile.data.impl.ProfileRemoteDataSourceImpl
-import com.judjingm.android002.profile.data.impl.ProfileRepositoryImpl
-import com.judjingm.android002.profile.domain.ProfileExceptionToErrorEntityMapper
-import com.judjingm.android002.profile.domain.repository.ProfileRepository
+import com.judjingm.android002.profile.data.api.AuthenticationRemoteDataSource
+import com.judjingm.android002.profile.data.impl.AuthenticationRemoteDataSourceImpl
+import com.judjingm.android002.profile.data.impl.AuthenticationRepositoryImpl
+import com.judjingm.android002.profile.domain.AuthenticationExceptionToErrorEntityMapper
+import com.judjingm.android002.profile.domain.repository.AuthenticationRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -15,7 +15,7 @@ import javax.inject.Singleton
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class ProfileExceptionMapper
+annotation class AuthenticationExceptionMapper
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -23,18 +23,18 @@ interface ProfileDataModule {
     @Singleton
     @Binds
     fun bindProfileRemoteDataSource(
-        impl: ProfileRemoteDataSourceImpl
-    ): ProfileRemoteDataSource
+        impl: AuthenticationRemoteDataSourceImpl
+    ): AuthenticationRemoteDataSource
 
     @Singleton
     @Binds
     fun bindProfileRepository(
-        impl: ProfileRepositoryImpl
-    ): ProfileRepository
+        impl: AuthenticationRepositoryImpl
+    ): AuthenticationRepository
 
-    @ProfileExceptionMapper
+    @AuthenticationExceptionMapper
     @Binds
     fun bindProfileExceptionToErrorMapper(
-        impl: ProfileExceptionToErrorEntityMapper
+        impl: AuthenticationExceptionToErrorEntityMapper
     ): BaseExceptionToErrorEntityMapper
 }

@@ -41,5 +41,16 @@
     <string name="type_a_request">Type request</string>
     <string name="movies">Movies</string>
     <string name="tv_shows">TV Shows</string>
+    <string name="user_name">User name</string>
+    <string name="user_id">User id</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="enter_to_profile">Enter to profile</string>
+    <string name="session_done">Session is done, please login</string>
+    <string name="error_try_again">Error. Try again</string>
+    <string name="login_denied_by_user">Login denied by user</string>
+    <string name="login_success">Login is success</string>
+    <string name="logout_succes">Logout success</string>
+
 
 </resources>

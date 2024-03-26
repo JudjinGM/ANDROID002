@@ -3,12 +3,14 @@ package com.judjingm.android002.profile.data
 import com.judjingm.android002.profile.data.models.CreateSessionRequestDto
 import com.judjingm.android002.profile.data.models.DeleteSessionDto
 import com.judjingm.android002.profile.data.models.DeleteSessionRequestDto
+import com.judjingm.android002.profile.data.models.ProfileDetailsDto
 import com.judjingm.android002.profile.data.models.RequestTokenDto
 import com.judjingm.android002.profile.data.models.SessionDto
 import com.judjingm.android002.profile.data.models.request.CreateSessionRequest
 import com.judjingm.android002.profile.data.models.request.DeleteSessionRequest
 import com.judjingm.android002.profile.data.models.response.CreateSessionResponse
 import com.judjingm.android002.profile.data.models.response.DeleteSessionResponse
+import com.judjingm.android002.profile.data.models.response.ProfileDetailsResponse
 import com.judjingm.android002.profile.data.models.response.RequestTokenResponse
 import javax.inject.Inject
 
@@ -43,6 +45,13 @@ class ProfileDataMapper @Inject constructor() {
     fun toDeleteSessionDto(deleteSessionResponse: DeleteSessionResponse): DeleteSessionDto {
         return DeleteSessionDto(
             success = deleteSessionResponse.success
+        )
+    }
+
+    fun toProfileDetailsDto(profileDetailResponse: ProfileDetailsResponse): ProfileDetailsDto {
+        return ProfileDetailsDto(
+            id = profileDetailResponse.id,
+            name = profileDetailResponse.userName,
         )
     }
 }

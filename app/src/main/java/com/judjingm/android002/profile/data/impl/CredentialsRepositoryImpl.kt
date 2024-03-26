@@ -2,8 +2,8 @@ package com.judjingm.android002.profile.data.impl
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import com.judjingm.android002.profile.data.api.CredentialsRepository
 import com.judjingm.android002.profile.data.models.CredentialsDto
+import com.judjingm.android002.profile.domain.repository.CredentialsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -32,9 +32,9 @@ class CredentialsRepositoryImpl(
         }
     }
 
-    override suspend fun saveCredentials(credentials: CredentialsDto) {
+    override suspend fun saveCredentials(credentialsDto: CredentialsDto) {
         withContext(Dispatchers.IO) {
-            val data = json.encodeToString(credentials)
+            val data = json.encodeToString(credentialsDto)
             storage.edit { putString(key, data) }
         }
     }

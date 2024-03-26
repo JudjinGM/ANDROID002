@@ -1,42 +1,42 @@
 package com.judjingm.android002.profile.data
 
 import com.judjingm.android002.common.data.models.ErrorResponse
+import com.judjingm.android002.common.utill.exceptions.AuthenticationException
 import com.judjingm.android002.common.utill.exceptions.NetworkException
-import com.judjingm.android002.common.utill.exceptions.ProfileException
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
-class NetworkToProfileExceptionMapper @Inject constructor(
+class NetworkToAuthenticationExceptionMapper @Inject constructor(
     private val json: Json
 ) {
-    fun handleException(exception: NetworkException): ProfileException {
+    fun handleException(exception: NetworkException): AuthenticationException {
         return when (exception) {
             is NetworkException.Unauthorized -> {
                 val response = handleErrorResponse<ErrorResponse>(exception.errorBody)
                 return when (response.statusCode) {
                     7 -> {
-                        ProfileException.Profile.InvalidAPIkey(
+                        AuthenticationException.Authentication.InvalidAPIkey(
                             message = response.statusMessage,
                             statusCode = response.statusCode
                         )
                     }
 
                     17 -> {
-                        ProfileException.Profile.Denied(
+                        AuthenticationException.Authentication.Denied(
                             message = response.statusMessage,
                             statusCode = response.statusCode
                         )
                     }
 
                     else -> {
-                        ProfileException.Undefined(message = response.statusMessage)
+                        AuthenticationException.Undefined(message = response.statusMessage)
                     }
                 }
             }
 
             is NetworkException.NotFound -> {
                 val response = handleErrorResponse<ErrorResponse>(exception.errorBody)
-                ProfileException.Profile.NotFound(
+                AuthenticationException.Authentication.NotFound(
                     message = response.statusMessage,
                     statusCode = response.statusCode
                 )
@@ -48,20 +48,20 @@ class NetworkToProfileExceptionMapper @Inject constructor(
         }
     }
 
-    private fun handleCommonException(exception: NetworkException): ProfileException {
+    private fun handleCommonException(exception: NetworkException): AuthenticationException {
         return when (exception) {
             is NetworkException.NoInternetConnection -> {
-                ProfileException.NoConnection(message = exception.errorBody)
+                AuthenticationException.NoConnection(message = exception.errorBody)
             }
 
             is NetworkException.Undefined -> {
                 val response = handleErrorResponse<ErrorResponse>(exception.errorBody)
-                ProfileException.Undefined(message = response.statusMessage)
+                AuthenticationException.Undefined(message = response.statusMessage)
             }
 
             else -> {
                 val response = handleErrorResponse<ErrorResponse>(exception.errorBody)
-                ProfileException.Undefined(message = response.statusMessage)
+                AuthenticationException.Undefined(message = response.statusMessage)
             }
         }
     }
@@ -71,7 +71,7 @@ class NetworkToProfileExceptionMapper @Inject constructor(
             return json.decodeFromString<T>(errorMessage)
 
         } catch (e: Exception) {
-            throw ProfileException.Undefined(COULD_NOT_CONVERT_TO_ERROR_RESPONSE)
+            throw AuthenticationException.Undefined(COULD_NOT_CONVERT_TO_ERROR_RESPONSE)
         }
     }
 

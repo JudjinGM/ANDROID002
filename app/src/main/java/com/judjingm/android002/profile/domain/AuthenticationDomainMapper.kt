@@ -3,16 +3,16 @@ package com.judjingm.android002.profile.domain
 import com.judjingm.android002.profile.data.models.CreateSessionRequestDto
 import com.judjingm.android002.profile.data.models.DeleteSessionDto
 import com.judjingm.android002.profile.data.models.DeleteSessionRequestDto
+import com.judjingm.android002.profile.data.models.ProfileDetailsDto
 import com.judjingm.android002.profile.data.models.RequestTokenDto
 import com.judjingm.android002.profile.data.models.SessionDto
-import com.judjingm.android002.profile.domain.models.CreateSessionRequestDomain
 import com.judjingm.android002.profile.domain.models.DeleteSession
-import com.judjingm.android002.profile.domain.models.DeleteSessionRequestDomain
+import com.judjingm.android002.profile.domain.models.ProfileDetails
 import com.judjingm.android002.profile.domain.models.RequestToken
 import com.judjingm.android002.profile.domain.models.Session
 import javax.inject.Inject
 
-class ProfileDomainMapper @Inject constructor() {
+class AuthenticationDomainMapper @Inject constructor() {
     fun toCreateSession(sessionDto: SessionDto): Session {
         return Session(
             success = sessionDto.success,
@@ -34,15 +34,30 @@ class ProfileDomainMapper @Inject constructor() {
         )
     }
 
-    fun toCreateSessionRequestDto(createSessionRequestDomain: CreateSessionRequestDomain): CreateSessionRequestDto {
+    fun toCreateSessionRequestDto(requestToken: String): CreateSessionRequestDto {
         return CreateSessionRequestDto(
-            requestToken = createSessionRequestDomain.requestToken,
+            requestToken = requestToken,
         )
     }
 
-    fun toDeleteSessionRequestDto(deleteSessionRequestDomain: DeleteSessionRequestDomain): DeleteSessionRequestDto {
+    fun toDeleteSessionRequestDto(sessionId: String): DeleteSessionRequestDto {
         return DeleteSessionRequestDto(
-            sessionId = deleteSessionRequestDomain.sessionId,
+            sessionId = sessionId
         )
+    }
+
+    fun createAuthenticationUrl(requestToken: String): String {
+        return BASE_URL + requestToken
+    }
+
+    fun toProfileDetails(profileDetailsDto: ProfileDetailsDto): ProfileDetails {
+        return ProfileDetails(
+            id = profileDetailsDto.id,
+            userName = profileDetailsDto.name,
+        )
+    }
+
+    companion object {
+        const val BASE_URL = "https://www.themoviedb.org/authenticate/"
     }
 }

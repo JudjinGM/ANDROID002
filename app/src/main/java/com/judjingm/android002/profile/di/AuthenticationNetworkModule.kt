@@ -1,6 +1,6 @@
 package com.judjingm.android002.profile.di
 
-import com.judjingm.android002.profile.data.api.ProfileApiService
+import com.judjingm.android002.profile.data.api.AuthenticationApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,13 +11,13 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class ProfileNetworkModule {
+class AuthenticationNetworkModule {
     @Provides
     @Singleton
     fun provideProfileApiService(
         retrofit: Retrofit
-    ): ProfileApiService {
-        return retrofit.create(ProfileApiService::class.java)
+    ): AuthenticationApiService {
+        return retrofit.create(AuthenticationApiService::class.java)
     }
 
 }

@@ -2,31 +2,31 @@ package com.judjingm.android002.common.utill.exceptions
 
 import java.io.IOException
 
-sealed class ProfileException(
+sealed class AuthenticationException(
     override val message: String
 ) : IOException(message) {
     data class NoConnection(
         override val message: String = NO_INTERNET_CONNECTION
-    ) : ProfileException(message)
+    ) : AuthenticationException(message)
 
     data class Undefined(override val message: String = UNDEFINED_MESSAGE) :
-        ProfileException(message)
+        AuthenticationException(message)
 
-    sealed class Profile(message: String) : ProfileException(message) {
+    sealed class Authentication(message: String) : AuthenticationException(message) {
         class InvalidAPIkey(
             override val message: String,
             val statusCode: Int
-        ) : Profile(message)
+        ) : Authentication(message)
 
         class NotFound(
             override val message: String,
             val statusCode: Int
-        ) : Profile(message)
+        ) : Authentication(message)
 
         class Denied(
             override val message: String,
             val statusCode: Int
-        ) : Profile(message)
+        ) : Authentication(message)
     }
 
     companion object {
