@@ -53,7 +53,6 @@ class AuthenticationDataModule {
     @Provides
     @Singleton
     fun providesCredentialsStorage(
-        @ApplicationContext context: Context,
         @RegularPrefs sharedPreferences: SharedPreferences,
         @EncryptedPrefs encryptedSharedPreferences: SharedPreferences,
         gson: Json

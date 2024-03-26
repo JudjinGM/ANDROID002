@@ -206,7 +206,7 @@ class HomeScreenViewModel @Inject constructor(
         ) { popularMovies, popularTVShows ->
 
             val contentMutex = Mutex()
-            var items = currentState.resultContent.toMutableList()
+            val items = currentState.resultContent.toMutableList()
             var isNetworkError = false
             var isMovieFetchingError = false
             var isTvShowFetchingError = false
@@ -302,12 +302,11 @@ class HomeScreenViewModel @Inject constructor(
             }
         }.collect { popularMovies ->
 
-            var items = currentState.resultContent.toMutableList()
+            val items = currentState.resultContent.toMutableList()
             var isNetworkError = false
             var isMovieFetchingError = false
             var isMoviesEmpty = false
             var totalPagesMovies = FIRST_PAGE
-            var totalPagesTv = FIRST_PAGE
 
             handleSearchContentResult(
                 searchContent = popularMovies,
@@ -375,7 +374,7 @@ class HomeScreenViewModel @Inject constructor(
             }
         }.collect { popularTVShows ->
 
-            var items = currentState.resultContent.toMutableList()
+            val items = currentState.resultContent.toMutableList()
             var isNetworkError = false
             var isTvShowFetchingError = false
             var isTvShowsEmpty = false
