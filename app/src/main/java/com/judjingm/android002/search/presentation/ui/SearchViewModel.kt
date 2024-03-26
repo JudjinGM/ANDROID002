@@ -389,7 +389,7 @@ class SearchViewModel @Inject constructor(
                 } else {
                     Resource.Success(
                         SearchContentResult(
-                            items = items.toList(),
+                            items = items,
                             totalPagesMovies = totalPagesMovies,
                             totalPagesTv = FIRST_PAGE
                         )

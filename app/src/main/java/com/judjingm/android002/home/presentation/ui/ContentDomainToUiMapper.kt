@@ -20,7 +20,15 @@ class ContentDomainToUiMapper @Inject constructor() {
         )
     }
 
-    fun toPopularContent(movie: Content.Movie): PopularContentUi {
+    fun toPopularContent(content: Content): PopularContentUi {
+        return when (content) {
+            is Content.Movie -> toPopularMovieUi(content)
+            is Content.TVShow -> toPopularTvShowUi(content)
+        }
+    }
+
+
+    private fun toPopularMovieUi(movie: Content.Movie): PopularContentUi {
         return PopularContentUi(
             id = movie.id ?: DEFAULT_ID,
             posterPath = movie.posterPath ?: EMPTY_STRING,
@@ -30,7 +38,7 @@ class ContentDomainToUiMapper @Inject constructor() {
         )
     }
 
-    fun toPopularContent(tvShow: Content.TVShow): PopularContentUi {
+    private fun toPopularTvShowUi(tvShow: Content.TVShow): PopularContentUi {
         return PopularContentUi(
             id = tvShow.id ?: DEFAULT_ID,
             posterPath = tvShow.posterPath ?: EMPTY_STRING,
