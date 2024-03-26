@@ -21,7 +21,6 @@
     <dimen name="_0dp">0dp</dimen>
     <dimen name="toolbar_height">64dp</dimen>
     <dimen name="edit_text_height">56dp</dimen>
-    <dimen name="search_screen_counter_vacancies_margin">12dp</dimen>
     <dimen name="progress_bar">48dp</dimen>
 
     <dimen name="item_height">48dp</dimen>
@@ -33,6 +32,42 @@
     <dimen name="text_input_layout_height">60dp</dimen>
     <dimen name="icon_size_bottom_nav">24dp</dimen>
 
+    <dimen name="divider_height">1dp</dimen>
+
+    <dimen name="error_placeholder_size">260dp</dimen>
+    <dimen name="error_placeholder_margin_top">120dp</dimen>
+    <dimen name="text_margin_top_variant_1">16dp</dimen>
+    <dimen name="text_margin_top_variant_2">8dp</dimen>
+    <dimen name="details_poster_width">260dp</dimen>
+    <dimen name="details_margin_bottom">16dp</dimen>
+
+    <dimen name="recycler_view_margin_horizontal">4dp</dimen>
+
     <dimen name="bottom_navigation_height">56dp</dimen>
+    <dimen name="refresh_button_margin_top">16dp</dimen>
+    <dimen name="button_margin_top">16dp</dimen>
+
+    <dimen name="search_recycle_view_margin_top">8dp</dimen>
+    <dimen name="item_popular_content_margin">4dp</dimen>
+    <dimen name="item_popular_content_name_margin_top">4dp</dimen>
+
+    <dimen name="item_search_content_poster_width">40dp</dimen>
+    <dimen name="item_search_content_poster_margin_start">12dp</dimen>
+    <dimen name="item_search_content_poster_margin_top">8dp</dimen>
+    <dimen name="item_search_content_poster_margin_bottom">8dp</dimen>
+
+    <dimen name="item_search_content_title_margin_start">8dp</dimen>
+    <dimen name="item_search_content_title_margin_top">12dp</dimen>
+    <dimen name="item_search_content_title_margin_end">16dp</dimen>
+
+    <dimen name="item_search_content_vote_title_margin_start">8dp</dimen>
+    <dimen name="item_search_content_vote_title_margin_top">1dp</dimen>
+    <dimen name="item_search_content_vote_title_margin_bottom">14dp</dimen>
+
+    <dimen name="item_search_content_packed_text_margin_start">4dp</dimen>
+    <dimen name="item_search_content_packed_text_margin_end">12dp</dimen>
+
+    <dimen name="item_title_margin">16dp</dimen>
+
 
 </resources>
