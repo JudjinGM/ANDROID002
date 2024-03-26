@@ -8,7 +8,7 @@
     tools:context=".profile.presentation.ui.ProfileFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/detailToolbar"
+        android:id="@+id/profileToolbar"
         style="@style/Toolbar"
         android:layout_width="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -16,6 +16,26 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/profile"
         app:titleTextAppearance="@style/TitleText" />
+
+    <FrameLayout
+        android:id="@+id/closeWebViewButton"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/profileToolbar"
+        app:layout_constraintEnd_toEndOf="@id/profileToolbar"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toStartOf="@id/profileToolbar"
+        app:layout_constraintTop_toTopOf="@id/profileToolbar">
+
+        <ImageView
+            android:id="@+id/closeWebViewImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/close"
+            android:src="@drawable/ic_cross" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/messageTextView"
@@ -27,7 +47,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/detailToolbar"
+        app:layout_constraintTop_toBottomOf="@id/profileToolbar"
         tools:text="string/error" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -134,7 +154,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/detailToolbar" />
+        app:layout_constraintTop_toBottomOf="@id/profileToolbar" />
 
     <ProgressBar
         android:id="@+id/progressBar"

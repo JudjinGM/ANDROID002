@@ -29,6 +29,10 @@ class ProfileFragment :
         binding.logoutButton.setOnClickListener {
             viewModel.handleEvent(ProfileEvent.OnLogoutTaped)
         }
+
+        binding.closeWebViewImageView.setOnClickListener {
+            viewModel.handleEvent(ProfileEvent.CloseButtonClicked)
+        }
     }
 
     override fun onSubscribe() {
@@ -79,6 +83,7 @@ class ProfileFragment :
 
     private fun showAuthenticationWebView(url: String) {
         emptyScreen()
+        binding.closeWebViewButton.isVisible = true
         binding.webView.isVisible = true
         binding.webView.loadUrl(url)
         binding.webView.canGoForward()
@@ -139,6 +144,7 @@ class ProfileFragment :
         binding.webView.isVisible = false
         binding.progressBar.isVisible = false
         binding.messageTextView.isVisible = false
+        binding.closeWebViewButton.isVisible = false
     }
 
     private fun showToast(message: String) {

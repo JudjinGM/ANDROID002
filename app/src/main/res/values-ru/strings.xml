@@ -62,4 +62,5 @@
     <string name="login_denied_by_user">Вход отказан пользователем</string>
     <string name="login_success">Вход успешен</string>
     <string name="logout_succes">Выход успешен</string>
+    <string name="close">Закрыть</string>
 </resources>

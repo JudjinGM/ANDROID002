@@ -51,6 +51,7 @@
     <string name="login_denied_by_user">Login denied by user</string>
     <string name="login_success">Login is success</string>
     <string name="logout_succes">Logout success</string>
+    <string name="close">Close</string>
 
 
 </resources>

@@ -185,6 +185,10 @@ class ProfileViewModel @Inject constructor(
             ProfileEvent.RequestTokenDenied -> {
                 requestLoginDenied()
             }
+
+            ProfileEvent.CloseButtonClicked -> {
+                closeAuthenticationButtonClicked()
+            }
         }
     }
 
@@ -331,6 +335,15 @@ class ProfileViewModel @Inject constructor(
                 isAuthenticationInProgress = false,
                 isAuthenticationIsSuccess = false,
                 errorState = AuthenticationErrorState.LoginDeniedByUser
+            )
+        }
+    }
+
+    private fun closeAuthenticationButtonClicked() {
+        _state.update {
+            it.copy(
+                isAuthenticationInProgress = false,
+                isAuthenticationIsSuccess = false,
             )
         }
     }
