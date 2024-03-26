@@ -75,6 +75,7 @@ class SearchViewModel @Inject constructor(
                 when (screenState.errorState) {
                     is SearchErrorState.NoConnection -> if (screenState.errorState.isPagination) {
                         setSideEffect(SearchScreenSideEffects.ShowMessage(StringVO.Resource(R.string.error_no_connection)))
+                        resetStateToNoError()
                     } else setErrorUiState(
                         SearchErrorUiState.UnknownError(
                             StringVO.Resource(R.string.error_no_connection)
@@ -83,6 +84,7 @@ class SearchViewModel @Inject constructor(
 
                     is SearchErrorState.NotFound -> if (screenState.errorState.isPagination) {
                         setSideEffect(SearchScreenSideEffects.ShowMessage(StringVO.Resource(R.string.error_not_found)))
+                        resetStateToNoError()
                     } else setErrorUiState(
                         SearchErrorUiState.UnknownError(
                             StringVO.Resource(
@@ -93,6 +95,7 @@ class SearchViewModel @Inject constructor(
 
                     is SearchErrorState.ServerError -> if (screenState.errorState.isPagination) {
                         setSideEffect(SearchScreenSideEffects.ShowMessage(StringVO.Resource(R.string.error_service_problem)))
+                        resetStateToNoError()
                     } else setErrorUiState(
                         SearchErrorUiState.UnknownError(
                             StringVO.Resource(
@@ -103,6 +106,7 @@ class SearchViewModel @Inject constructor(
 
                     is SearchErrorState.UnknownError -> if (screenState.errorState.isPagination) {
                         setSideEffect(SearchScreenSideEffects.ShowMessage(StringVO.Resource(R.string.error_something_went_wrong)))
+                        resetStateToNoError()
                     } else setErrorUiState(
                         SearchErrorUiState.UnknownError(
                             StringVO.Resource(
@@ -210,7 +214,8 @@ class SearchViewModel @Inject constructor(
                         totalPagesMovies = data.totalPagesMovies,
                         totalPagesTvShows = data.totalPagesTv,
                         pageToLoadMovies = currentState.pageToLoadMovies + NEXT_PAGE,
-                        pageToLoadTvShows = currentState.pageToLoadTvShows + NEXT_PAGE
+                        pageToLoadTvShows = currentState.pageToLoadTvShows + NEXT_PAGE,
+                        errorState = SearchErrorState.NoError
                     )
                 }
             }
@@ -563,7 +568,6 @@ class SearchViewModel @Inject constructor(
                 it.copy(
                     isLoading = true,
                     resultContent = emptyList(),
-                    errorState = SearchErrorState.NoError,
                     pageToLoadMovies = FIRST_PAGE,
                     pageToLoadTvShows = FIRST_PAGE,
                     totalPagesMovies = FIRST_PAGE,
@@ -574,7 +578,6 @@ class SearchViewModel @Inject constructor(
             _state.update {
                 it.copy(
                     isLoading = true,
-                    errorState = SearchErrorState.NoError,
                 )
             }
         }
@@ -594,6 +597,15 @@ class SearchViewModel @Inject constructor(
 
     private suspend fun setSideEffect(sideEffect: SearchScreenSideEffects) {
         _sideEffects.emit(sideEffect)
+    }
+
+    private fun resetStateToNoError() {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                errorState = SearchErrorState.NoError
+            )
+        }
     }
 
     companion object {

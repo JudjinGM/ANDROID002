@@ -66,6 +66,7 @@ class HomeScreenViewModel @Inject constructor(
                 when (screenState.errorState) {
                     is PopularsErrorState.NoConnection -> if (screenState.errorState.isPagination) {
                         setSideEffect(HomeScreenSideEffects.ShowMessage(StringVO.Resource(R.string.error_no_connection)))
+                        resetStateToNoError()
                     } else setErrorUiState(
                         PopularsErrorUiState.UnknownError(
                             StringVO.Resource(R.string.error_no_connection)
@@ -74,6 +75,7 @@ class HomeScreenViewModel @Inject constructor(
 
                     is PopularsErrorState.NotFound -> if (screenState.errorState.isPagination) {
                         setSideEffect(HomeScreenSideEffects.ShowMessage(StringVO.Resource(R.string.error_not_found)))
+                        resetStateToNoError()
                     } else setErrorUiState(
                         PopularsErrorUiState.UnknownError(
                             StringVO.Resource(
@@ -84,6 +86,7 @@ class HomeScreenViewModel @Inject constructor(
 
                     is PopularsErrorState.ServerError -> if (screenState.errorState.isPagination) {
                         setSideEffect(HomeScreenSideEffects.ShowMessage(StringVO.Resource(R.string.error_service_problem)))
+                        resetStateToNoError()
                     } else setErrorUiState(
                         PopularsErrorUiState.UnknownError(
                             StringVO.Resource(
@@ -94,6 +97,7 @@ class HomeScreenViewModel @Inject constructor(
 
                     is PopularsErrorState.UnknownError -> if (screenState.errorState.isPagination) {
                         setSideEffect(HomeScreenSideEffects.ShowMessage(StringVO.Resource(R.string.error_something_went_wrong)))
+                        resetStateToNoError()
                     } else setErrorUiState(
                         PopularsErrorUiState.UnknownError(
                             StringVO.Resource(
@@ -124,6 +128,7 @@ class HomeScreenViewModel @Inject constructor(
                     getPopularContent()
                 }
             }
+
             is HomeScreenEvent.OnContentClicked -> {
                 viewModelScope.launch {
                     _sideEffects.emit(
@@ -171,7 +176,8 @@ class HomeScreenViewModel @Inject constructor(
                         totalPagesMovies = data.totalPagesMovies,
                         totalPagesTvShows = data.totalPagesTv,
                         pageToLoadMovies = currentState.pageToLoadMovies + NEXT_PAGE,
-                        pageToLoadTvShows = currentState.pageToLoadTvShows + NEXT_PAGE
+                        pageToLoadTvShows = currentState.pageToLoadTvShows + NEXT_PAGE,
+                        errorState = PopularsErrorState.NoError
                     )
                 }
             }
@@ -188,248 +194,222 @@ class HomeScreenViewModel @Inject constructor(
         pageToLoadMovies: Int,
         pageToLoadTvShows: Int,
     ) {
-        getPopularMoviesUseCase(
-            page = pageToLoadMovies,
-            getLanguageForAppUseCase()
-        ).onStart {
-            _state.update {
-                it.copy(
-                    isLoading = true,
-                    errorState = PopularsErrorState.NoError
+        getPopularMoviesUseCase(page = pageToLoadMovies, getLanguageForAppUseCase())
+            .onStart { setLoadingOnStart() }
+            .zip(
+                getPopularTVShowsUseCase(
+                    page = pageToLoadTvShows,
+                    getLanguageForAppUseCase()
                 )
-            }
-        }.zip(
-            getPopularTVShowsUseCase(
-                page = pageToLoadTvShows,
-                getLanguageForAppUseCase()
-            )
-        ) { popularMovies, popularTVShows ->
+            ) { popularMovies, popularTVShows ->
 
-            val contentMutex = Mutex()
-            val items = currentState.resultContent.toMutableList()
-            var isNetworkError = false
-            var isMovieFetchingError = false
-            var isTvShowFetchingError = false
-            var isMoviesEmpty = false
-            var isTvShowsEmpty = false
+                val contentMutex = Mutex()
+                val items = currentState.resultContent.toMutableList()
+                var isNetworkError = false
+                var isMovieFetchingError = false
+                var isTvShowFetchingError = false
+                var isMoviesEmpty = false
+                var isTvShowsEmpty = false
 
-            var totalPagesMovies = FIRST_PAGE
-            var totalPagesTv = FIRST_PAGE
+                var totalPagesMovies = FIRST_PAGE
+                var totalPagesTv = FIRST_PAGE
 
-            handleSearchContentResult(
-                searchContent = popularMovies,
-                searchResult = {
-                    contentMutex.withLock { items.addAll(it) }
-                },
-                onEmptyContent = {
-                    isMoviesEmpty = true
-                },
-                onServerError = {
-                    isMovieFetchingError = true
-                },
-                onNetworkError = { isNetworkError = true },
-                totalPages = {
-                    totalPagesMovies = it
+                handleSearchContentResult(
+                    searchContent = popularMovies,
+                    searchResult = {
+                        contentMutex.withLock { items.addAll(it) }
+                    },
+                    onEmptyContent = {
+                        isMoviesEmpty = true
+                    },
+                    onServerError = {
+                        isMovieFetchingError = true
+                    },
+                    onNetworkError = { isNetworkError = true },
+                    totalPages = {
+                        totalPagesMovies = it
+                    }
+
+                )
+
+                handleSearchContentResult(
+                    searchContent = popularTVShows,
+                    searchResult = {
+                        contentMutex.withLock { items.addAll(it) }
+                    },
+                    onEmptyContent = {
+                        isTvShowsEmpty = true
+                    },
+                    onServerError = {
+                        isTvShowFetchingError = true
+                    },
+                    onNetworkError = { isNetworkError = true },
+                    totalPages = {
+                        totalPagesTv = it
+                    }
+
+                )
+
+                return@zip if (isNetworkError) {
+                    Resource.Error<PopularContentResult, PopularsErrorState>(
+                        PopularsErrorState.NoConnection(
+                            currentState.pageToLoadMovies != FIRST_PAGE
+                                    && currentState.pageToLoadTvShows != FIRST_PAGE
+                        )
+                    )
+                } else if (isMovieFetchingError && isTvShowFetchingError) {
+                    Resource.Error<PopularContentResult, PopularsErrorState>(
+                        PopularsErrorState.ServerError(
+                            currentState.pageToLoadMovies != FIRST_PAGE
+                                    && currentState.pageToLoadTvShows != FIRST_PAGE
+                        )
+                    )
+                } else if (isMoviesEmpty && isTvShowsEmpty) {
+                    Resource.Error<PopularContentResult, PopularsErrorState>(
+                        PopularsErrorState.NotFound(
+                            currentState.pageToLoadMovies != FIRST_PAGE
+                                    && currentState.pageToLoadTvShows != FIRST_PAGE
+                        )
+                    )
+                } else {
+                    Resource.Success(
+                        PopularContentResult(
+                            items = items,
+                            totalPagesMovies = totalPagesMovies,
+                            totalPagesTv = totalPagesTv
+                        )
+                    )
                 }
-
-            )
-
-            handleSearchContentResult(
-                searchContent = popularTVShows,
-                searchResult = {
-                    contentMutex.withLock { items.addAll(it) }
-                },
-                onEmptyContent = {
-                    isTvShowsEmpty = true
-                },
-                onServerError = {
-                    isTvShowFetchingError = true
-                },
-                onNetworkError = { isNetworkError = true },
-                totalPages = {
-                    totalPagesTv = it
-                }
-
-            )
-
-            return@zip if (isNetworkError) {
-                Resource.Error<PopularContentResult, PopularsErrorState>(
-                    PopularsErrorState.NoConnection(
-                        currentState.pageToLoadMovies != FIRST_PAGE
-                                && currentState.pageToLoadTvShows != FIRST_PAGE
-                    )
-                )
-            } else if (isMovieFetchingError && isTvShowFetchingError) {
-                Resource.Error<PopularContentResult, PopularsErrorState>(
-                    PopularsErrorState.ServerError(
-                        currentState.pageToLoadMovies != FIRST_PAGE
-                                && currentState.pageToLoadTvShows != FIRST_PAGE
-                    )
-                )
-            } else if (isMoviesEmpty && isTvShowsEmpty) {
-                Resource.Error<PopularContentResult, PopularsErrorState>(
-                    PopularsErrorState.NotFound(
-                        currentState.pageToLoadMovies != FIRST_PAGE
-                                && currentState.pageToLoadTvShows != FIRST_PAGE
-                    )
-                )
-            } else {
-                Resource.Success(
-                    PopularContentResult(
-                        items = items,
-                        totalPagesMovies = totalPagesMovies,
-                        totalPagesTv = totalPagesTv
-                    )
-                )
+            }.collect { result ->
+                proceedResult(result)
             }
-        }.collect { result ->
-            proceedResult(result)
-        }
     }
 
     private suspend fun getPopularMovies(
         pageToLoadMovies: Int
     ) {
-        getPopularMoviesUseCase(
-            page = pageToLoadMovies,
-            getLanguageForAppUseCase()
-        ).onStart {
-            _state.update {
-                it.copy(
-                    isLoading = true,
-                    errorState = PopularsErrorState.NoError
+        getPopularMoviesUseCase(page = pageToLoadMovies, getLanguageForAppUseCase())
+            .onStart { setLoadingOnStart() }
+            .collect { popularMovies ->
+
+                val items = currentState.resultContent.toMutableList()
+                var isNetworkError = false
+                var isMovieFetchingError = false
+                var isMoviesEmpty = false
+                var totalPagesMovies = FIRST_PAGE
+
+                handleSearchContentResult(
+                    searchContent = popularMovies,
+                    searchResult = {
+                        items.addAll(it)
+                    },
+                    onEmptyContent = {
+                        isMoviesEmpty = true
+                    },
+                    onServerError = {
+                        isMovieFetchingError = true
+                    },
+                    onNetworkError = { isNetworkError = true },
+                    totalPages = {
+                        totalPagesMovies = it
+                    }
+
                 )
-            }
-        }.collect { popularMovies ->
 
-            val items = currentState.resultContent.toMutableList()
-            var isNetworkError = false
-            var isMovieFetchingError = false
-            var isMoviesEmpty = false
-            var totalPagesMovies = FIRST_PAGE
-
-            handleSearchContentResult(
-                searchContent = popularMovies,
-                searchResult = {
-                    items.addAll(it)
-                },
-                onEmptyContent = {
-                    isMoviesEmpty = true
-                },
-                onServerError = {
-                    isMovieFetchingError = true
-                },
-                onNetworkError = { isNetworkError = true },
-                totalPages = {
-                    totalPagesMovies = it
+                val data = if (isNetworkError) {
+                    Resource.Error<PopularContentResult, PopularsErrorState>(
+                        PopularsErrorState.NoConnection(
+                            currentState.pageToLoadMovies != FIRST_PAGE
+                                    && currentState.pageToLoadTvShows != FIRST_PAGE
+                        )
+                    )
+                } else if (isMovieFetchingError) {
+                    Resource.Error<PopularContentResult, PopularsErrorState>(
+                        PopularsErrorState.ServerError(
+                            currentState.pageToLoadMovies != FIRST_PAGE
+                                    && currentState.pageToLoadTvShows != FIRST_PAGE
+                        )
+                    )
+                } else if (isMoviesEmpty) {
+                    Resource.Error<PopularContentResult, PopularsErrorState>(
+                        PopularsErrorState.NotFound(
+                            currentState.pageToLoadMovies != FIRST_PAGE
+                                    && currentState.pageToLoadTvShows != FIRST_PAGE
+                        )
+                    )
+                } else {
+                    Resource.Success(
+                        PopularContentResult(
+                            items = items,
+                            totalPagesMovies = totalPagesMovies,
+                        )
+                    )
                 }
-
-            )
-
-            val data = if (isNetworkError) {
-                Resource.Error<PopularContentResult, PopularsErrorState>(
-                    PopularsErrorState.NoConnection(
-                        currentState.pageToLoadMovies != FIRST_PAGE
-                                && currentState.pageToLoadTvShows != FIRST_PAGE
-                    )
-                )
-            } else if (isMovieFetchingError) {
-                Resource.Error<PopularContentResult, PopularsErrorState>(
-                    PopularsErrorState.ServerError(
-                        currentState.pageToLoadMovies != FIRST_PAGE
-                                && currentState.pageToLoadTvShows != FIRST_PAGE
-                    )
-                )
-            } else if (isMoviesEmpty) {
-                Resource.Error<PopularContentResult, PopularsErrorState>(
-                    PopularsErrorState.NotFound(
-                        currentState.pageToLoadMovies != FIRST_PAGE
-                                && currentState.pageToLoadTvShows != FIRST_PAGE
-                    )
-                )
-            } else {
-                Resource.Success(
-                    PopularContentResult(
-                        items = items,
-                        totalPagesMovies = totalPagesMovies,
-                    )
-                )
+                proceedResult(data)
             }
-            proceedResult(data)
-        }
     }
 
     private suspend fun getPopularTvShows(
         pageToLoadTvShows: Int,
     ) {
-        getPopularTVShowsUseCase(
-            page = pageToLoadTvShows,
-            getLanguageForAppUseCase()
-        ).onStart {
-            _state.update {
-                it.copy(
-                    isLoading = true,
-                    errorState = PopularsErrorState.NoError
+        getPopularTVShowsUseCase(page = pageToLoadTvShows, getLanguageForAppUseCase())
+            .onStart { setLoadingOnStart() }
+            .collect { popularTVShows ->
+
+                val items = currentState.resultContent.toMutableList()
+                var isNetworkError = false
+                var isTvShowFetchingError = false
+                var isTvShowsEmpty = false
+                var totalPagesTv = FIRST_PAGE
+
+                handleSearchContentResult(
+                    searchContent = popularTVShows,
+                    searchResult = {
+                        items.addAll(it)
+                    },
+                    onEmptyContent = {
+                        isTvShowsEmpty = true
+                    },
+                    onServerError = {
+                        isTvShowFetchingError = true
+                    },
+                    onNetworkError = { isNetworkError = true },
+                    totalPages = {
+                        totalPagesTv = it
+                    }
                 )
-            }
-        }.collect { popularTVShows ->
 
-            val items = currentState.resultContent.toMutableList()
-            var isNetworkError = false
-            var isTvShowFetchingError = false
-            var isTvShowsEmpty = false
-            var totalPagesTv = FIRST_PAGE
-
-
-            handleSearchContentResult(
-                searchContent = popularTVShows,
-                searchResult = {
-                    items.addAll(it)
-                },
-                onEmptyContent = {
-                    isTvShowsEmpty = true
-                },
-                onServerError = {
-                    isTvShowFetchingError = true
-                },
-                onNetworkError = { isNetworkError = true },
-                totalPages = {
-                    totalPagesTv = it
+                val result = if (isNetworkError) {
+                    Resource.Error<PopularContentResult, PopularsErrorState>(
+                        PopularsErrorState.NoConnection(
+                            currentState.pageToLoadMovies != FIRST_PAGE
+                                    && currentState.pageToLoadTvShows != FIRST_PAGE
+                        )
+                    )
+                } else if (isTvShowFetchingError) {
+                    Resource.Error<PopularContentResult, PopularsErrorState>(
+                        PopularsErrorState.ServerError(
+                            currentState.pageToLoadMovies != FIRST_PAGE
+                                    && currentState.pageToLoadTvShows != FIRST_PAGE
+                        )
+                    )
+                } else if (isTvShowsEmpty) {
+                    Resource.Error<PopularContentResult, PopularsErrorState>(
+                        PopularsErrorState.NotFound(
+                            currentState.pageToLoadMovies != FIRST_PAGE
+                                    && currentState.pageToLoadTvShows != FIRST_PAGE
+                        )
+                    )
+                } else {
+                    Resource.Success(
+                        PopularContentResult(
+                            items = items,
+                            totalPagesTv = totalPagesTv
+                        )
+                    )
                 }
-
-            )
-
-            val result = if (isNetworkError) {
-                Resource.Error<PopularContentResult, PopularsErrorState>(
-                    PopularsErrorState.NoConnection(
-                        currentState.pageToLoadMovies != FIRST_PAGE
-                                && currentState.pageToLoadTvShows != FIRST_PAGE
-                    )
-                )
-            } else if (isTvShowFetchingError) {
-                Resource.Error<PopularContentResult, PopularsErrorState>(
-                    PopularsErrorState.ServerError(
-                        currentState.pageToLoadMovies != FIRST_PAGE
-                                && currentState.pageToLoadTvShows != FIRST_PAGE
-                    )
-                )
-            } else if (isTvShowsEmpty) {
-                Resource.Error<PopularContentResult, PopularsErrorState>(
-                    PopularsErrorState.NotFound(
-                        currentState.pageToLoadMovies != FIRST_PAGE
-                                && currentState.pageToLoadTvShows != FIRST_PAGE
-                    )
-                )
-            } else {
-                Resource.Success(
-                    PopularContentResult(
-                        items = items,
-                        totalPagesTv = totalPagesTv
-                    )
-                )
+                proceedResult(result)
             }
-            proceedResult(result)
-        }
     }
 
 
@@ -512,6 +492,23 @@ class HomeScreenViewModel @Inject constructor(
 
     private suspend fun setSideEffect(sideEffect: HomeScreenSideEffects) {
         _sideEffects.emit(sideEffect)
+    }
+
+    private fun resetStateToNoError() {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                errorState = PopularsErrorState.NoError
+            )
+        }
+    }
+
+    private fun setLoadingOnStart() {
+        _state.update {
+            it.copy(
+                isLoading = true,
+            )
+        }
     }
 
     companion object {
