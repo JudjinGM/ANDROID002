@@ -76,6 +76,21 @@ class ProfileViewModel @Inject constructor(
                         }
                     }
 
+                    AuthenticationErrorState.NoConnection -> {
+                        viewModelScope.launch {
+                            _sideEffects.emit(
+                                ProfileSideEffects
+                                    .ShowMessage(StringVO.Resource(R.string.error_service_problem))
+                            )
+                        }
+                        _state.update {
+                            it.copy(
+                                errorState = AuthenticationErrorState.NoError
+                            )
+                        }
+                    }
+
+
                     AuthenticationErrorState.CannotProceedTryAgain -> {
                         viewModelScope.launch {
                             _sideEffects.emit(
@@ -225,6 +240,7 @@ class ProfileViewModel @Inject constructor(
                                 is ErrorEntity.Authentication.InvalidCredentials -> AuthenticationErrorState.InvalidCredentials
                                 is ErrorEntity.Authentication.InvalidToken -> AuthenticationErrorState.InvalidCredentials
                                 is ErrorEntity.NetworksError.NoInternet -> AuthenticationErrorState.NoInternet
+                                is ErrorEntity.NetworksError.NoConnection -> AuthenticationErrorState.NoConnection
                                 else -> AuthenticationErrorState.UnknownError
                             }
 
@@ -282,6 +298,7 @@ class ProfileViewModel @Inject constructor(
                         is ErrorEntity.Authentication.InvalidToken -> AuthenticationErrorState.CannotProceedTryAgain
                         is ErrorEntity.Authentication.Unauthorized -> AuthenticationErrorState.UnknownError
                         is ErrorEntity.NetworksError.NoInternet -> AuthenticationErrorState.NoInternet
+                        is ErrorEntity.NetworksError.NoConnection -> AuthenticationErrorState.NoConnection
                         else -> AuthenticationErrorState.UnknownError
 
                     }

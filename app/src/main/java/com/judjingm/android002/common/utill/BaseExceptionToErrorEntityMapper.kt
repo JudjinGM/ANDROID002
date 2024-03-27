@@ -25,8 +25,8 @@ abstract class BaseExceptionToErrorEntityMapper {
     }
 
     private fun handleNetworkError(exception: Exception): ErrorEntity {
-        return ErrorEntity.NetworksError.NoInternet(
-            exception.message ?: DEFAULT_ERROR_MESSAGE
+        return ErrorEntity.NetworksError.NoConnection(
+            exception.message ?: NO_INTERNET_CONNECTION
         )
     }
 
@@ -38,6 +38,8 @@ abstract class BaseExceptionToErrorEntityMapper {
 
     companion object {
         const val DEFAULT_ERROR_MESSAGE = "No error message"
+
+        const val NO_INTERNET_CONNECTION = "No internet connection BaseExceptionToErrorEntityMapper"
     }
 }
 

@@ -136,7 +136,8 @@ class ContentDetailViewModel @Inject constructor(
                                     StringVO.Resource(R.string.error_no_connection)
                                 )
 
-                                is ErrorEntity.ContentDetail.Unauthorized -> ContentDetailErrorState.NoConnection(
+                                is ErrorEntity.ContentDetail.Unauthorized,
+                                is ErrorEntity.NetworksError.NoConnection -> ContentDetailErrorState.NoConnection(
                                     StringVO.Resource(R.string.error_service_problem)
                                 )
 

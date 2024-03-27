@@ -5,6 +5,7 @@ sealed class ErrorEntity(open val message: String) {
 
     sealed class NetworksError(override val message: String) : ErrorEntity(message) {
         data class NoInternet(override val message: String) : NetworksError(message)
+        data class NoConnection(override val message: String) : NetworksError(message)
     }
 
     sealed class PopularContent(override val message: String) : ErrorEntity(message) {
