@@ -22,8 +22,8 @@
         <activity
             android:name=".app.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.ANDROID002"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.ANDROID002"
             android:windowSoftInputMode="adjustNothing"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
@@ -37,9 +37,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="http" />
+                <data android:scheme="https" />
                 <data android:host="judjingm.github.io" />
-                <data android:pathPattern="/ANDROID002" />
+                <data android:pathPrefix="/ANDROID002" />
             </intent-filter>
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
@@ -47,9 +47,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="https" />
+                <data android:scheme="http" />
                 <data android:host="judjingm.github.io" />
-                <data android:pathPattern="/ANDROID002" />
+                <data android:pathPrefix="/ANDROID002" />
             </intent-filter>
         </activity>
     </application>
