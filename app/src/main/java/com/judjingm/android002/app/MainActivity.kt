@@ -1,9 +1,13 @@
 package com.judjingm.android002.app
 
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import app.cashadvisor.common.utill.extensions.logDebugMessage
 import com.judjingm.android002.R
 import com.judjingm.android002.common.ui.BaseActivity
 import com.judjingm.android002.databinding.ActivityMainBinding
@@ -11,6 +15,15 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // ATTENTION: This was auto-generated to handle app links.
+        val appLinkIntent: Intent = intent
+        val appLinkAction: String? = appLinkIntent.action
+        val appLinkData: Uri? = appLinkIntent.data
+    }
+
     override fun configureViews() {
         val navigationView = binding.navigationView
 
@@ -43,6 +56,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 }
             }
         }
+
+        val action: String? = intent?.action
+        val data: Uri? = intent?.data
+
+        logDebugMessage("action: $action")
+        logDebugMessage("data: $data")
+
     }
+
 
 }

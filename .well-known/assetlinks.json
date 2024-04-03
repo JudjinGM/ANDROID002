@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.judjingm.android002",
+      "sha256_cert_fingerprints": [
+        "53:A5:B8:16:26:03:E9:E1:8A:2F:D1:7D:BD:8A:11:42:95:80:46:00:77:41:9D:67:24:B3:90:E2:F6:B5:ED:DE"
+      ]
+    }
+  }
+]
