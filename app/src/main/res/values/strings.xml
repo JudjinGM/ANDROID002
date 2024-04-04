@@ -56,7 +56,7 @@
     <string name="notificationDescription">Notification Description</string>
     <string name="deepLinkNotificationTitle">Deep Link Notification Title</string>
     <string name="notification_text">Notification text</string>
-    <string name="static_shortcut_label_short">Profile</string>
-    <string name="static_shortcut_label_long">Go to profile</string>
-    <string name="static_shortcut_disabled_message">Profile shortcut disable</string>
+    <string name="static_shortcut_label_short">Favorite tvshow</string>
+    <string name="static_shortcut_label_long">Go to favorite tvshow</string>
+    <string name="static_shortcut_disabled_message">Favorite shortcut disable</string>
 </resources>

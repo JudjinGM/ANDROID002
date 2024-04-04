@@ -2,13 +2,13 @@
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_menu_profile"
+        android:icon="@drawable/ic_movies_film"
         android:shortcutDisabledMessage="@string/static_shortcut_disabled_message"
         android:shortcutId="ProfileFragment"
         android:shortcutLongLabel="@string/static_shortcut_label_long"
         android:shortcutShortLabel="@string/static_shortcut_label_short">
         <intent
             android:action="android.intent.action.VIEW"
-            android:data="https://judjingm.github.io/android002/profile" />
+            android:data="https://judjingm.github.io/android002/SERIES/1437" />
     </shortcut>
 </shortcuts>

@@ -9,7 +9,6 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import app.cashadvisor.common.utill.extensions.logDebugMessage
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.judjingm.android002.R
@@ -22,7 +21,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        logDebugMessage("onNewIntent intent: $intent")
         findNavController(R.id.rootFragmentContainerView).handleDeepLink(intent)
     }
 
