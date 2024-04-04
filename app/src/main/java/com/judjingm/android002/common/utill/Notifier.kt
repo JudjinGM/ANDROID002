@@ -12,18 +12,17 @@ import com.judjingm.android002.R
 
 object Notifier {
 
-    private const val channelId = "Default"
+    private const val CHANNEL_ID = "Default"
 
     fun init(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationManager =
                 context.getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
-            val existingChannel = notificationManager.getNotificationChannel(channelId)
+            val existingChannel = notificationManager.getNotificationChannel(CHANNEL_ID)
             if (existingChannel == null) {
-                // Create the NotificationChannel
                 val name = context.getString(R.string.default_chanel)
                 val importance = NotificationManager.IMPORTANCE_DEFAULT
-                val mChannel = NotificationChannel(channelId, name, importance)
+                val mChannel = NotificationChannel(CHANNEL_ID, name, importance)
                 mChannel.description = context.getString(R.string.notificationDescription)
                 notificationManager.createNotificationChannel(mChannel)
             }
@@ -37,7 +36,7 @@ object Notifier {
         title: String?,
         text: String?
     ) {
-        val builder = NotificationCompat.Builder(context, channelId)
+        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
         val titleText = title ?: context.getString(R.string.deepLinkNotificationTitle)
         builder.setContentTitle(titleText)
             .setSmallIcon(R.drawable.ic_movies_film)
@@ -49,6 +48,7 @@ object Notifier {
             .build()
         val notificationManager = NotificationManagerCompat.from(context)
         notificationManager.cancelAll()
-        notificationManager.notify(id.toInt(), notification)
+        notificationManager.notify(id, notification)
     }
+
 }
