@@ -99,7 +99,7 @@ class HomeScreenFragment :
                 val direction =
                     HomeScreenFragmentDirections.actionHomeScreenFragmentToContentDetailFragment(
                         contentId = sideEffect.id,
-                        contentType = sideEffect.contentType
+                        contentTypeName = sideEffect.contentTypeName
                     )
                 findNavController().navigate(direction)
             }

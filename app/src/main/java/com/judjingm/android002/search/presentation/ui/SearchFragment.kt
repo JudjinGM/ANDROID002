@@ -114,7 +114,7 @@ class SearchFragment :
                 val direction =
                     SearchFragmentDirections.actionSearchFragmentToContentDetailFragment(
                         contentId = sideEffect.id,
-                        contentType = sideEffect.contentType
+                        contentTypeName = sideEffect.contentTypeName
                     )
                 findNavController().navigate(direction)
             }

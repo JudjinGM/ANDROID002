@@ -133,7 +133,7 @@ class HomeScreenViewModel @Inject constructor(
                 viewModelScope.launch {
                     _sideEffects.emit(
                         HomeScreenSideEffects.NavigateToDetails(
-                            contentType = event.content.type, id = event.content.id
+                            contentTypeName = event.content.type.name, id = event.content.id
                         )
                     )
                 }

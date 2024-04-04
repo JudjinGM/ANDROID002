@@ -1,5 +1,6 @@
 package com.judjingm.android002.profile.presentation.ui
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import app.cashadvisor.common.utill.extensions.logDebugMessage
 import com.judjingm.android002.R
@@ -35,6 +36,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
     private val authenticationUseCase: AuthenticationUseCase,
     private val requestLoginToProfileUseCase: RequestLoginToProfileUseCase,
     private val confirmLoginToProfileUseCase: ConfirmLoginToProfileUseCase,
@@ -57,7 +59,12 @@ class ProfileViewModel @Inject constructor(
 
     val sideEffect: SharedFlow<ProfileSideEffects> = _sideEffects.asSharedFlow()
 
+    private val args = ProfileFragmentArgs.fromSavedStateHandle(savedStateHandle)
+
+    private val id = args.id
+
     init {
+        logDebugMessage("profile deeplink arg id = $id")
         initialize()
         viewModelScope.launch {
             state.collect { screenState ->

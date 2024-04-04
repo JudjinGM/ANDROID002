@@ -1,10 +1,9 @@
 package com.judjingm.android002.app
 
 import android.content.Intent
-import android.net.Uri
-import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import app.cashadvisor.common.utill.extensions.logDebugMessage
@@ -15,13 +14,26 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
-        // ATTENTION: This was auto-generated to handle app links.
-        val appLinkIntent: Intent = intent
-        val appLinkAction: String? = appLinkIntent.action
-        val appLinkData: Uri? = appLinkIntent.data
+//    override fun onNewIntent(intent: Intent?) {
+//        logDebugMessage("onNewIntent intent: $intent")
+//
+//        val appLinkAction: String? = intent?.action
+//
+//        logDebugMessage("onNewIntent appLinkAction: $appLinkAction")
+//
+//        val appLinkData: Uri? = intent?.data
+//
+//        logDebugMessage("onNewIntent appLinkData: $appLinkData")
+//
+//        super.onNewIntent(intent)
+//    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        logDebugMessage("onNewIntent intent: $intent")
+        findNavController(R.id.rootFragmentContainerView).handleDeepLink(intent)
+
     }
 
     override fun configureViews() {
@@ -56,12 +68,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 }
             }
         }
-
-        val action: String? = intent?.action
-        val data: Uri? = intent?.data
-
-        logDebugMessage("action: $action")
-        logDebugMessage("data: $data")
 
     }
 

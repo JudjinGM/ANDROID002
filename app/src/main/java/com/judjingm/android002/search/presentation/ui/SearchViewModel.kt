@@ -137,7 +137,7 @@ class SearchViewModel @Inject constructor(
                     viewModelScope.launch {
                         _sideEffects.emit(
                             SearchScreenSideEffects.NavigateToDetails(
-                                event.contentId, event.contentType
+                                event.contentId, event.contentType.name
                             )
                         )
                     }
@@ -278,7 +278,7 @@ class SearchViewModel @Inject constructor(
                 )
 
                 handleSearchContentResult(
-                    contentType = ContentType.TVSHOW,
+                    contentType = ContentType.SERIES,
                     searchContent = searchTVShows,
                     contentMutex = contentMutex,
                     items,
@@ -419,7 +419,7 @@ class SearchViewModel @Inject constructor(
                 var tvShowTotalPages = 1
 
                 handleSearchContentResult(
-                    contentType = ContentType.TVSHOW,
+                    contentType = ContentType.SERIES,
                     searchContent = searchTVShows,
                     contentMutex = Mutex(),
                     items,
@@ -489,7 +489,7 @@ class SearchViewModel @Inject constructor(
                 R.string.movies
             )
 
-            ContentType.TVSHOW -> StringVO.Resource(
+            ContentType.SERIES -> StringVO.Resource(
                 R.string.tv_shows
             )
 

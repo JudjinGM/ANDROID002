@@ -6,6 +6,6 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 enum class ContentType : Parcelable {
     MOVIE,
-    TVSHOW,
+    SERIES,
     UNKNOWN
 }

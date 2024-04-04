@@ -26,31 +26,25 @@
             android:theme="@style/Theme.ANDROID002"
             android:windowSoftInputMode="adjustNothing"
             tools:ignore="LockedOrientationActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+            <nav-graph android:value="@navigation/nav_graph" />
 
-                <data android:scheme="https" />
-                <data android:host="judjingm.github.io" />
-                <data android:pathPrefix="/ANDROID002" />
-            </intent-filter>
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
+            <!--            <intent-filter android:autoVerify="true">-->
+            <!--                <action android:name="android.intent.action.VIEW" />-->
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+            <!--                <category android:name="android.intent.category.DEFAULT" />-->
+            <!--                <category android:name="android.intent.category.BROWSABLE" />-->
 
-                <data android:scheme="http" />
-                <data android:host="judjingm.github.io" />
-                <data android:pathPrefix="/ANDROID002" />
-            </intent-filter>
+            <!--                <data android:scheme="https" />-->
+            <!--                <data android:host="judjingm.github.io" />-->
+            <!--                <data android:path="/android002" />-->
+            <!--            </intent-filter>-->
         </activity>
     </application>
 

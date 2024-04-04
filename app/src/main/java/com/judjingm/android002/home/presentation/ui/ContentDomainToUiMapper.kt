@@ -44,7 +44,7 @@ class ContentDomainToUiMapper @Inject constructor() {
             posterPath = tvShow.posterPath ?: EMPTY_STRING,
             releaseDate = tvShow.firstAirDate ?: EMPTY_STRING,
             title = tvShow.name ?: EMPTY_STRING,
-            type = ContentType.TVSHOW
+            type = ContentType.SERIES
         )
     }
 
@@ -76,7 +76,7 @@ class ContentDomainToUiMapper @Inject constructor() {
             posterPath = tvShow.posterPath ?: EMPTY_STRING,
             firstAirDate = firstAirDate,
             title = tvShow.name ?: EMPTY_STRING,
-            type = ContentType.TVSHOW,
+            type = ContentType.SERIES,
             averageVote = String.format("%.1f", tvShow.voteAverage)
         )
     }

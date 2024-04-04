@@ -54,7 +54,7 @@ class ContentDetailViewModel @Inject constructor(
 
     private val args = ContentDetailFragmentArgs.fromSavedStateHandle(savedState)
 
-    private val contentType = args.contentType
+    private val contentTypeName = args.contentTypeName
     private val contentId = args.contentId
 
 
@@ -73,10 +73,10 @@ class ContentDetailViewModel @Inject constructor(
     }
 
     private fun getContent() {
-        when (contentType) {
-            ContentType.MOVIE -> getMovieDetails()
-            ContentType.TVSHOW -> getTvShowDetails()
-            ContentType.UNKNOWN -> {
+        when (contentTypeName) {
+            ContentType.MOVIE.name -> getMovieDetails()
+            ContentType.SERIES.name -> getTvShowDetails()
+            else -> {
                 _uiState.value =
                     ContentDetailUiScreenState.Error(
                         errorState = ContentDetailErrorState.UnknownError(
