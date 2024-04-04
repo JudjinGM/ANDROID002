@@ -67,4 +67,7 @@
     <string name="notificationDescription">Описание нотификации</string>
     <string name="deepLinkNotificationTitle">Заголовок нотификации Deep Link</string>
     <string name="notification_text">Текст нотификации</string>
+    <string name="static_shortcut_label_short">Профиль</string>
+    <string name="static_shortcut_label_long">Перейти в профиль</string>
+    <string name="static_shortcut_disabled_message">Переход в профиль отключен</string>
 </resources>

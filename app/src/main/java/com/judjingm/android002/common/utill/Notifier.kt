@@ -30,12 +30,19 @@ object Notifier {
         }
     }
 
-    fun postNotification(id: Long, context: Context, intent: PendingIntent) {
+    fun postNotification(
+        id: Int,
+        context: Context,
+        intent: PendingIntent,
+        title: String?,
+        text: String?
+    ) {
         val builder = NotificationCompat.Builder(context, channelId)
-        builder.setContentTitle(context.getString(R.string.deepLinkNotificationTitle))
-            .setSmallIcon(R.drawable.content_cover_rv)
-        val text = context.getString(R.string.notification_text)
-        val notification = builder.setContentText(text)
+        val titleText = title ?: context.getString(R.string.deepLinkNotificationTitle)
+        builder.setContentTitle(titleText)
+            .setSmallIcon(R.drawable.ic_movies_film)
+        val textText = text ?: context.getString(R.string.notification_text)
+        val notification = builder.setContentText(textText)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(intent)
             .setAutoCancel(true)

@@ -21,11 +21,7 @@
         <deepLink
             android:id="@+id/deepLink"
             android:autoVerify="true"
-            app:uri="https://judjingm.github.io/android002/{id}" />
-        <argument
-            android:name="id"
-            android:defaultValue="-1"
-            app:argType="integer" />
+            app:uri="https://judjingm.github.io/android002/profile" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"

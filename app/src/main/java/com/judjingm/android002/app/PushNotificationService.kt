@@ -18,31 +18,36 @@ class PushNotificationService : FirebaseMessagingService() {
 
         if (message.data.isNotEmpty()) {
             val deepLink = message.data[DEEP_LINK]
+            val title = message.data[TITLE]
+            val text = message.data[MESSAGE]
 
             if (deepLink != null) {
-                handleDeepLink(deepLink)
+                handleDeepLink(deepLink, title, text)
                 return
             }
         }
         super.onMessageReceived(message)
     }
 
-    private fun handleDeepLink(deepLink: String) {
+    private fun handleDeepLink(deepLink: String, title: String?, text: String?) {
         Notifier.init(this)
 
         val pendingIntent = PendingIntent.getActivity(
             this,
-            0,
+            REQUEST_CODE,
             Intent(Intent.ACTION_VIEW, Uri.parse(deepLink))
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
         )
 
-        Notifier.postNotification(1, this, pendingIntent)
+        Notifier.postNotification(NOTIFICATION_ID, this, pendingIntent, title, text)
     }
-
 
     companion object {
         private const val DEEP_LINK = "deeplink"
+        private const val TITLE = "title"
+        private const val MESSAGE = "message"
+        private const val REQUEST_CODE = 0
+        private const val NOTIFICATION_ID = 1
     }
 }

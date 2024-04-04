@@ -59,12 +59,7 @@ class ProfileViewModel @Inject constructor(
 
     val sideEffect: SharedFlow<ProfileSideEffects> = _sideEffects.asSharedFlow()
 
-    private val args = ProfileFragmentArgs.fromSavedStateHandle(savedStateHandle)
-
-    private val id = args.id
-
     init {
-        logDebugMessage("profile deeplink arg id = $id")
         initialize()
         viewModelScope.launch {
             state.collect { screenState ->
