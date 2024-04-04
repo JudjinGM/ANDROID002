@@ -3,11 +3,17 @@ package com.judjingm.android002.app
 import android.app.PendingIntent
 import android.content.Intent
 import android.net.Uri
+import app.cashadvisor.common.utill.extensions.logDebugMessage
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.judjingm.android002.common.utill.Notifier
 
 class PushNotificationService : FirebaseMessagingService() {
+
+    override fun onNewToken(token: String) {
+        logDebugMessage("Refreshed token: $token")
+    }
+
     override fun onMessageReceived(message: RemoteMessage) {
 
         if (message.data.isNotEmpty()) {
