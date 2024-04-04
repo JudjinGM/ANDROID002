@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.androidx.navigation.safeargs.kotlin)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -80,6 +81,7 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt.android)
+    implementation(libs.firebase.messaging)
     ksp(libs.hilt.android.compiler)
 
     // Room

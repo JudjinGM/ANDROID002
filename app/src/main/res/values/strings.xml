@@ -52,6 +52,10 @@
     <string name="login_success">Login is success</string>
     <string name="logout_succes">Logout success</string>
     <string name="close">Close</string>
+    <string name="default_chanel">Default chanel</string>
+    <string name="notificationDescription">Notification Description</string>
+    <string name="deepLinkNotificationTitle">Deep Link Notification Title</string>
+    <string name="notification_text">Notification text</string>
 
 
 </resources>

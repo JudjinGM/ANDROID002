@@ -63,4 +63,8 @@
     <string name="login_success">Вход успешен</string>
     <string name="logout_succes">Выход успешен</string>
     <string name="close">Закрыть</string>
+    <string name="default_chanel">Стандартный канал</string>
+    <string name="notificationDescription">Описание нотификации</string>
+    <string name="deepLinkNotificationTitle">Заголовок нотификации Deep Link</string>
+    <string name="notification_text">Текст нотификации</string>
 </resources>

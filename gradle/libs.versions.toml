@@ -26,6 +26,8 @@ lifecycle_version = "2.7.0"
 activity_version = "1.8.2"
 kotlinx-serialization-converter = "1.0.0"
 cryptoVersion = "1.0.0-alpha02"
+googleGmsGoogleServicesVersion = "4.4.1"
+firebaseMessagingVersion = "23.4.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -62,6 +64,7 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 retrofit2-kotlinx-serialization-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "kotlinx-serialization-converter" }
 
 crypto = { module = "androidx.security:security-crypto", version.ref = "cryptoVersion" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessagingVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -72,5 +75,6 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 androidLibrary = { id = "com.android.library", version.ref = "androidLibrary" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 androidx-navigation-safeargs-kotlin = { id = "androidx.navigation.safeargs.kotlin", version.ref = "nav_version" }
+google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServicesVersion" }
 
 
