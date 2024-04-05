@@ -21,7 +21,7 @@ object Notifier {
             val existingChannel = notificationManager.getNotificationChannel(CHANNEL_ID)
             if (existingChannel == null) {
                 val name = context.getString(R.string.default_chanel)
-                val importance = NotificationManager.IMPORTANCE_DEFAULT
+                val importance = NotificationManager.IMPORTANCE_HIGH
                 val mChannel = NotificationChannel(CHANNEL_ID, name, importance)
                 mChannel.description = context.getString(R.string.notificationDescription)
                 notificationManager.createNotificationChannel(mChannel)
@@ -42,7 +42,7 @@ object Notifier {
             .setSmallIcon(R.drawable.ic_movies_film)
         val textText = text ?: context.getString(R.string.notification_text)
         val notification = builder.setContentText(textText)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setPriority(NotificationCompat.PRIORITY_MAX)
             .setContentIntent(intent)
             .setAutoCancel(true)
             .build()
