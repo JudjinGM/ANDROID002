@@ -1,4 +1,4 @@
-package com.judjingm.android002.search.presentation.models.state
+package com.judjingm.android002.profile.presentation.models.state
 
 sealed interface ProfileEvent {
     data object OnLoginTaped : ProfileEvent

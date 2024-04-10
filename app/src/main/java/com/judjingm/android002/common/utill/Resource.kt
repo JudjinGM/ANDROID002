@@ -17,7 +17,7 @@ sealed class Resource<T, E> {
 
     interface ResultHandler<T, E> {
         suspend fun handleSuccess(data: T)
-        suspend fun handleError(errorStatus: E)
+        suspend fun handleError(error: E)
     }
 }
 

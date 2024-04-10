@@ -1,5 +1,6 @@
 package com.judjingm.android002.search.di
 
+import com.judjingm.android002.common.di.MainAppRetrofit
 import com.judjingm.android002.search.data.api.SearchContentApiService
 import dagger.Module
 import dagger.Provides
@@ -15,7 +16,7 @@ class SearchContentNetworkModule {
     @Provides
     @Singleton
     fun provideSearchContentApiService(
-        retrofit: Retrofit
+        @MainAppRetrofit retrofit: Retrofit
     ): SearchContentApiService {
         return retrofit.create(SearchContentApiService::class.java)
     }

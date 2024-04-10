@@ -82,6 +82,8 @@ dependencies {
     // Hilt
     implementation(libs.hilt.android)
     implementation(libs.firebase.messaging)
+    implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
     ksp(libs.hilt.android.compiler)
 
     // Room
@@ -109,6 +111,10 @@ dependencies {
 
     //Crypto
     implementation(libs.crypto)
+
+    //WorkManager
+    implementation(libs.workmanager)
+
 
     // Test
     testImplementation(libs.junit)

@@ -65,11 +65,11 @@ class HomeScreenViewModel @Inject constructor(
             state.collect { screenState ->
                 when (screenState.errorState) {
                     is PopularsErrorState.NoConnection -> if (screenState.errorState.isPagination) {
-                        setSideEffect(HomeScreenSideEffects.ShowMessage(StringVO.Resource(R.string.error_no_connection)))
+                        setSideEffect(HomeScreenSideEffects.ShowMessage(StringVO.Resource(R.string.error_no_internet)))
                         resetStateToNoError()
                     } else setErrorUiState(
                         PopularsErrorUiState.UnknownError(
-                            StringVO.Resource(R.string.error_no_connection)
+                            StringVO.Resource(R.string.error_no_internet)
                         )
                     )
 
@@ -182,9 +182,9 @@ class HomeScreenViewModel @Inject constructor(
                 }
             }
 
-            override suspend fun handleError(errorStatus: PopularsErrorState) {
+            override suspend fun handleError(error: PopularsErrorState) {
                 _state.update {
-                    it.copy(isLoading = false, errorState = errorStatus)
+                    it.copy(isLoading = false, errorState = error)
                 }
             }
         })
@@ -435,8 +435,8 @@ class HomeScreenViewModel @Inject constructor(
                 totalPages.invoke(data.totalPages)
             }
 
-            override suspend fun handleError(errorStatus: ErrorEntity) {
-                when (errorStatus) {
+            override suspend fun handleError(error: ErrorEntity) {
+                when (error) {
                     is ErrorEntity.NetworksError.NoInternet -> onNetworkError.invoke()
                     else -> onServerError.invoke()
                 }

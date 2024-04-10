@@ -74,11 +74,11 @@ class SearchViewModel @Inject constructor(
             state.collect { screenState ->
                 when (screenState.errorState) {
                     is SearchErrorState.NoConnection -> if (screenState.errorState.isPagination) {
-                        setSideEffect(SearchScreenSideEffects.ShowMessage(StringVO.Resource(R.string.error_no_connection)))
+                        setSideEffect(SearchScreenSideEffects.ShowMessage(StringVO.Resource(R.string.error_no_internet)))
                         resetStateToNoError()
                     } else setErrorUiState(
                         SearchErrorUiState.UnknownError(
-                            StringVO.Resource(R.string.error_no_connection)
+                            StringVO.Resource(R.string.error_no_internet)
                         )
                     )
 
@@ -220,10 +220,10 @@ class SearchViewModel @Inject constructor(
                 }
             }
 
-            override suspend fun handleError(errorStatus: SearchErrorState) {
+            override suspend fun handleError(error: SearchErrorState) {
                 _state.update {
                     it.copy(
-                        isLoading = false, errorState = errorStatus
+                        isLoading = false, errorState = error
                     )
                 }
             }
@@ -519,8 +519,8 @@ class SearchViewModel @Inject constructor(
                 totalPages.invoke(data.totalPages)
             }
 
-            override suspend fun handleError(errorStatus: ErrorEntity) {
-                when (errorStatus) {
+            override suspend fun handleError(error: ErrorEntity) {
+                when (error) {
                     is ErrorEntity.NetworksError.NoInternet -> onNetworkError.invoke()
                     else -> onServerError.invoke()
                 }

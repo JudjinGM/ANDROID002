@@ -16,8 +16,16 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class MainAppRetrofit
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class InternalServerRetrofit
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -43,14 +51,27 @@ class NetworkModule {
             .build()
     }
 
-    @Singleton
     @Provides
-    fun provideRetrofit(
+    @MainAppRetrofit
+    fun provideMainRetrofit(
         okHttpClient: OkHttpClient,
         json: Json
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(ENDPOINT_URL)
+            .baseUrl(MOVIE_DB_ENDPOINT_URL)
+            .client(okHttpClient)
+            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+            .build()
+    }
+
+    @InternalServerRetrofit
+    @Provides
+    fun provideInternalServerRetrofit(
+        okHttpClient: OkHttpClient,
+        json: Json
+    ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(INTERNAL_SERVER_ENDPOINT_URL)
             .client(okHttpClient)
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
@@ -73,7 +94,8 @@ class NetworkModule {
     }
 
     companion object {
-        const val ENDPOINT_URL = "https://api.themoviedb.org/"
+        const val MOVIE_DB_ENDPOINT_URL = "https://api.themoviedb.org/"
+        const val INTERNAL_SERVER_ENDPOINT_URL = "https://androiduploadtestserver.ew.r.appspot.com/"
     }
 
 }

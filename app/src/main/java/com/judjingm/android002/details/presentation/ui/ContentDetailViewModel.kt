@@ -130,10 +130,10 @@ class ContentDetailViewModel @Inject constructor(
                             }
                         }
 
-                        override suspend fun handleError(errorStatus: ErrorEntity) {
-                            val errorState: ContentDetailErrorState = when (errorStatus) {
+                        override suspend fun handleError(error: ErrorEntity) {
+                            val errorState: ContentDetailErrorState = when (error) {
                                 is ErrorEntity.NetworksError.NoInternet -> ContentDetailErrorState.NoConnection(
-                                    StringVO.Resource(R.string.error_no_connection)
+                                    StringVO.Resource(R.string.error_no_internet)
                                 )
 
                                 is ErrorEntity.ContentDetail.Unauthorized,
@@ -199,10 +199,10 @@ class ContentDetailViewModel @Inject constructor(
                             }
                         }
 
-                        override suspend fun handleError(errorStatus: ErrorEntity) {
-                            val errorState: ContentDetailErrorState = when (errorStatus) {
+                        override suspend fun handleError(error: ErrorEntity) {
+                            val errorState: ContentDetailErrorState = when (error) {
                                 is ErrorEntity.NetworksError.NoInternet -> ContentDetailErrorState.NoConnection(
-                                    StringVO.Resource(R.string.error_no_connection)
+                                    StringVO.Resource(R.string.error_no_internet)
                                 )
 
                                 is ErrorEntity.ContentDetail.Unauthorized -> ContentDetailErrorState.NoConnection(

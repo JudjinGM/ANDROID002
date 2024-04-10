@@ -1,6 +1,5 @@
 package com.judjingm.android002.profile.presentation.ui
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import app.cashadvisor.common.utill.extensions.logDebugMessage
 import com.judjingm.android002.R
@@ -18,10 +17,10 @@ import com.judjingm.android002.profile.domain.useCase.GetProfileDetailsUseCase
 import com.judjingm.android002.profile.domain.useCase.LogoutFromProfileUseCase
 import com.judjingm.android002.profile.domain.useCase.RequestLoginToProfileUseCase
 import com.judjingm.android002.profile.presentation.models.state.AuthenticationErrorState
+import com.judjingm.android002.profile.presentation.models.state.ProfileEvent
 import com.judjingm.android002.profile.presentation.models.state.ProfileScreenState
 import com.judjingm.android002.profile.presentation.models.state.ProfileSideEffects
 import com.judjingm.android002.profile.presentation.models.state.ProfileUiScreenState
-import com.judjingm.android002.search.presentation.models.state.ProfileEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,7 +35,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
     private val authenticationUseCase: AuthenticationUseCase,
     private val requestLoginToProfileUseCase: RequestLoginToProfileUseCase,
     private val confirmLoginToProfileUseCase: ConfirmLoginToProfileUseCase,
@@ -68,7 +66,7 @@ class ProfileViewModel @Inject constructor(
                         viewModelScope.launch {
                             _sideEffects.emit(
                                 ProfileSideEffects
-                                    .ShowMessage(StringVO.Resource(R.string.error_no_connection))
+                                    .ShowMessage(StringVO.Resource(R.string.error_no_internet))
                             )
                         }
                         _state.update {
@@ -237,8 +235,8 @@ class ProfileViewModel @Inject constructor(
                             }
                         }
 
-                        override suspend fun handleError(errorStatus: ErrorEntity) {
-                            val error = when (errorStatus) {
+                        override suspend fun handleError(error: ErrorEntity) {
+                            val error = when (error) {
                                 is ErrorEntity.Authentication.InvalidCredentials -> AuthenticationErrorState.InvalidCredentials
                                 is ErrorEntity.Authentication.InvalidToken -> AuthenticationErrorState.InvalidCredentials
                                 is ErrorEntity.NetworksError.NoInternet -> AuthenticationErrorState.NoInternet
@@ -294,8 +292,8 @@ class ProfileViewModel @Inject constructor(
                     }
                 }
 
-                override suspend fun handleError(errorStatus: ErrorEntity) {
-                    val error = when (errorStatus) {
+                override suspend fun handleError(error: ErrorEntity) {
+                    val error = when (error) {
                         is ErrorEntity.Authentication.InvalidCredentials -> AuthenticationErrorState.InvalidCredentials
                         is ErrorEntity.Authentication.InvalidToken -> AuthenticationErrorState.CannotProceedTryAgain
                         is ErrorEntity.Authentication.Unauthorized -> AuthenticationErrorState.UnknownError
@@ -336,7 +334,7 @@ class ProfileViewModel @Inject constructor(
                     }
                 }
 
-                override suspend fun handleError(errorStatus: ErrorEntity) {
+                override suspend fun handleError(error: ErrorEntity) {
                     _state.update {
                         it.copy(
                             isLoading = false,
@@ -383,7 +381,7 @@ class ProfileViewModel @Inject constructor(
                     }
                 }
 
-                override suspend fun handleError(errorStatus: ErrorEntity) {
+                override suspend fun handleError(error: ErrorEntity) {
                     _state.update {
                         it.copy(
                             errorState = AuthenticationErrorState.CannotProceedTryAgain,

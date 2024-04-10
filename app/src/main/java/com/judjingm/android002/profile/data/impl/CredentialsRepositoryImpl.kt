@@ -13,8 +13,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import javax.inject.Inject
 
-class CredentialsRepositoryImpl(
+class CredentialsRepositoryImpl @Inject constructor(
     private val storage: SharedPreferences,
     private val key: String,
     private val json: Json

@@ -28,6 +28,9 @@ kotlinx-serialization-converter = "1.0.0"
 cryptoVersion = "1.0.0-alpha02"
 googleGmsGoogleServicesVersion = "4.4.1"
 firebaseMessagingVersion = "23.4.1"
+work_version = "2.9.0"
+legacySupportV4Version = "1.0.0"
+lifecycleLivedataKtxVersion = "2.7.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -65,6 +68,11 @@ retrofit2-kotlinx-serialization-converter = { module = "com.jakewharton.retrofit
 
 crypto = { module = "androidx.security:security-crypto", version.ref = "cryptoVersion" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessagingVersion" }
+
+workmanager = { module = "androidx.work:work-runtime-ktx", version.ref = "work_version" }
+androidx-legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4Version" }
+androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtxVersion" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

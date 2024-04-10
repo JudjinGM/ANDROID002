@@ -7,7 +7,7 @@
     <string name="popular">Popular</string>
     <string name="error">Error</string>
 
-    <string name="error_no_connection">No connection</string>
+    <string name="error_no_internet">No internet</string>
     <string name="error_not_found">Nothing found</string>
     <string name="error_service_problem">Service problem</string>
     <string name="error_something_went_wrong">Something went wrong</string>
@@ -59,4 +59,7 @@
     <string name="static_shortcut_label_short">Favorite tvshow</string>
     <string name="static_shortcut_label_long">Go to favorite tvshow</string>
     <string name="static_shortcut_disabled_message">Favorite shortcut disable</string>
+    <string name="choose_document">Choose Document</string>
+    <string name="upload_document">Upload Document</string>
+    <string name="upload_pdf">Upload PDF</string>
 </resources>

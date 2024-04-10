@@ -1,5 +1,6 @@
 package com.judjingm.android002.home.di
 
+import com.judjingm.android002.common.di.MainAppRetrofit
 import com.judjingm.android002.home.data.api.PopularContentApiService
 import dagger.Module
 import dagger.Provides
@@ -15,7 +16,7 @@ class PopularContentNetworkModule {
     @Provides
     @Singleton
     fun providePopularContentApiService(
-        retrofit: Retrofit
+        @MainAppRetrofit retrofit: Retrofit
     ): PopularContentApiService {
         return retrofit.create(PopularContentApiService::class.java)
     }

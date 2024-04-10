@@ -11,9 +11,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.judjingm.android002.common.ui.BaseFragment
 import com.judjingm.android002.databinding.FragmentProfileBinding
 import com.judjingm.android002.profile.domain.models.ProfileDetails
+import com.judjingm.android002.profile.presentation.models.state.ProfileEvent
 import com.judjingm.android002.profile.presentation.models.state.ProfileSideEffects
 import com.judjingm.android002.profile.presentation.models.state.ProfileUiScreenState
-import com.judjingm.android002.search.presentation.models.state.ProfileEvent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -97,12 +97,12 @@ class ProfileFragment :
             }
 
             override fun onPageFinished(view: WebView, url: String) {
-                if (url.contains("/allow")) {
+                if (url.contains(ALLOW)) {
                     viewModel.handleEvent(ProfileEvent.RequestTokenConfirmed)
                     binding.webView.isVisible = false
                 }
 
-                if (url.contains("/deny")) {
+                if (url.contains(DENY)) {
                     viewModel.handleEvent(ProfileEvent.RequestTokenDenied)
                     binding.webView.isVisible = false
                 }
@@ -149,5 +149,10 @@ class ProfileFragment :
 
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    companion object {
+        const val ALLOW = "/allow"
+        const val DENY = "/deny"
     }
 }

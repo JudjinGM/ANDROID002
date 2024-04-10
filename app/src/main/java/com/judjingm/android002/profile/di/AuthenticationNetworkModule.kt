@@ -1,5 +1,6 @@
 package com.judjingm.android002.profile.di
 
+import com.judjingm.android002.common.di.MainAppRetrofit
 import com.judjingm.android002.profile.data.api.AuthenticationApiService
 import dagger.Module
 import dagger.Provides
@@ -15,7 +16,7 @@ class AuthenticationNetworkModule {
     @Provides
     @Singleton
     fun provideProfileApiService(
-        retrofit: Retrofit
+        @MainAppRetrofit retrofit: Retrofit
     ): AuthenticationApiService {
         return retrofit.create(AuthenticationApiService::class.java)
     }

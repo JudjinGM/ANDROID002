@@ -7,7 +7,7 @@
     <string name="profile">Профиль</string>
     <string name="popular">Популярное</string>
     <string name="error">Ошибка</string>
-    <string name="error_no_connection">Нет интернета</string>
+    <string name="error_no_internet">Нет интернета</string>
     <string name="error_not_found">Ничего не найдено</string>
     <string name="error_service_problem">Проблема с сервисом</string>
     <string name="error_something_went_wrong">Что-то пошло не так</string>
@@ -70,4 +70,7 @@
     <string name="static_shortcut_label_short">Любимый сериал</string>
     <string name="static_shortcut_label_long">Перейти в любимый сериал</string>
     <string name="static_shortcut_disabled_message">Переход в любимый сериал отключен</string>
+    <string name="choose_document">Выбрать документ</string>
+    <string name="upload_document">Отправить документ</string>
+    <string name="upload_pdf">Загрузить PDF</string>
 </resources>
