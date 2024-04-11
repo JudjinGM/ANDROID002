@@ -1,6 +1,8 @@
 package com.judjingm.android002.upload.di
 
+import com.judjingm.android002.upload.domain.useCase.GetFileNameUseCase
 import com.judjingm.android002.upload.domain.useCase.SavePdfToPrivateStorageUseCase
+import com.judjingm.android002.upload.domain.useCase.SetFileNameUseCase
 import com.judjingm.android002.upload.domain.useCase.UploadPdfToServerUseCase
 import dagger.Binds
 import dagger.Module
@@ -20,4 +22,15 @@ interface FileDomainModule {
     fun bindUploadPdfToServerUseCase(
         impl: UploadPdfToServerUseCase.Base
     ): UploadPdfToServerUseCase
+
+    @Binds
+    fun bindGetFileNameUseCase(
+        impl: GetFileNameUseCase.Base
+    ): GetFileNameUseCase
+
+    @Binds
+    fun bindSetFileNameUseCase(
+        impl: SetFileNameUseCase.Base
+    ): SetFileNameUseCase
+
 }
