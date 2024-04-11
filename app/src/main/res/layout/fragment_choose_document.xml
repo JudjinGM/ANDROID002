@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".upload.presentation.choseDocument.ChooseDocumentFragment">
+    tools:context=".upload.presentation.chooseDocument.ChooseDocumentFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_arrow_left"
         app:titleTextAppearance="@style/TitleText"
-        app:title="@string/upload_pdf" />
+        app:title="@string/choose_pdf" />
 
     <Button
         android:id="@+id/chooseDocumentButton"
@@ -58,7 +58,7 @@
         android:id="@+id/documentImageView"
         android:layout_width="160dp"
         android:layout_height="@dimen/_0dp"
-        android:contentDescription="@string/upload_pdf"
+        android:contentDescription="@string/choose_pdf"
         app:layout_constraintDimensionRatio="2:3"
         android:layout_marginTop="@dimen/button_margin_top"
         android:src="@drawable/content_cover_rv"

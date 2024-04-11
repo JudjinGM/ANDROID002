@@ -1,4 +1,4 @@
-package com.judjingm.android002.upload.presentation.choseDocument
+package com.judjingm.android002.upload.presentation.chooseDocument
 
 import android.graphics.Bitmap
 import android.graphics.pdf.PdfRenderer
@@ -14,13 +14,15 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import app.cashadvisor.common.utill.extensions.logDebugMessage
 import com.bumptech.glide.Glide
+import com.judjingm.android002.R
 import com.judjingm.android002.common.ui.BaseFragment
 import com.judjingm.android002.databinding.FragmentChooseDocumentBinding
-import com.judjingm.android002.upload.presentation.models.chooseDocument.ChooseDocumentEvent
-import com.judjingm.android002.upload.presentation.models.chooseDocument.ChooseDocumentSideEffects
-import com.judjingm.android002.upload.presentation.models.chooseDocument.ChooseDocumentUiScreenState
+import com.judjingm.android002.upload.presentation.models.state.ChooseDocumentEvent
+import com.judjingm.android002.upload.presentation.models.state.ChooseDocumentSideEffects
+import com.judjingm.android002.upload.presentation.models.state.ChooseDocumentUiScreenState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -101,7 +103,7 @@ class ChooseDocumentFragment : BaseFragment<FragmentChooseDocumentBinding, Choos
             }
 
             ChooseDocumentSideEffects.NavigateToNextScreen -> {
-
+                findNavController().navigate(R.id.action_chooseDocumentFragment_to_chooseDocumentNameFragment)
             }
         }
     }

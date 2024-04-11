@@ -151,7 +151,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/button_margin_top"
-        android:text="@string/upload_pdf"
+        android:text="@string/choose_pdf"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
         app:layout_constraintStart_toStartOf="@id/guidLineStart"

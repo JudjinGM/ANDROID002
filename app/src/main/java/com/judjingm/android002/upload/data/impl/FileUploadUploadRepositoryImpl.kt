@@ -5,21 +5,21 @@ import com.judjingm.android002.common.utill.Resource
 import com.judjingm.android002.upload.data.api.FileLocalStorage
 import com.judjingm.android002.upload.data.api.FileRemoteDataSource
 import com.judjingm.android002.upload.domain.models.FileResult
-import com.judjingm.android002.upload.domain.repository.FileRepository
+import com.judjingm.android002.upload.domain.models.FileUploadState
+import com.judjingm.android002.upload.domain.repository.FileUploadRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class FileRepositoryImpl @Inject constructor(
+class FileUploadUploadRepositoryImpl @Inject constructor(
     private val fileLocalStorage: FileLocalStorage,
     private val fileRemoteDataSource: FileRemoteDataSource,
-) : FileRepository {
+) : FileUploadRepository {
 
-    private val _state: MutableStateFlow<String> = MutableStateFlow(BLANK_STRING)
-    val state: MutableStateFlow<String> = _state
+    private val _state: MutableStateFlow<FileUploadState> = MutableStateFlow(FileUploadState())
+    val state: MutableStateFlow<FileUploadState> = _state
 
     override suspend fun savePdfToPrivateStorage(
         uri: Uri,
@@ -27,11 +27,18 @@ class FileRepositoryImpl @Inject constructor(
     ): Resource<FileResult, String> {
         return withContext(Dispatchers.IO) {
             try {
-                _state.update { name }
                 val response = fileLocalStorage.savePdfToPrivateStorage(uri)
+
+                _state.update {
+                    it.copy(
+                        fileName = name,
+                        localFileUri = Uri.fromFile(response)
+                    )
+                }
+
                 Resource.Success(
                     FileResult(
-                        originalName = state.value,
+                        originalName = name,
                         uri = Uri.fromFile(response)
                     )
                 )
@@ -41,10 +48,11 @@ class FileRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun uploadPdfToServer(uri: Uri): Resource<Boolean, String> {
+    override suspend fun uploadPdfToServer(): Resource<Boolean, String> {
         return try {
-            val response = fileRemoteDataSource.uploadFile(uri, state.value)
-            fileLocalStorage.deletePdfFromPrivateStorage(uri)
+            val response =
+                fileRemoteDataSource.uploadFile(state.value.localFileUri, state.value.fileName)
+            fileLocalStorage.deletePdfFromPrivateStorage(state.value.localFileUri)
             Resource.Success(response)
         } catch (e: Exception) {
             Resource.Error(e.message ?: NO_ERROR_MESSAGE)
@@ -52,15 +60,14 @@ class FileRepositoryImpl @Inject constructor(
     }
 
     override fun setFileName(name: String) {
-        _state.update { name }
+        _state.update { it.copy(fileName = name) }
     }
 
-    override fun getFileName(): Flow<String> {
-        return state
+    override suspend fun getFileState(): FileUploadState {
+        return state.value
     }
 
     companion object {
-        private const val BLANK_STRING = ""
         private const val NO_ERROR_MESSAGE = "No error message"
     }
 

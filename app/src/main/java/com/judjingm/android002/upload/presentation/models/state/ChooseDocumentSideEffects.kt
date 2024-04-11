@@ -1,4 +1,4 @@
-package com.judjingm.android002.upload.presentation.models.chooseDocument
+package com.judjingm.android002.upload.presentation.models.state
 
 import com.judjingm.android002.home.presentation.models.StringVO
 

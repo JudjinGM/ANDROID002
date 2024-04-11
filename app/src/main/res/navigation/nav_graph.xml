@@ -51,7 +51,30 @@
     </fragment>
     <fragment
         android:id="@+id/chooseDocumentFragment"
-        android:name="com.judjingm.android002.upload.presentation.choseDocument.ChooseDocumentFragment"
+        android:name="com.judjingm.android002.upload.presentation.chooseDocument.ChooseDocumentFragment"
         android:label="fragment_upload"
-        tools:layout="@layout/fragment_choose_document" />
+        tools:layout="@layout/fragment_choose_document">
+        <action
+            android:id="@+id/action_chooseDocumentFragment_to_chooseDocumentNameFragment"
+            app:destination="@id/chooseDocumentNameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chooseDocumentNameFragment"
+        android:name="com.judjingm.android002.upload.presentation.chooseName.ChooseDocumentNameFragment"
+        android:label="fragment_choose_name"
+        tools:layout="@layout/fragment_choose_name">
+        <action
+            android:id="@+id/action_chooseDocumentNameFragment_to_confirmUploadFragment"
+            app:destination="@id/confirmUploadFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/confirmUploadFragment"
+        android:name="com.judjingm.android002.upload.presentation.confirmUpload.ConfirmUploadFragment"
+        android:label="fragment_confirm_upload"
+        tools:layout="@layout/fragment_confirm_upload">
+        <action
+            android:id="@+id/action_confirmUploadFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:popUpTo="@id/profileFragment" />
+    </fragment>
 </navigation>

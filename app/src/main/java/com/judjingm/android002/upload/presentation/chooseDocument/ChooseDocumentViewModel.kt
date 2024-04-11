@@ -1,4 +1,4 @@
-package com.judjingm.android002.upload.presentation.choseDocument
+package com.judjingm.android002.upload.presentation.chooseDocument
 
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
@@ -8,11 +8,11 @@ import com.judjingm.android002.common.utill.Resource
 import com.judjingm.android002.home.presentation.models.StringVO
 import com.judjingm.android002.upload.domain.models.FileResult
 import com.judjingm.android002.upload.domain.useCase.SavePdfToPrivateStorageUseCase
-import com.judjingm.android002.upload.presentation.models.chooseDocument.ChooseDocumentErrorState
-import com.judjingm.android002.upload.presentation.models.chooseDocument.ChooseDocumentEvent
-import com.judjingm.android002.upload.presentation.models.chooseDocument.ChooseDocumentScreenState
-import com.judjingm.android002.upload.presentation.models.chooseDocument.ChooseDocumentSideEffects
-import com.judjingm.android002.upload.presentation.models.chooseDocument.ChooseDocumentUiScreenState
+import com.judjingm.android002.upload.presentation.models.state.ChooseDocumentErrorState
+import com.judjingm.android002.upload.presentation.models.state.ChooseDocumentEvent
+import com.judjingm.android002.upload.presentation.models.state.ChooseDocumentScreenState
+import com.judjingm.android002.upload.presentation.models.state.ChooseDocumentSideEffects
+import com.judjingm.android002.upload.presentation.models.state.ChooseDocumentUiScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -47,19 +47,6 @@ class ChooseDocumentViewModel @Inject constructor(
         viewModelScope.launch {
             state.collect { screenState ->
                 when (screenState.errorState) {
-                    is ChooseDocumentErrorState.NoInternet -> {
-                        _sideEffects.emit(
-                            ChooseDocumentSideEffects
-                                .ShowMessage(StringVO.Resource(R.string.error_no_internet))
-                        )
-                    }
-
-                    ChooseDocumentErrorState.NoConnection -> {
-                        _sideEffects.emit(
-                            ChooseDocumentSideEffects
-                                .ShowMessage(StringVO.Resource(R.string.error_service_problem))
-                        )
-                    }
 
                     is ChooseDocumentErrorState.CannotChooseDocumentFile -> {
                         ChooseDocumentSideEffects
@@ -72,7 +59,6 @@ class ChooseDocumentViewModel @Inject constructor(
                             ChooseDocumentSideEffects
                                 .ShowMessage(StringVO.Resource(R.string.error_something_went_wrong))
                         )
-
                     }
 
                     ChooseDocumentErrorState.NoError -> with(screenState) {

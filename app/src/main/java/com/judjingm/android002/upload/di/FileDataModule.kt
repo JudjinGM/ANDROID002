@@ -4,8 +4,8 @@ import com.judjingm.android002.upload.data.api.FileLocalStorage
 import com.judjingm.android002.upload.data.api.FileRemoteDataSource
 import com.judjingm.android002.upload.data.impl.FileLocalStorageImpl
 import com.judjingm.android002.upload.data.impl.FileRemoteDataSourceImpl
-import com.judjingm.android002.upload.data.impl.FileRepositoryImpl
-import com.judjingm.android002.upload.domain.repository.FileRepository
+import com.judjingm.android002.upload.data.impl.FileUploadUploadRepositoryImpl
+import com.judjingm.android002.upload.domain.repository.FileUploadRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -26,5 +26,5 @@ interface FileDataModule {
 
     @Singleton
     @Binds
-    fun bindFileRepository(impl: FileRepositoryImpl): FileRepository
+    fun bindFileRepository(impl: FileUploadUploadRepositoryImpl): FileUploadRepository
 }

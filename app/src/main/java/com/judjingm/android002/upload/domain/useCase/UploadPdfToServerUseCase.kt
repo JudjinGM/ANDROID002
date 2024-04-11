@@ -1,17 +1,15 @@
 package com.judjingm.android002.upload.domain.useCase
 
-import android.net.Uri
 import com.judjingm.android002.common.utill.Resource
-import com.judjingm.android002.upload.domain.repository.FileRepository
+import com.judjingm.android002.upload.domain.repository.FileUploadRepository
 import javax.inject.Inject
 
 interface UploadPdfToServerUseCase {
-    suspend operator fun invoke(uri: Uri): Resource<Boolean, String>
-    class Base @Inject constructor(private val fileRepository: FileRepository) :
+    suspend operator fun invoke(): Resource<Boolean, String>
+    class Base @Inject constructor(private val fileUploadRepository: FileUploadRepository) :
         UploadPdfToServerUseCase {
-        override suspend fun invoke(uri: Uri): Resource<Boolean, String> {
-            return fileRepository.uploadPdfToServer(uri)
+        override suspend fun invoke(): Resource<Boolean, String> {
+            return fileUploadRepository.uploadPdfToServer()
         }
     }
-
 }

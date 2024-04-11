@@ -1,6 +1,6 @@
 package com.judjingm.android002.upload.di
 
-import com.judjingm.android002.upload.domain.useCase.GetFileNameUseCase
+import com.judjingm.android002.upload.domain.useCase.GetFileStateUseCase
 import com.judjingm.android002.upload.domain.useCase.SavePdfToPrivateStorageUseCase
 import com.judjingm.android002.upload.domain.useCase.SetFileNameUseCase
 import com.judjingm.android002.upload.domain.useCase.UploadPdfToServerUseCase
@@ -25,8 +25,8 @@ interface FileDomainModule {
 
     @Binds
     fun bindGetFileNameUseCase(
-        impl: GetFileNameUseCase.Base
-    ): GetFileNameUseCase
+        impl: GetFileStateUseCase.Base
+    ): GetFileStateUseCase
 
     @Binds
     fun bindSetFileNameUseCase(

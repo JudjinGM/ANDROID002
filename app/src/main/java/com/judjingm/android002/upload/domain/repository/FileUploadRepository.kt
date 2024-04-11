@@ -3,11 +3,11 @@ package com.judjingm.android002.upload.domain.repository
 import android.net.Uri
 import com.judjingm.android002.common.utill.Resource
 import com.judjingm.android002.upload.domain.models.FileResult
-import kotlinx.coroutines.flow.Flow
+import com.judjingm.android002.upload.domain.models.FileUploadState
 
-interface FileRepository {
+interface FileUploadRepository {
     suspend fun savePdfToPrivateStorage(uri: Uri, name: String): Resource<FileResult, String>
-    suspend fun uploadPdfToServer(uri: Uri): Resource<Boolean, String>
+    suspend fun uploadPdfToServer(): Resource<Boolean, String>
     fun setFileName(name: String)
-    fun getFileName(): Flow<String>
+    suspend fun getFileState(): FileUploadState
 }
