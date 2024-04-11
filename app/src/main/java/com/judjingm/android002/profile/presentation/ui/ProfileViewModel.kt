@@ -204,6 +204,11 @@ class ProfileViewModel @Inject constructor(
             ProfileEvent.CloseButtonClicked -> {
                 closeAuthenticationButtonClicked()
             }
+
+            ProfileEvent.OnUploadPdfButtonClicked ->
+                viewModelScope.launch {
+                    _sideEffects.emit(ProfileSideEffects.NavigateToUploadPdf)
+                }
         }
     }
 

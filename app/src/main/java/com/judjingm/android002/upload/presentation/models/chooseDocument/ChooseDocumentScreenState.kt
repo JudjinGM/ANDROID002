@@ -3,6 +3,7 @@ package com.judjingm.android002.upload.presentation.models.chooseDocument
 import android.net.Uri
 
 data class ChooseDocumentScreenState(
+    val documentName: String = "",
     val documentUri: Uri = Uri.EMPTY,
     val isDocumentSelectInProcess: Boolean = false,
     val isLoading: Boolean = false,

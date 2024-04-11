@@ -73,4 +73,5 @@
     <string name="choose_document">Выбрать документ</string>
     <string name="upload_document">Отправить документ</string>
     <string name="upload_pdf">Загрузить PDF</string>
+    <string name="proceed_next">Далее</string>
 </resources>

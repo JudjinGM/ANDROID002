@@ -6,4 +6,5 @@ sealed interface ProfileEvent {
     data object RequestTokenDenied : ProfileEvent
     data object CloseButtonClicked : ProfileEvent
     data object OnLogoutTaped : ProfileEvent
+    data object OnUploadPdfButtonClicked : ProfileEvent
 }

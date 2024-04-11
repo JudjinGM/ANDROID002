@@ -6,6 +6,7 @@ import com.judjingm.android002.R
 import com.judjingm.android002.common.ui.BaseViewModel
 import com.judjingm.android002.common.utill.Resource
 import com.judjingm.android002.home.presentation.models.StringVO
+import com.judjingm.android002.upload.domain.models.FileResult
 import com.judjingm.android002.upload.domain.useCase.SavePdfToPrivateStorageUseCase
 import com.judjingm.android002.upload.presentation.models.chooseDocument.ChooseDocumentErrorState
 import com.judjingm.android002.upload.presentation.models.chooseDocument.ChooseDocumentEvent
@@ -21,7 +22,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -82,7 +82,10 @@ class ChooseDocumentViewModel @Inject constructor(
                             }
                         } else if (documentUri.toString().isNotBlank()) {
                             _uiState.update {
-                                ChooseDocumentUiScreenState.Success(documentUri)
+                                ChooseDocumentUiScreenState.Success(
+                                    name = documentName,
+                                    uri = documentUri
+                                )
                             }
                         } else {
                             _uiState.update {
@@ -110,7 +113,7 @@ class ChooseDocumentViewModel @Inject constructor(
             }
 
             is ChooseDocumentEvent.DocumentSelected -> {
-                saveDocument(event.uri)
+                saveDocument(event.uri, event.name)
             }
 
             ChooseDocumentEvent.ProceedNextClicked -> {
@@ -122,16 +125,16 @@ class ChooseDocumentViewModel @Inject constructor(
 
     }
 
-    private fun saveDocument(uri: Uri) {
+    private fun saveDocument(uri: Uri, name: String) {
         viewModelScope.launch {
-            savePdfToPrivateStorageUseCase(uri).handle(
-                object : Resource.ResultHandler<File, String> {
-                    override suspend fun handleSuccess(data: File) {
-                        val savedFileUri = Uri.fromFile(data)
+            savePdfToPrivateStorageUseCase.invoke(uri, name).handle(
+                object : Resource.ResultHandler<FileResult, String> {
+                    override suspend fun handleSuccess(data: FileResult) {
                         _state.update {
                             it.copy(
                                 isLoading = false,
-                                documentUri = savedFileUri
+                                documentUri = data.uri,
+                                documentName = data.originalName
                             )
                         }
                     }
@@ -149,30 +152,4 @@ class ChooseDocumentViewModel @Inject constructor(
         }
     }
 
-//    private fun uploadDocument(uri: Uri) {
-//        viewModelScope.launch {
-//            uploadDocumentUseCase(uri = uri).handle(object :
-//                Resource.ResultHandler<Boolean, String> {
-//                override suspend fun handleSuccess(data: Boolean) {
-//                    _state.update {
-//                        it.copy(
-//                            isLoading = false,
-//                            isUploadSuccess = true
-//                        )
-//                    }
-//                }
-//
-//                override suspend fun handleError(error: String) {
-//                    _state.update {
-//                        it.copy(
-//                            isLoading = false,
-//                            isUploadSuccess = false,
-//                            errorState = ChooseDocumentErrorState.CannotChooseDocumentFile(error = error)
-//                        )
-//                    }
-//
-//                }
-//            })
-//        }
-//    }
 }

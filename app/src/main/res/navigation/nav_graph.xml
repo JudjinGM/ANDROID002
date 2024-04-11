@@ -17,7 +17,11 @@
         android:id="@+id/profileFragment"
         android:name="com.judjingm.android002.profile.presentation.ui.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profileFragment_to_chooseDocumentFragment"
+            app:destination="@id/chooseDocumentFragment" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.judjingm.android002.search.presentation.ui.SearchFragment"
@@ -45,4 +49,9 @@
             android:autoVerify="true"
             app:uri="https://judjingm.github.io/android002/{contentTypeName}/{contentId}" />
     </fragment>
+    <fragment
+        android:id="@+id/chooseDocumentFragment"
+        android:name="com.judjingm.android002.upload.presentation.choseDocument.ChooseDocumentFragment"
+        android:label="fragment_upload"
+        tools:layout="@layout/fragment_choose_document" />
 </navigation>

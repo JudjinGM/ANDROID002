@@ -146,6 +146,17 @@
         app:layout_constraintStart_toStartOf="@id/guidLineStart"
         app:layout_constraintTop_toBottomOf="@id/loginButton" />
 
+    <Button
+        android:id="@+id/toUploadFileButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/button_margin_top"
+        android:text="@string/upload_pdf"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
+        app:layout_constraintStart_toStartOf="@id/guidLineStart"
+        app:layout_constraintTop_toBottomOf="@id/logoutButton" />
+
     <WebView
         android:id="@+id/webView"
         android:layout_width="match_parent"

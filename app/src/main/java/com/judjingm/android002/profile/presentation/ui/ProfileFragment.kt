@@ -8,6 +8,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import com.judjingm.android002.R
 import com.judjingm.android002.common.ui.BaseFragment
 import com.judjingm.android002.databinding.FragmentProfileBinding
 import com.judjingm.android002.profile.domain.models.ProfileDetails
@@ -32,6 +34,9 @@ class ProfileFragment :
 
         binding.closeWebViewImageView.setOnClickListener {
             viewModel.handleEvent(ProfileEvent.CloseButtonClicked)
+        }
+        binding.toUploadFileButton.setOnClickListener {
+            viewModel.handleEvent(ProfileEvent.OnUploadPdfButtonClicked)
         }
     }
 
@@ -78,6 +83,10 @@ class ProfileFragment :
             is ProfileSideEffects.ShowMessage -> {
                 showToast(sideEffect.message.value(requireContext()))
             }
+
+            ProfileSideEffects.NavigateToUploadPdf -> {
+                findNavController().navigate(R.id.action_profileFragment_to_chooseDocumentFragment)
+            }
         }
     }
 
@@ -116,6 +125,7 @@ class ProfileFragment :
         binding.loginButton.isVisible = true
         binding.messageTextView.isVisible = true
         binding.messageTextView.text = message
+        binding.toUploadFileButton.isVisible = true
     }
 
     private fun showLoadingScreen() {
@@ -132,6 +142,8 @@ class ProfileFragment :
         binding.userIdTitleTextView.isVisible = true
         binding.userIdTextView.isVisible = true
         binding.logoutButton.isVisible = true
+        binding.toUploadFileButton.isVisible = true
+
     }
 
     private fun emptyScreen() {
@@ -145,6 +157,7 @@ class ProfileFragment :
         binding.progressBar.isVisible = false
         binding.messageTextView.isVisible = false
         binding.closeWebViewButton.isVisible = false
+        binding.toUploadFileButton.isVisible = false
     }
 
     private fun showToast(message: String) {

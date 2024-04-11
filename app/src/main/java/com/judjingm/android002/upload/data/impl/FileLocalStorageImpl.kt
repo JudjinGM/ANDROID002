@@ -3,7 +3,6 @@ package com.judjingm.android002.upload.data.impl
 import android.content.Context
 import android.net.Uri
 import android.os.Environment
-import com.judjingm.android002.common.utill.Resource
 import com.judjingm.android002.upload.data.api.FileLocalStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
@@ -13,8 +12,8 @@ import javax.inject.Inject
 
 class FileLocalStorageImpl @Inject constructor(@ApplicationContext private val context: Context) :
     FileLocalStorage {
-    override fun savePdfToPrivateStorage(uri: Uri): Resource<File, String> {
-        val fileName = uri.lastPathSegment ?: DEFAULT_PDF_FILE_NAME
+    override fun savePdfToPrivateStorage(uri: Uri): File {
+        val fileName = DEFAULT_PDF_FILE_NAME
         val filePath =
             File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), DIRECTORY_PATH)
 
@@ -22,17 +21,12 @@ class FileLocalStorageImpl @Inject constructor(@ApplicationContext private val c
             filePath.mkdirs()
         }
         val file = File(filePath, fileName)
-
-        return try {
-            context.contentResolver.openInputStream(uri)?.use { inputStream ->
-                FileOutputStream(file).use { outputStream ->
-                    inputStream.copyTo(outputStream)
-                }
+        context.contentResolver.openInputStream(uri)?.use { inputStream ->
+            FileOutputStream(file).use { outputStream ->
+                inputStream.copyTo(outputStream)
             }
-            Resource.Success(file)
-        } catch (e: Exception) {
-            Resource.Error(e.message ?: "Unknown error of saving file")
         }
+        return file
     }
 
     override fun deletePdfFromPrivateStorage(uri: Uri) {
