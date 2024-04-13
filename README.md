@@ -1,5 +1,5 @@
 An Android application in Kotlin for movie search (TMDB API). 
-The app allows users to look up for popular movies and tv shows, search movies and tv show, check profile information.
+The app allows users to look up for popular movies and tv shows, search movies and tv show, check profile information, upload pdf files to backend server
 
 Actually, pet project for testing new technology stacks.
 
