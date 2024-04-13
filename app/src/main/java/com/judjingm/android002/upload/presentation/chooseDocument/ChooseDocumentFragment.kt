@@ -43,7 +43,13 @@ class ChooseDocumentFragment : BaseFragment<FragmentChooseDocumentBinding, Choos
                 val nameIndex = returnCursor?.getColumnIndex(OpenableColumns.DISPLAY_NAME)
                 returnCursor?.moveToFirst()
                 val name: String = nameIndex?.let { returnCursor.getString(it) } ?: BLANC_STRING
-                viewModel.handleEvent(ChooseDocumentEvent.DocumentSelected(uri = uri, name = name))
+                val resultName = name.substringBeforeLast(".")
+                viewModel.handleEvent(
+                    ChooseDocumentEvent.DocumentSelected(
+                        uri = uri,
+                        name = resultName
+                    )
+                )
             }
         }
 
