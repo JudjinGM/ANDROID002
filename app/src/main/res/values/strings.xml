@@ -69,4 +69,10 @@
     <string name="upload">Upload</string>
     <string name="back">Back</string>
     <string name="cancel">Cancel</string>
+    <string name="uploading_pdf_to_server">Uploading PDF to server</string>
+    <string name="channel_id_main">Main</string>
+    <string name="uploading_content">Uploading file %1$s</string>
+    <string name="done">Done</string>
+    <string name="upload_stared">Upload stared</string>
+    <string name="retry">Retry</string>
 </resources>

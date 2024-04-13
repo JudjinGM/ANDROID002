@@ -65,7 +65,8 @@
         tools:layout="@layout/fragment_choose_name">
         <action
             android:id="@+id/action_chooseDocumentNameFragment_to_confirmUploadFragment"
-            app:destination="@id/confirmUploadFragment" />
+            app:destination="@id/confirmUploadFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/confirmUploadFragment"
@@ -75,6 +76,7 @@
         <action
             android:id="@+id/action_confirmUploadFragment_to_profileFragment"
             app:destination="@id/profileFragment"
-            app:popUpTo="@id/profileFragment" />
+            app:popUpTo="@id/profileFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

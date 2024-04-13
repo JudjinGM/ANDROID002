@@ -16,21 +16,25 @@ class FileRemoteDataSourceImpl @Inject constructor(
     private val exceptionMapper: NetworkToUploadFileExceptionMapper
 ) :
     FileRemoteDataSource {
-    override suspend fun uploadFile(uri: Uri, fileName: String): Boolean {
+    override suspend fun uploadFile(uri: Uri, fileName: String) {
         return try {
             val file = File(uri.path)
             val name = fileName.ifBlank { file.name }
             fileService.uploadDocument(
                 MultipartBody.Part.createFormData(
-                    "file",
+                    FILE,
                     name,
                     file.asRequestBody()
                 )
             )
-            true
         } catch (exception: NetworkException) {
             logDebugMessage(exception.message)
             throw exceptionMapper.handleException(exception)
         }
+    }
+
+    companion object {
+        private const val FILE = "file"
+
     }
 }

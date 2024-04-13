@@ -11,6 +11,7 @@ import com.judjingm.android002.upload.presentation.models.state.ConfirmUploadErr
 import com.judjingm.android002.upload.presentation.models.state.ConfirmUploadEvent
 import com.judjingm.android002.upload.presentation.models.state.ConfirmUploadScreenState
 import com.judjingm.android002.upload.presentation.models.state.ConfirmUploadSideEffects
+import com.judjingm.android002.upload.presentation.models.state.ConfirmUploadUiErrorState
 import com.judjingm.android002.upload.presentation.models.state.ConfirmUploadUiScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -72,12 +74,14 @@ class ConfirmUploadViewModel @Inject constructor(
                     }
 
                     is ConfirmUploadErrorState.CannotUploadFile -> {
-                        _sideEffects.emit(
-                            ConfirmUploadSideEffects
-                                .ShowMessage(StringVO.Plain(screenState.errorState.error))
-                        )
+                        _uiState.update {
+                            ConfirmUploadUiScreenState.Error(
+                                ConfirmUploadUiErrorState.FileUploadError(
+                                    StringVO.Resource(R.string.error_something_went_wrong)
+                                )
+                            )
+                        }
                     }
-
 
                     ConfirmUploadErrorState.UnknownError -> {
                         _sideEffects.emit(
@@ -88,19 +92,33 @@ class ConfirmUploadViewModel @Inject constructor(
 
                     ConfirmUploadErrorState.CannotShowFile -> {
                         _uiState.update {
-                            ConfirmUploadUiScreenState.Error(StringVO.Resource(R.string.error_something_went_wrong))
-                        }
-                    }
-
-                    ConfirmUploadErrorState.NoError -> with(screenState) {
-                        _uiState.update {
-                            ConfirmUploadUiScreenState.Success(
-                                name = documentName,
-                                uri = documentUri
+                            ConfirmUploadUiScreenState.Error(
+                                ConfirmUploadUiErrorState.FileLoadError(
+                                    StringVO.Resource(R.string.error_something_went_wrong)
+                                )
                             )
                         }
                     }
 
+                    ConfirmUploadErrorState.NoError -> with(screenState) {
+                        if (isUploading) {
+                            _uiState.update {
+                                ConfirmUploadUiScreenState.Uploading
+                            }
+                        } else if (isUploadComplete) {
+                            _uiState.update {
+                                ConfirmUploadUiScreenState.Success
+                            }
+                        } else {
+                            _uiState.update {
+                                ConfirmUploadUiScreenState.ReadyToUplLoad(
+                                    name = documentName,
+                                    uri = documentUri
+                                )
+                            }
+                        }
+
+                    }
                 }
             }
         }
@@ -120,7 +138,7 @@ class ConfirmUploadViewModel @Inject constructor(
 
             ConfirmUploadEvent.CancelButtonClicked -> {
                 viewModelScope.launch {
-                    _sideEffects.emit(ConfirmUploadSideEffects.CancelUploadConfirmation)
+                    _sideEffects.emit(ConfirmUploadSideEffects.NavigateToHome)
                 }
             }
 
@@ -131,31 +149,53 @@ class ConfirmUploadViewModel @Inject constructor(
                     )
                 }
             }
+
+            ConfirmUploadEvent.RetryButtonClicked -> {
+                uploadDocument()
+            }
         }
     }
 
     private fun uploadDocument() {
         viewModelScope.launch {
-            uploadPdfToServerUseCase().handle(
-                object : Resource.ResultHandler<Boolean, String> {
-                    override suspend fun handleSuccess(data: Boolean) {
-                        _sideEffects.emit(
-                            ConfirmUploadSideEffects.ShowMessage(
-                                StringVO.Resource(
-                                    R.string.upload_success
-                                )
-                            )
+            uploadPdfToServerUseCase()
+                .onStart {
+                    _state.update {
+                        it.copy(
+                            errorState = ConfirmUploadErrorState.NoError
                         )
                     }
-
-                    override suspend fun handleError(error: String) {
-                        _state.update {
-                            it.copy(
-                                errorState = ConfirmUploadErrorState.CannotUploadFile(error),
-                            )
+                }
+                .collect { resource ->
+                    resource.handle(object : Resource.ResultHandler<Boolean, String> {
+                        override suspend fun handleSuccess(data: Boolean) {
+                            if (data) {
+                                _state.update {
+                                    it.copy(
+                                        isUploadComplete = true,
+                                        isUploading = false
+                                    )
+                                }
+                            } else {
+                                _state.update {
+                                    it.copy(
+                                        isUploading = true
+                                    )
+                                }
+                            }
                         }
-                    }
-                })
+
+                        override suspend fun handleError(error: String) {
+                            _state.update {
+                                it.copy(
+                                    isUploading = false,
+                                    isUploadComplete = false,
+                                    errorState = ConfirmUploadErrorState.CannotUploadFile(error),
+                                )
+                            }
+                        }
+                    })
+                }
         }
     }
 

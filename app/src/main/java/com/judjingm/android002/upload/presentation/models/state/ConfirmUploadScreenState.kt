@@ -6,4 +6,6 @@ data class ConfirmUploadScreenState(
     val documentName: String = "",
     val documentUri: Uri = Uri.EMPTY,
     val errorState: ConfirmUploadErrorState = ConfirmUploadErrorState.NoError,
+    val isUploading: Boolean = false,
+    val isUploadComplete: Boolean = false,
 )

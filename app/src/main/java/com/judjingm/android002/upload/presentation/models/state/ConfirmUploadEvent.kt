@@ -8,6 +8,8 @@ sealed interface ConfirmUploadEvent {
 
     data object CancelButtonClicked : ConfirmUploadEvent
 
+    data object RetryButtonClicked : ConfirmUploadEvent
+
     data object ErrorShowingPDf : ConfirmUploadEvent
 
 }

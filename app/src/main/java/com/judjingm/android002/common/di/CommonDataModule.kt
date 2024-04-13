@@ -49,7 +49,9 @@ class NetworkModule {
             .addInterceptor(httpLoggingInterceptor)
             .addInterceptor(headerInterceptor)
             .addInterceptor(errorInterceptor)
-            .writeTimeout(1, TimeUnit.MINUTES)
+            .connectTimeout(TIMEOUT_180, TimeUnit.SECONDS)
+            .writeTimeout(TIMEOUT_180, TimeUnit.SECONDS)
+            .readTimeout(TIMEOUT_180, TimeUnit.SECONDS)
             .build()
     }
 
@@ -98,6 +100,7 @@ class NetworkModule {
     companion object {
         const val MOVIE_DB_ENDPOINT_URL = "https://api.themoviedb.org/"
         const val INTERNAL_SERVER_ENDPOINT_URL = "https://androiduploadtestserver.ew.r.appspot.com/"
+        const val TIMEOUT_180 = 180L
     }
 
 }

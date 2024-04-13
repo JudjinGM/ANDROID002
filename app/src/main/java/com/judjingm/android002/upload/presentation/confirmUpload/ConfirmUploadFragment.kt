@@ -20,6 +20,7 @@ import com.judjingm.android002.common.ui.BaseFragment
 import com.judjingm.android002.databinding.FragmentConfirmUploadBinding
 import com.judjingm.android002.upload.presentation.models.state.ConfirmUploadEvent
 import com.judjingm.android002.upload.presentation.models.state.ConfirmUploadSideEffects
+import com.judjingm.android002.upload.presentation.models.state.ConfirmUploadUiErrorState
 import com.judjingm.android002.upload.presentation.models.state.ConfirmUploadUiScreenState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -39,8 +40,11 @@ class ConfirmUploadFragment : BaseFragment<FragmentConfirmUploadBinding, Confirm
         binding.backButton.setOnClickListener {
             viewModel.handleEvent(ConfirmUploadEvent.BackButtonClicked)
         }
-        binding.cancelButton.setOnClickListener {
+        binding.toHomeScreenButton.setOnClickListener {
             viewModel.handleEvent(ConfirmUploadEvent.CancelButtonClicked)
+        }
+        binding.retryButton.setOnClickListener {
+            viewModel.handleEvent(ConfirmUploadEvent.RetryButtonClicked)
         }
     }
 
@@ -65,14 +69,16 @@ class ConfirmUploadFragment : BaseFragment<FragmentConfirmUploadBinding, Confirm
     private fun updateUi(uiState: ConfirmUploadUiScreenState) {
         when (uiState) {
             ConfirmUploadUiScreenState.Loading -> showLoading()
-            is ConfirmUploadUiScreenState.Success -> showContent(uiState.name, uiState.uri)
-            is ConfirmUploadUiScreenState.Error -> showError(uiState.message.value(requireContext()))
+            is ConfirmUploadUiScreenState.ReadyToUplLoad -> showContent(uiState.name, uiState.uri)
+            ConfirmUploadUiScreenState.Uploading -> showUploading()
+            is ConfirmUploadUiScreenState.Success -> showSuccess()
+            is ConfirmUploadUiScreenState.Error -> showError(uiState.errorState)
         }
     }
 
     private fun handleSideEffect(sideEffects: ConfirmUploadSideEffects) {
         when (sideEffects) {
-            ConfirmUploadSideEffects.CancelUploadConfirmation -> {
+            ConfirmUploadSideEffects.NavigateToHome -> {
                 findNavController().navigate(R.id.action_confirmUploadFragment_to_profileFragment)
             }
 
@@ -98,28 +104,63 @@ class ConfirmUploadFragment : BaseFragment<FragmentConfirmUploadBinding, Confirm
         setPdfImage(uri, binding.documentImageView)
         binding.confirmButton.isVisible = true
         binding.backButton.isVisible = true
-        binding.cancelButton.isVisible = true
+        binding.toHomeScreenButton.isVisible = true
     }
 
-    private fun showError(message: String) {
+    private fun showUploading() {
         emptyScreen()
-        binding.errorTextView.text = message
-        binding.errorTextView.isVisible = true
-        binding.placeholderImage.isVisible = true
-        binding.backButton.isVisible = true
-        binding.cancelButton.isVisible = true
+        binding.statusTextView.isVisible = true
+        binding.statusTextView.text = getString(R.string.uploading_pdf_to_server)
+        binding.documentNameTextView.isVisible = true
+        binding.documentImageView.isVisible = true
+        binding.progressBar.isVisible = true
+        binding.toHomeScreenButton.isVisible = true
+    }
+
+    private fun showSuccess() {
+        emptyScreen()
+        binding.documentNameTextView.isVisible = true
+        binding.documentImageView.isVisible = true
+        binding.statusTextView.isVisible = true
+        binding.statusTextView.text = getString(R.string.upload_success)
+        binding.toHomeScreenButton.isVisible = true
+    }
+
+    private fun showError(errorState: ConfirmUploadUiErrorState) {
+        when (errorState) {
+            is ConfirmUploadUiErrorState.FileLoadError -> {
+                emptyScreen()
+                binding.errorTextView.text = errorState.message.value(requireContext())
+                binding.errorTextView.isVisible = true
+                binding.placeholderImage.isVisible = true
+                binding.backButton.isVisible = true
+                binding.toHomeScreenButton.isVisible = true
+            }
+
+            is ConfirmUploadUiErrorState.FileUploadError -> {
+                emptyScreen()
+                binding.documentNameTextView.isVisible = true
+                binding.documentImageView.isVisible = true
+                binding.statusTextView.isVisible = true
+                binding.statusTextView.text = errorState.message.value(requireContext())
+                binding.retryButton.isVisible = true
+                binding.toHomeScreenButton.isVisible = true
+            }
+        }
     }
 
     private fun emptyScreen() {
         with(binding) {
-            progressBar.isVisible = false
             placeholderImage.isVisible = false
             errorTextView.isVisible = false
             documentNameTextView.isVisible = false
             documentImageView.isVisible = false
             confirmButton.isVisible = false
             backButton.isVisible = false
-            cancelButton.isVisible = false
+            progressBar.isVisible = false
+            statusTextView.isVisible = false
+            retryButton.isVisible = false
+            toHomeScreenButton.isVisible = false
         }
     }
 
