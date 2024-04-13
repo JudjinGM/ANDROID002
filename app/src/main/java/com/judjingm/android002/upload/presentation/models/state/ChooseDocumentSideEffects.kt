@@ -9,4 +9,6 @@ sealed interface ChooseDocumentSideEffects {
     data object OpenDocumentPicker : ChooseDocumentSideEffects
 
     data object NavigateToNextScreen : ChooseDocumentSideEffects
+    data object NavigateToPreviousScreen : ChooseDocumentSideEffects
+
 }

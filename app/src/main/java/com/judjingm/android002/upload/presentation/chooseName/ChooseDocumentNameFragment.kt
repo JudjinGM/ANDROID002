@@ -31,7 +31,7 @@ class ChooseDocumentNameFragment :
             }
         }
 
-        binding.backButton.setOnClickListener {
+        binding.toolbar.setNavigationOnClickListener {
             viewModel.handleEvent(ChooseDocumentNameEvent.BackClicked)
         }
     }

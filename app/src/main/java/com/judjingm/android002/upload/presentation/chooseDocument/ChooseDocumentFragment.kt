@@ -15,7 +15,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import app.cashadvisor.common.utill.extensions.logDebugMessage
 import com.bumptech.glide.Glide
 import com.judjingm.android002.R
 import com.judjingm.android002.common.ui.BaseFragment
@@ -60,6 +59,10 @@ class ChooseDocumentFragment : BaseFragment<FragmentChooseDocumentBinding, Choos
 
         binding.proceedNextButton.setOnClickListener {
             viewModel.handleEvent(ChooseDocumentEvent.ProceedNextClicked)
+        }
+
+        binding.toolbar.setNavigationOnClickListener {
+            viewModel.handleEvent(ChooseDocumentEvent.BackClicked)
         }
     }
 
@@ -111,6 +114,10 @@ class ChooseDocumentFragment : BaseFragment<FragmentChooseDocumentBinding, Choos
             ChooseDocumentSideEffects.NavigateToNextScreen -> {
                 findNavController().navigate(R.id.action_chooseDocumentFragment_to_chooseDocumentNameFragment)
             }
+
+            ChooseDocumentSideEffects.NavigateToPreviousScreen -> {
+                findNavController().popBackStack()
+            }
         }
     }
 
@@ -150,7 +157,6 @@ class ChooseDocumentFragment : BaseFragment<FragmentChooseDocumentBinding, Choos
             } catch (e: Exception) {
                 emptyScreen()
                 e.printStackTrace()
-                logDebugMessage("getPdfThumbnail error ${e.localizedMessage}")
             }
         }
     }

@@ -6,6 +6,8 @@ import android.net.Uri
 import android.os.ParcelFileDescriptor
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.addCallback
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.net.toFile
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -13,7 +15,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import app.cashadvisor.common.utill.extensions.logDebugMessage
 import com.bumptech.glide.Glide
 import com.judjingm.android002.R
 import com.judjingm.android002.common.ui.BaseFragment
@@ -37,7 +38,7 @@ class ConfirmUploadFragment : BaseFragment<FragmentConfirmUploadBinding, Confirm
         binding.confirmButton.setOnClickListener {
             viewModel.handleEvent(ConfirmUploadEvent.ConfirmButtonClicked)
         }
-        binding.backButton.setOnClickListener {
+        binding.toolbar.setNavigationOnClickListener {
             viewModel.handleEvent(ConfirmUploadEvent.BackButtonClicked)
         }
         binding.toHomeScreenButton.setOnClickListener {
@@ -103,8 +104,13 @@ class ConfirmUploadFragment : BaseFragment<FragmentConfirmUploadBinding, Confirm
         binding.documentNameTextView.isVisible = true
         setPdfImage(uri, binding.documentImageView)
         binding.confirmButton.isVisible = true
-        binding.backButton.isVisible = true
         binding.toHomeScreenButton.isVisible = true
+        setNavigationIconIsVisible(true)
+        requireActivity().onBackPressedDispatcher
+            .addCallback {
+                findNavController().popBackStack()
+            }
+
     }
 
     private fun showUploading() {
@@ -115,6 +121,8 @@ class ConfirmUploadFragment : BaseFragment<FragmentConfirmUploadBinding, Confirm
         binding.documentImageView.isVisible = true
         binding.progressBar.isVisible = true
         binding.toHomeScreenButton.isVisible = true
+        binding.toolbar.navigationIcon = null
+        requireActivity().onBackPressedDispatcher.addCallback { }
     }
 
     private fun showSuccess() {
@@ -124,6 +132,8 @@ class ConfirmUploadFragment : BaseFragment<FragmentConfirmUploadBinding, Confirm
         binding.statusTextView.isVisible = true
         binding.statusTextView.text = getString(R.string.upload_success)
         binding.toHomeScreenButton.isVisible = true
+        requireActivity().onBackPressedDispatcher.addCallback { }
+
     }
 
     private fun showError(errorState: ConfirmUploadUiErrorState) {
@@ -133,7 +143,7 @@ class ConfirmUploadFragment : BaseFragment<FragmentConfirmUploadBinding, Confirm
                 binding.errorTextView.text = errorState.message.value(requireContext())
                 binding.errorTextView.isVisible = true
                 binding.placeholderImage.isVisible = true
-                binding.backButton.isVisible = true
+                setNavigationIconIsVisible(true)
                 binding.toHomeScreenButton.isVisible = true
             }
 
@@ -156,10 +166,10 @@ class ConfirmUploadFragment : BaseFragment<FragmentConfirmUploadBinding, Confirm
             documentNameTextView.isVisible = false
             documentImageView.isVisible = false
             confirmButton.isVisible = false
-            backButton.isVisible = false
             progressBar.isVisible = false
             statusTextView.isVisible = false
             retryButton.isVisible = false
+            setNavigationIconIsVisible(false)
             toHomeScreenButton.isVisible = false
         }
     }
@@ -181,7 +191,6 @@ class ConfirmUploadFragment : BaseFragment<FragmentConfirmUploadBinding, Confirm
                 Glide.with(requireContext()).load(bitmap).into(imageView)
             } catch (e: Exception) {
                 viewModel.handleEvent(ConfirmUploadEvent.ErrorShowingPDf)
-                logDebugMessage("setPdfImage ${e.message}")
             }
         }
     }
@@ -204,4 +213,9 @@ class ConfirmUploadFragment : BaseFragment<FragmentConfirmUploadBinding, Confirm
         return bitmap
     }
 
+    fun setNavigationIconIsVisible(isVisible: Boolean) {
+        if (isVisible) binding.toolbar.navigationIcon =
+            AppCompatResources.getDrawable(requireContext(), R.drawable.ic_arrow_left)
+        else binding.toolbar.navigationIcon = null
+    }
 }

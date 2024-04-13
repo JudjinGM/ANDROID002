@@ -107,8 +107,13 @@ class ChooseDocumentViewModel @Inject constructor(
                     _sideEffects.emit(ChooseDocumentSideEffects.NavigateToNextScreen)
                 }
             }
-        }
 
+            ChooseDocumentEvent.BackClicked -> {
+                viewModelScope.launch {
+                    _sideEffects.emit(ChooseDocumentSideEffects.NavigateToPreviousScreen)
+                }
+            }
+        }
     }
 
     private fun saveDocument(uri: Uri, name: String) {
