@@ -30,6 +30,10 @@ class ChooseDocumentNameFragment :
                 viewModel.handleEvent(ChooseDocumentNameEvent.OnDocumentNameChanged(text.toString()))
             }
         }
+
+        binding.backButton.setOnClickListener {
+            viewModel.handleEvent(ChooseDocumentNameEvent.BackClicked)
+        }
     }
 
     override fun onSubscribe() {
@@ -65,6 +69,10 @@ class ChooseDocumentNameFragment :
 
             is ChooseDocumentNameSideEffects.SetDocumentName -> {
                 binding.nameEditText.setText(effect.name)
+            }
+
+            ChooseDocumentNameSideEffects.NavigateToPreviousScreen -> {
+                findNavController().popBackStack()
             }
         }
     }

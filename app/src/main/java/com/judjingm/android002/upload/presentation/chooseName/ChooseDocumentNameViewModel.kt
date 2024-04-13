@@ -48,9 +48,18 @@ class ChooseDocumentNameViewModel @Inject constructor(
                 _state.update { event.name }
             }
 
-            ChooseDocumentNameEvent.ProceedNextClicked -> viewModelScope.launch {
-                setFileNameUseCase.invoke(state.value)
-                _sideEffects.emit(ChooseDocumentNameSideEffects.NavigateToNextScreen)
+            ChooseDocumentNameEvent.ProceedNextClicked -> {
+                viewModelScope.launch {
+                    setFileNameUseCase.invoke(state.value)
+                    _sideEffects.emit(ChooseDocumentNameSideEffects.NavigateToNextScreen)
+                }
+            }
+
+            ChooseDocumentNameEvent.BackClicked -> {
+                viewModelScope.launch {
+                    _sideEffects.emit(ChooseDocumentNameSideEffects.NavigateToPreviousScreen)
+                }
+
             }
         }
     }
