@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
@@ -66,8 +67,11 @@ class CredentialsLocalDataSourceImpl @Inject constructor(
     ) {
         if (p1 == key) {
             coroutineScope.launch {
-                _credentialsUpdateFlow.value = getCredentials()
+                _credentialsUpdateFlow.update {
+                    getCredentials()
+                }
             }
         }
     }
+
 }
